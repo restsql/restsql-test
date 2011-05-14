@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://restsql.org/schema ServiceTestCaseDefinition.xsd ">
+	<step name="execute">
+		<request method="POST" uri="res/SingleTable">
+			<body>
+<![CDATA[
+<request>
+	<actor actor_id="1000" first_name="A first name that is too long for the domain rule" last_name="Daniels" />
+</request>
+]]>
+		</body>
+		</request>
+		<response status="400">
+		<body>First name length must be less or equal to 25 characters</body>
+		</response>
+	</step>
+
+	<teardown>
+		<sql>DELETE FROM actor where actor_id between 1000 and 1100</sql>
+	</teardown>
+</tc:testcase>

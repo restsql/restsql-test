@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://restsql.org/schema ServiceTestCaseDefinition.xsd ">
+	<step name="execute">
+		<request method="GET" uri="res/HierManyToMany?_limit=50&amp;_offset=0" />
+		<response>
+			<body>
+<![CDATA[
+<readResponse>
+	<actor last_name="GUINESS" first_name="PENELOPE" actor_id="1">
+		<film year="2006" title="ACADEMY DINOSAUR" film_id="1" />
+		<film year="2006" title="ANACONDA CONFESSIONS" film_id="23" />
+		<film year="2006" title="ANGELS LIFE" film_id="25" />
+		<film year="2006" title="BULWORTH COMMANDMENTS" film_id="106" />
+		<film year="2006" title="CHEAPER CLYDE" film_id="140" />
+		<film year="2006" title="COLOR PHILADELPHIA" film_id="166" />
+		<film year="2006" title="ELEPHANT TROJAN" film_id="277" />
+		<film year="2006" title="GLEAMING JAWBREAKER" film_id="361" />
+		<film year="2006" title="HUMAN GRAFFITI" film_id="438" />
+		<film year="2006" title="KING EVOLUTION" film_id="499" />
+		<film year="2006" title="LADY STAGE" film_id="506" />
+		<film year="2006" title="LANGUAGE COWBOY" film_id="509" />
+		<film year="2006" title="MULHOLLAND BEAST" film_id="605" />
+		<film year="2006" title="OKLAHOMA JUMANJI" film_id="635" />
+		<film year="2006" title="RULES HUMAN" film_id="749" />
+		<film year="2006" title="SPLASH GUMP" film_id="832" />
+		<film year="2006" title="VERTIGO NORTHWEST" film_id="939" />
+		<film year="2006" title="WESTWARD SEABISCUIT" film_id="970" />
+		<film year="2006" title="WIZARD COLDBLOODED" film_id="980" />
+	</actor>
+	<actor last_name="WAHLBERG" first_name="NICK" actor_id="2">
+		<film year="2006" title="ADAPTATION HOLES" film_id="3" />
+		<film year="2006" title="APACHE DIVINE" film_id="31" />
+		<film year="2006" title="BABY HALL" film_id="47" />
+		<film year="2006" title="BULL SHAWSHANK" film_id="105" />
+		<film year="2006" title="CHAINSAW UPTOWN" film_id="132" />
+		<film year="2006" title="CHISUM BEHAVIOR" film_id="145" />
+		<film year="2006" title="DESTINY SATURDAY" film_id="226" />
+		<film year="2006" title="DRACULA CRYSTAL" film_id="249" />
+		<film year="2006" title="FIGHT JAWBREAKER" film_id="314" />
+		<film year="2006" title="FLASH WARS" film_id="321" />
+		<film year="2006" title="GILBERT PELICAN" film_id="357" />
+		<film year="2006" title="GOODFELLAS SALUTE" film_id="369" />
+		<film year="2006" title="HAPPINESS UNITED" film_id="399" />
+		<film year="2006" title="INDIAN LOVE" film_id="458" />
+		<film year="2006" title="JEKYLL FROGMEN" film_id="481" />
+		<film year="2006" title="JERSEY SASSY" film_id="485" />
+		<film year="2006" title="LIAISONS SWEET" film_id="518" />
+		<film year="2006" title="LUCKY FLYING" film_id="540" />
+		<film year="2006" title="MAGUIRE APACHE" film_id="550" />
+		<film year="2006" title="MALLRATS UNITED" film_id="555" />
+		<film year="2006" title="MASK PEACH" film_id="561" />
+		<film year="2006" title="ROOF CHAMPION" film_id="742" />
+		<film year="2006" title="RUSHMORE MERMAID" film_id="754" />
+		<film year="2006" title="SMILE EARRING" film_id="811" />
+		<film year="2006" title="WARDROBE PHANTOM" film_id="958" />
+	</actor>
+	<actor last_name="CHASE" first_name="ED" actor_id="3">
+		<film year="2006" title="ALONE TRIP" film_id="17" />
+		<film year="2006" title="ARMY FLINTSTONES" film_id="40" />
+		<film year="2006" title="ARTIST COLDBLOODED" film_id="42" />
+		<film year="2006" title="BOONDOCK BALLROOM" film_id="87" />
+		<film year="2006" title="CADDYSHACK JEDI" film_id="111" />
+		<film year="2006" title="COWBOY DOOM" film_id="185" />
+	</actor>
+</readResponse>
+]]>
+			</body>
+		</response>
+	</step>
+</tc:testcase>

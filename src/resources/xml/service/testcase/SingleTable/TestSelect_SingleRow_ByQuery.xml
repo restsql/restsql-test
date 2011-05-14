@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://restsql.org/schema ServiceTestCaseDefinition.xsd ">
+	<step name="execute">
+		<request accept="application/xml" method="GET" uri="res/SingleTable?actor_id=99" />
+		<response>
+			<header name="Server" value="Apache-Coyote/1.1" />
+			<body>
+<![CDATA[
+<readResponse>
+	<actor actor_id="99" first_name="JIM" last_name="MOSTEL" />
+</readResponse>
+]]>
+			</body>
+		</response>
+	</step>
+</tc:testcase>

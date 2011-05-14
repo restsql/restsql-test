@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://restsql.org/schema ServiceTestCaseDefinition.xsd ">
+	<step name="execute">
+		<request method="POST" uri="res/SingleTable" contentType="application/x-www-form-urlencoded">
+			<body>
+<![CDATA[
+]]>
+			</body>
+		</request>
+		<response status="400">
+			<body>No valid parameters found</body>
+		</response>
+	</step>
+</tc:testcase>

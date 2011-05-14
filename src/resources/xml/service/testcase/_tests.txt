@@ -1,0 +1,13 @@
+# Contains test cases to run in test-service-xxx-subset build targets
+# List test case definitions using paths relative to restsql-test/src/resources/xml/service/testcase
+# 	e.g. HierManyToMany/TestDelete_MultiRowChild_ByBody.xml
+# Use {dir}/* for all files in a subdir
+# 	e.g. HierManyToMany/*
+# Use # to comment out a line
+
+#Negative/TestInsert_InvalidRequestBody.xml
+#FlatOneToOne/TestUpdate_MultiRow_ByFormParam.xml
+#SingleTable/TestDelete_SingleRow_ByQuery.xml
+#HierOneToMany/TestDelete_SingleRowParentNoChildren_ByQuery.xml
+#HierOneToMany/TestDelete_SingleRowParentNoChildren_ByPath.xml
+HierManyToMany/TestInsert_MultiRowChild_ByPath.xml

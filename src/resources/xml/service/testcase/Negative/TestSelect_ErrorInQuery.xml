@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://restsql.org/schema ServiceTestCaseDefinition.xsd ">
+	<step name="execute">
+		<request method="GET" uri="res/ErrorInQuery" />
+		<response status="500">
+			<body>You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'LIMIT 0,1' at line 1 :: select actor_id, first_name, last_name from  LIMIT 0,1</body>
+		</response>
+	</step>
+</tc:testcase>

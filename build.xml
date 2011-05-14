@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="restsql-test" default="all">
+	<property file="build.properties" />
+
+	<taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask" classpath="../restsql/lib/jaxb-xjc.jar" />
+
+	<target name="all" depends="clean,test-api,test-service-http,test-report" />
+
+	<target name="clean">
+		<delete dir="obj" failonerror="false" includeEmptyDirs="true" quiet="true" />
+	</target>
+
+	<target name="compile-schema">
+		<!-- Create output dir -->
+		<mkdir dir="obj/bin" />
+
+		<xjc destdir="src" package="org.restsql.service.testcase" removeOldOutput="yes">
+			<schema file="src/resources/xml/service/testcase/ServiceTestCaseDefinition.xsd" />
+			<depends file="src/resources/xml/service/testcase/ServiceTestCaseDefinition.xsd" />
+			<produces dir="obj/bin" />
+		</xjc>
+	</target>
+
+	<target name="compile-tests">
+		<ant antfile="../restsql/build.xml" target="compile" inheritall="no" />
+
+		<!-- Create output dir -->
+		<mkdir dir="obj/bin" />
+
+		<!-- Copy supporting files -->
+		<copy todir="obj/bin">
+			<fileset dir="src">
+				<include name="**/*.properties" />
+				<include name="**/*.xml" />
+				<include name="**/*.xsd" />
+			</fileset>
+		</copy>
+
+		<!-- Compile tests -->
+		<javac srcdir="src" destdir="obj/bin" classpath="${test-compile.classpath}" debug="true" />
+	</target>
+
+	<target name="test-api" depends="compile-tests">
+		<!-- Create output dir -->
+		<delete dir="obj/test" />
+		<mkdir dir="obj/test" />
+
+		<!-- Execute tests -->
+		<junit fork="true" showoutput="true" printsummary="true" tempdir="obj/test" dir="${basedir}">
+			<sysproperty key="java.util.logging.config.file" value="/restsql/eclipse-workspace/restsql-test/src/resources/properties/test-logging-file.properties" />
+			<classpath path="${test-exec.classpath}" />
+			<formatter type="xml" />
+			<batchtest todir="obj/test">
+				<fileset dir="src" includes="**/*Test.*" excludes="" />
+			</batchtest>
+		</junit>
+	</target>
+
+	<!-- Creates report for API test -->
+	<target name="test-report">
+		<!-- Create output dir -->
+		<delete dir="obj/test/report" />
+		<mkdir dir="obj/test/report" />
+
+		<!-- Create report -->
+		<junitreport todir="obj/test">
+			<fileset dir="obj/test">
+				<include name="TEST-*.xml" />
+			</fileset>
+			<report format="frames" todir="obj/test/report" />
+		</junitreport>
+	</target>
+
+	<target name="test-service-http">
+		<antcall target="-test-service">
+			<param name="testStyle" value="http" />
+			<param name="testList" value="%" />
+		</antcall>
+	</target>
+
+	<target name="test-service-http-subset">
+		<antcall target="-test-service">
+			<param name="testStyle" value="http" />
+			<param name="testList" value="${test.list}" />
+		</antcall>
+	</target>
+
+	<target name="test-service-java">
+		<antcall target="-test-service">
+			<param name="testStyle" value="java" />
+			<param name="testList" value="%" />
+		</antcall>
+	</target>
+
+	<target name="test-service-java-subset">
+		<antcall target="-test-service">
+			<param name="testStyle" value="java" />
+			<param name="testList" value="${test.list}" />
+		</antcall>
+	</target>
+
+	<target name="-test-service" depends="compile-tests">
+		<property name="org.restsql.baseUri" value="http://localhost:8080/restsql/" />
+		<java fork="true" classpath="${test-exec.classpath}" classname="org.restsql.service.ServiceTestRunner" dir="${basedir}">
+			<arg value="${testStyle}" />
+			<arg value="${testList}" />
+			<jvmarg value="-Dorg.restsql.baseUri=${org.restsql.baseUri}" />
+		</java>
+	</target>
+
+</project>

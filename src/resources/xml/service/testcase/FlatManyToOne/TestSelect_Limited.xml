@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://restsql.org/schema ServiceTestCaseDefinition.xsd ">
+	<step name="execute">
+		<request method="GET" uri="res/FlatManyToOne?_offset=0&amp;_limit=20" />
+		<response>
+			<body>
+<![CDATA[
+<readResponse>
+	<film film_id="1" title="ACADEMY DINOSAUR" year="2006" language_id="1" name="English" />
+	<film film_id="2" title="ACE GOLDFINGER" year="2006" language_id="1" name="English" />
+	<film film_id="3" title="ADAPTATION HOLES" year="2006" language_id="1" name="English" />
+	<film film_id="4" title="AFFAIR PREJUDICE" year="2006" language_id="1" name="English" />
+	<film film_id="5" title="AFRICAN EGG" year="2006" language_id="1" name="English" />
+	<film film_id="6" title="AGENT TRUMAN" year="2006" language_id="1" name="English" />
+	<film film_id="7" title="AIRPLANE SIERRA" year="2006" language_id="1" name="English" />
+	<film film_id="8" title="AIRPORT POLLOCK" year="2006" language_id="1" name="English" />
+	<film film_id="9" title="ALABAMA DEVIL" year="2006" language_id="1" name="English" />
+	<film film_id="10" title="ALADDIN CALENDAR" year="2006" language_id="1" name="English" />
+	<film film_id="11" title="ALAMO VIDEOTAPE" year="2006" language_id="1" name="English" />
+	<film film_id="12" title="ALASKA PHANTOM" year="2006" language_id="1" name="English" />
+	<film film_id="13" title="ALI FOREVER" year="2006" language_id="1" name="English" />
+	<film film_id="14" title="ALICE FANTASIA" year="2006" language_id="1" name="English" />
+	<film film_id="15" title="ALIEN CENTER" year="2006" language_id="1" name="English" />
+	<film film_id="16" title="ALLEY EVOLUTION" year="2006" language_id="1" name="English" />
+	<film film_id="17" title="ALONE TRIP" year="2006" language_id="1" name="English" />
+	<film film_id="18" title="ALTER VICTORY" year="2006" language_id="1" name="English" />
+	<film film_id="19" title="AMADEUS HOLY" year="2006" language_id="1" name="English" />
+	<film film_id="20" title="AMELIE HELLFIGHTERS" year="2006" language_id="1" name="English" />
+</readResponse>
+]]>
+			</body>
+		</response>
+	</step>
+</tc:testcase>

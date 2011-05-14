@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://restsql.org/schema ServiceTestCaseDefinition.xsd ">
+	<step name="execute">
+		<request method="POST" uri="res/SingleTable">
+			<body>
+<![CDATA[
+<request>
+	<actor actor_id="1000" first_name="_Jack" last_name="Daniels" >
+</request>
+]]>
+			</body>
+		</request>
+		<response status="400">
+			<body>
+<![CDATA[
+Error parsing request body: org.xml.sax.SAXParseException: The element type "actor" must be terminated by the matching end-tag "</actor>".
+]]>
+			</body>
+		</response>
+	</step>
+</tc:testcase>

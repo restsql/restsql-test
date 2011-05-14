@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://restsql.org/schema ServiceTestCaseDefinition.xsd ">
+	<setup>
+		<sql>INSERT INTO language (language_id,name) VALUES (100,'New Esperanto')</sql>
+		<sql>INSERT INTO language (language_id,name) VALUES (101,'New Greek')</sql>
+	</setup>
+	<step name="execute">
+		<request method="POST" uri="res/HierOneToMany">
+			<body>
+<![CDATA[
+<request>
+	<language language_id="100" name="New Esperanto">
+		<film year="2011" title="BLESSED SUN" film_id="5003" />
+		<film year="2011" title="WICKED SUN" film_id="5004" />
+	</language>
+	<language language_id="101" name="New Greek">
+		<film year="2011" title="BLESSED MOON" film_id="5005" />
+		<film year="2011" title="WICKED MOON" film_id="5006" />
+	</language>
+</request>
+]]>
+			</body>
+		</request>
+		<response>
+			<body>
+<![CDATA[
+<writeResponse rowsAffected="4" />
+]]>
+				</body>
+		</response>
+	</step>
+	<step name="verify">
+		<request method="GET" uri="res/HierOneToMany?name=New%25" />
+		<response>
+			<body>
+<![CDATA[
+<readResponse>
+	<language language_id="100" name="New Esperanto">
+		<film year="2011" title="BLESSED SUN" film_id="5003" />
+		<film year="2011" title="WICKED SUN" film_id="5004" />
+	</language>
+	<language language_id="101" name="New Greek">
+		<film year="2011" title="BLESSED MOON" film_id="5005" />
+		<film year="2011" title="WICKED MOON" film_id="5006" />
+	</language>
+</readResponse>
+]]>
+		</body>
+		</response>
+	</step>
+	<teardown>
+		<sql>DELETE FROM film WHERE film_id between 5000 and 5500</sql>
+		<sql>DELETE FROM language WHERE language_id between 100 and 150</sql>
+	</teardown>
+</tc:testcase>

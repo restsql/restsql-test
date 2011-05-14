@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://restsql.org/schema ServiceTestCaseDefinition.xsd ">
+	<step name="execute">
+		<request method="POST" uri="res/SingleTable" contentType="application/x-www-form-urlencoded">
+			<body>
+<![CDATA[
+actor_id=1000&first_name=_Jack&last_name=Daniels
+]]>
+			</body>
+		</request>
+		<response>
+			<body>
+<![CDATA[
+<writeResponse rowsAffected="1" />
+]]>
+			</body>
+		</response>
+	</step>
+
+	<step name="verify">
+		<request method="GET" uri="res/SingleTable?first_name=_Jack" />
+		<response>
+			<body>
+<![CDATA[
+<readResponse>
+	<actor actor_id="1000" first_name="_Jack" last_name="Daniels" />
+</readResponse>
+]]>
+			</body>
+		</response>
+	</step>
+
+	<teardown>
+		<sql>DELETE FROM actor where actor_id between 1000 and 1100</sql>
+	</teardown>
+</tc:testcase>

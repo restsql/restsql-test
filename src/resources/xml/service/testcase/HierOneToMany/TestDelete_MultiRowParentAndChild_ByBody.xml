@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://restsql.org/schema ServiceTestCaseDefinition.xsd ">
+	<setup>
+		<sql>INSERT INTO language (language_id,name) VALUES (100,'New Esperanto')</sql>
+		<sql>INSERT INTO language (language_id,name) VALUES (101,'New Greek')</sql>
+		<sql>INSERT INTO film (film_id,title,release_year,language_id,rental_duration,rental_rate,replacement_cost) VALUES (5000,'ESCAPE FROM TOMORROW',2011,100,0,0,0)</sql>
+		<sql>INSERT INTO film (film_id,title,release_year,language_id,rental_duration,rental_rate,replacement_cost) VALUES (5001,'BLOOD PURPLE',2012,100,0,0,0)</sql>
+		<sql>INSERT INTO film (film_id,title,release_year,language_id,rental_duration,rental_rate,replacement_cost) VALUES (5002,'THE DARKENING',2012,101,0,0,0)</sql>
+		<sql>INSERT INTO film (film_id,title,release_year,language_id,rental_duration,rental_rate,replacement_cost) VALUES (5003,'THE LIGHTENING',2012,101,0,0,0)</sql>
+	</setup>
+	<step name="execute">
+		<request method="DELETE" uri="res/HierOneToMany">
+			<body>
+<![CDATA[
+<request>
+	<language language_id="100">
+		<film film_id="5001" />
+		<film film_id="5000" />
+	</language>
+	<language language_id="100" />
+	<language language_id="101" />
+</request>
+]]>
+			</body>
+		</request>
+		<response>
+			<body>
+<![CDATA[
+<writeResponse rowsAffected="6" />
+]]>
+			</body>
+		</response>
+	</step>
+	<step name="verify">
+		<request method="GET" uri="res/HierOneToMany?name=New%25" />
+		<response>
+			<body>
+<![CDATA[
+<readResponse>
+</readResponse>
+]]>
+			</body>
+		</response>
+	</step>
+	<teardown>
+		<sql>DELETE FROM language WHERE language_id between 100 and 150</sql>
+	</teardown>
+</tc:testcase>

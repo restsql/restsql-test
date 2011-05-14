@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://restsql.org/schema" elementFormDefault="unqualified"
+	xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tc="http://restsql.org/schema">
+
+	<element name="testcase" type="tc:ServiceTestCaseDefinition"></element>
+
+	<complexType name="ServiceTestCaseDefinition">
+		<sequence>
+			<element name="setup" type="tc:SetupOrTeardown" maxOccurs="1" minOccurs="0"></element>
+			<element name="step" type="tc:Step" maxOccurs="unbounded" minOccurs="1"></element>
+			<element name="teardown" type="tc:SetupOrTeardown" maxOccurs="1" minOccurs="0"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="SetupOrTeardown">
+		<sequence>
+			<element name="sql" type="string" maxOccurs="unbounded" minOccurs="1"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="Step">
+		<sequence>
+			<element name="request" type="tc:Request"></element>
+			<element name="response" type="tc:Response"></element>
+		</sequence>
+		<attribute name="name" type="string" use="required"></attribute>
+	</complexType>
+
+	<complexType name="Request">
+		<sequence>
+			<element name="header" type="tc:Header" maxOccurs="unbounded" minOccurs="0"></element>
+			<element name="body" type="string" maxOccurs="1" minOccurs="0"></element>
+		</sequence>
+		<attribute name="method" use="required">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="DELETE"></enumeration>
+					<enumeration value="GET"></enumeration>
+					<enumeration value="POST"></enumeration>
+					<enumeration value="PUT"></enumeration>
+				</restriction>
+			</simpleType>
+		</attribute>
+		<attribute name="uri" type="string" use="required"></attribute>
+        <attribute name="contentType" type="string" use="optional" default="application/xml"></attribute>
+        <attribute name="accept" type="string" use="optional" default="application/xml" />
+	</complexType>
+
+	<complexType name="Response">
+		<sequence>
+			<element name="header" type="tc:Header" maxOccurs="unbounded" minOccurs="0"></element>
+			<element name="body" type="string" maxOccurs="1" minOccurs="0"></element>
+		</sequence>
+		<attribute name="status" type="int" use="optional" default="200"></attribute>
+	</complexType>
+
+	<complexType name="Header">
+		<attribute name="name" type="string" use="required"></attribute>
+		<attribute name="value" type="string" use="required"></attribute>
+	</complexType>
+
+</schema>
