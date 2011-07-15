@@ -145,8 +145,8 @@ public class SqlResourceHierOneToManyWriteTest extends SqlResourceTestBase {
 		final List<Map<String, Object>> results = sqlResource.readCollection(request);
 		assertEquals(1, results.size());
 		List<Map<String, Object>> childRows = (List<Map<String, Object>>) results.get(0).get("films");
-		AssertionHelper.assertFilmBasics(childRows.get(0), 5003, "BLESSED SUN", 2011);
-		AssertionHelper.assertFilmBasics(childRows.get(1), 5004, "WICKED SUN", 2011);
+		AssertionHelper.assertFilmBasics(childRows, 5003, "BLESSED SUN", 2011);
+		AssertionHelper.assertFilmBasics(childRows, 5004, "WICKED SUN", 2011);
 	}
 
 	@SuppressWarnings("unchecked")

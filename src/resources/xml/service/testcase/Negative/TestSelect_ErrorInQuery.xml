@@ -4,7 +4,9 @@
 	<step name="execute">
 		<request method="GET" uri="res/ErrorInQuery" />
 		<response status="500">
-			<body>You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'LIMIT 0,1' at line 1 :: select actor_id, first_name, last_name from  LIMIT 0,1</body>
-		</response>
+			<body>You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'LIMIT 1 OFFSET 0' at line 2 :: 
+		select actor_id, first_name, last_name from
+	 LIMIT 1 OFFSET 0</body>
+      	 </response>
 	</step>
 </tc:testcase>

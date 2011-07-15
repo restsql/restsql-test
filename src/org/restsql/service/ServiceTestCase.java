@@ -110,7 +110,9 @@ public class ServiceTestCase extends TestCase {
 	}
 
 	private void testHttpStep(final Client client, final Step step) {
-		final WebResource resource = client.resource(System.getProperty("org.restsql.baseUri", DEFAULT_BASE_URI) + step.getRequest().getUri());
+		final WebResource resource = client.resource(System.getProperty("org.restsql.baseUri",
+				DEFAULT_BASE_URI)
+				+ step.getRequest().getUri());
 		final String accept = step.getRequest().getAccept();
 		final String contentType = step.getRequest().getContentType();
 		String requestBody = null;
@@ -154,19 +156,23 @@ public class ServiceTestCase extends TestCase {
 			ServiceTestCase.assertEquals(step, "header " + header.getName() + " value", header.getValue(),
 					actualValue.toString());
 		}
+		helper.writeSuccess();
 	}
 
 	private void testJavaStep(final Step step) throws SqlResourceException, ParserConfigurationException,
 			SAXException, JAXBException, IOException {
-		if (step.getRequest().getUri().startsWith("resource")) {
+		if (step.getRequest().getUri().startsWith("res")) {
 			final Request request = Factory.getRequest("localhost", step.getRequest().getMethod(), step
 					.getRequest().getUri());
 			if (request.getType() == Type.SELECT) {
 				try {
 					final SqlResource sqlResource = Factory.getSqlResource(request.getSqlResource());
 					final String response = sqlResource.readXml(request);
-					helper.writeResponseTrace(step, 0, 0, step.getResponse().getBody(), response);
+					helper.writeResponseTrace(step, ServiceTestCaseHelper.STATUS_NOT_APPLICABLE,
+							ServiceTestCaseHelper.STATUS_NOT_APPLICABLE, step.getResponse().getBody(),
+							response);
 					ServiceTestCase.assertEquals(step, "body", step.getResponse().getBody(), response);
+					helper.writeSuccess();
 				} catch (SqlResourceException exception) {
 					handleException(step, exception);
 				}
@@ -184,11 +190,15 @@ public class ServiceTestCase extends TestCase {
 					if (step.getResponse().getStatus() == 200) {
 						final int expectedRowsAffected = XmlHelper.unmarshallWriteResponse(step.getResponse()
 								.getBody());
+						helper.writeResponseTrace(step, 200, 200, "rowsAffected=" + expectedRowsAffected,
+								"rowsAffected=" + rowsAffected);
 						ServiceTestCase
 								.assertEquals(step, "rowsAffected", expectedRowsAffected, rowsAffected);
 					} else {
+						helper.writeResponseTrace(step, 200, 200, "", "");
 						assertEquals("status", step.getResponse().getStatus(), 200);
 					}
+					helper.writeSuccess();
 				} catch (SqlResourceException exception) {
 					handleException(step, exception);
 				}
@@ -197,17 +207,19 @@ public class ServiceTestCase extends TestCase {
 	}
 
 	private void handleException(Step step, SqlResourceException exception) {
+		int actualStatus;
 		if (exception instanceof InvalidRequestException) {
-			assertEquals(400, step.getResponse().getStatus());
-			assertEquals("response body", step.getResponse().getBody(), exception.getMessage());
+			actualStatus = 400;
 		} else if (exception instanceof SqlResourceFactoryException) {
-			assertEquals(404, step.getResponse().getStatus());
-			assertEquals("response body", step.getResponse().getBody(), exception.getMessage());
+			actualStatus = 404;
 		} else { // exception instanceof SqlResourceException
-			assertEquals(500, step.getResponse().getStatus());
-			assertEquals("response body", step.getResponse().getBody(), exception.getMessage());
+			actualStatus = 500;
 		}
-
+		helper.writeResponseTrace(step, step.getResponse().getStatus(), actualStatus, step.getResponse()
+				.getBody(), exception.getMessage());
+		assertEquals(step.getResponse().getStatus(), actualStatus);
+		assertEquals("response body", step.getResponse().getBody(), exception.getMessage());
+		helper.writeSuccess();
 	}
 
 	public enum InterfaceStyle {

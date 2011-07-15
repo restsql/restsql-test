@@ -1,4 +1,4 @@
-README.txt (14-May-2011)
+README.txt (14-Jul-2011)
 
 restSQL Test Deployment Guide
 
@@ -28,14 +28,25 @@ Requirements: restSQL project or deployed restSQL, JDK, Ant
 
 The test project contains component test code, artifacts and a harness that exercise the framework and the service using the Java and HTTP APIs, respectively. The Java API tests use straight JUnit tests. The HTTP API tests use an XML-driven test case harness built with JUnit. The Java API tests require the restsql project, since it relies on its build file and source code. The HTTP API tests only require a deployed restsql service. 
 
+Database: If you have not deployed the SDK yet, you will need to deploy the extended sakila database. Bash and Windows batch scripts are provided to create the base and extended database for MySQL and PostgreSQL. The bash script is restsql-test/database/<database>/create-sakila.sh and the Windows batch script is restsql-test/database/<database>/create-sakila.bat, where database is mysql or postgresql. You will need to change the user and password variables in the beginning of the script to an account that has database and table creation privileges.
+
 Execution: The tests are executed using the Ant build file (restsql-test/build.xml). Executing the default target, all, will run everything, but you can also run test-api (Java API) or test-service (HTTP API) to run one or either half. If the service is not running in the default location, http://localhost:8080/restsql/, then the System Property, org.restsql.baseUri, must be set. For example:
 
     ant -Dorg.restsql.baseUri=http://somehost:8080/restsql-0.5/ test-service-http
 
-Test results will appear on the screen. Failure detail is available in restsql-test/obj/test.
+By default, the tests will use the restsql properties file src/resources/properties/restsql-mysql.properties. If you are using PostgreSQL, you must explicitly instruct the test harness to use the postgresql properties. Set the System property org.restsql.properties as follows at ant execution:
+	
+	ant -Dorg.restsql.properties=/resources/properties/restsql-postgresql.properties 
 
-Database: If you have not deployed the SDK yet, you will need to deploy the extended sakila database. Bash and Windows batch scripts are provided to create the base and extended database for MySQL. The bash script is restsql-test/database/create-sakila.sh and the Windows batch script is restsql-test/database/create-sakila.bat. You will need to change the user and password variables in the beginning of the script to an account that has database and table creation privileges.
+Test results will appear on the screen. Test detail is available in restsql-test/obj/test.
 
+PostgreSQL Notes: Five test cases that pass with MySQL are expected to fail with PostgreSQL. The first one returns a database-specific error:
+	Negative/TestSelect_ErrorInQuery.xml
+The other four return the correct data but in a different order than MySQL.
+	FlatManyToOne/TestSelect_Limited.xml
+	HierOneToMany/TestUpdate_MultiRowParentAndChild_ByBody.xml
+	HierManyToManyExt/TestUpdate_MultiRowParentAndChild_ByBody.xml
+	HierManyToMany/TestInsert_MultiRowParentAndChild_ByBody.xml
 
 -------------------------------------------------------------------------------
 License

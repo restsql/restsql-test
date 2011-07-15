@@ -11,9 +11,11 @@ import java.util.List;
 import org.restsql.service.testcase.Step;
 
 public class ServiceTestCaseHelper {
+	public static final int STATUS_NOT_APPLICABLE = -1;
 	private static final String TRACE_OUTPUT_DIR = "obj/test";
 
-	static void executeSetupOrTeardownSql(final Connection connection, final String action, final List<String> sqls) {
+	static void executeSetupOrTeardownSql(final Connection connection, final String action,
+			final List<String> sqls) {
 		if (sqls != null && sqls.size() > 0) {
 			String trace = null;
 			try {
@@ -25,7 +27,8 @@ public class ServiceTestCaseHelper {
 				}
 				statement.close();
 			} catch (final SQLException exception) {
-				System.out.println("SQLException on " + action + ": " + exception.getMessage() + " \n" + trace);
+				System.out.println("SQLException on " + action + ": " + exception.getMessage() + " \n"
+						+ trace);
 			}
 		}
 	}
@@ -51,10 +54,12 @@ public class ServiceTestCaseHelper {
 			final FileOutputStream outputStream = new FileOutputStream(traceFile, true);
 			outputStream.write("\nstep ".getBytes());
 			outputStream.write(step.getName().getBytes());
-			outputStream.write(" exected status: ".getBytes());
-			outputStream.write(String.valueOf(expectedStatus).getBytes());
-			outputStream.write(" actual: ".getBytes());
-			outputStream.write(String.valueOf(actualStatus).getBytes());
+			if (expectedStatus != STATUS_NOT_APPLICABLE) {
+				outputStream.write(" exected status: ".getBytes());
+				outputStream.write(String.valueOf(expectedStatus).getBytes());
+				outputStream.write(" actual: ".getBytes());
+				outputStream.write(String.valueOf(actualStatus).getBytes());
+			}
 			outputStream.write("\nexpected body:\n".getBytes());
 			if (expectedBody != null) {
 				outputStream.write(expectedBody.getBytes());
@@ -68,4 +73,15 @@ public class ServiceTestCaseHelper {
 			exception.printStackTrace();
 		}
 	}
+
+	void writeSuccess() {
+		try {
+			final FileOutputStream outputStream = new FileOutputStream(traceFile, true);
+			outputStream.write("\n\n--- TEST PASSED ---".getBytes());
+			outputStream.close();
+		} catch (final Exception exception) {
+			exception.printStackTrace();
+		}
+	}
+
 }

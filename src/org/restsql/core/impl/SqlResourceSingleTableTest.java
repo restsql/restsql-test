@@ -16,8 +16,8 @@ import org.restsql.core.Factory;
 import org.restsql.core.InvalidRequestException;
 import org.restsql.core.Request;
 import org.restsql.core.RequestFactoryHelper;
+import org.restsql.core.SqlBuilder;
 import org.restsql.core.SqlResourceException;
-import org.restsql.core.impl.SqlBuilder.SqlStruct;
 
 public class SqlResourceSingleTableTest extends SqlResourceTestBase {
 
@@ -75,10 +75,11 @@ public class SqlResourceSingleTableTest extends SqlResourceTestBase {
 		// Insert it
 		Request request = RequestFactoryHelper.getRequest(Request.Type.INSERT, sqlResource.getName(), null, new String[] {
 				"actor_id", "1003", "first_name", "Patty", "last_name", "White" });
-		final Map<String, SqlStruct> sql = SqlBuilder.buildWriteSql(((SqlResourceImpl) sqlResource)
+		final Map<String, SqlBuilder.SqlStruct> sql = Factory.getSqlBuilder().buildWriteSql(((SqlResourceImpl) sqlResource)
 				.getSqlResourceMetaData(), request, false);
-		assertEquals("INSERT INTO sakila.actor (actor_id,first_name,last_name) VALUES (1003,'Patty','White')", sql
-				.get("sakila.actor").main.toString());
+		String qualifiedTableName = getQualifiedTableName("actor");
+		assertEquals("INSERT INTO " + qualifiedTableName + " (actor_id,first_name,last_name) VALUES (1003,'Patty','White')", sql
+				.get(qualifiedTableName).getMain().toString());
 
 		final int rowsAffected = sqlResource.write(request);
 		assertEquals(1, rowsAffected);

@@ -3,17 +3,14 @@ package org.restsql.service;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Properties;
 
 import junit.framework.AssertionFailedError;
 import junit.framework.Test;
@@ -21,17 +18,21 @@ import junit.framework.TestListener;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
 
+import org.restsql.core.Config;
+import org.restsql.core.Factory;
 import org.restsql.service.ServiceTestCase.InterfaceStyle;
 import org.restsql.service.testcase.ServiceTestCaseDefinition;
 
 public class ServiceTestRunner {
-	private static final String DATABASE_PROPERTIES = "../restsql/src/resources/properties/default-database.properties";
 	public final static String SCOPE_ALL = "%";
 	public final static String TEST_CASE_DIR = "obj/bin/resources/xml/service/testcase";
 	public final static String TEST_RESULTS_DIR = "obj/test";
 
 	static {
-		System.setProperty("org.restsql.properties", "/resources/properties/restsql.properties");
+		if (System.getProperty(Config.KEY_RESTSQL_PROPERTIES) == null) {
+			System.setProperty(Config.KEY_RESTSQL_PROPERTIES, "/resources/properties/restsql-mysql.properties");
+		}
+		System.out.println("Using " + System.getProperty(Config.KEY_RESTSQL_PROPERTIES));
 	}
 
 	public static void main(final String[] args) throws SQLException, IOException {
@@ -50,7 +51,7 @@ public class ServiceTestRunner {
 		final ServiceTestListener listener = new ServiceTestListener();
 		result.addListener(listener);
 
-		final Connection connection = getConnection();
+		final Connection connection = Factory.getConnection("sakila");
 
 		if (buildSuite(connection, suite, interfaceStyle, files)) {
 			suite.run(result);
@@ -116,17 +117,6 @@ public class ServiceTestRunner {
 		} else {
 			dir.mkdir();
 		}
-	}
-
-	private static Connection getConnection() throws FileNotFoundException, IOException, SQLException {
-		final Properties properties = new Properties();
-		final FileInputStream inputStream = new FileInputStream(DATABASE_PROPERTIES);
-		properties.load(inputStream);
-		final Connection connection = DriverManager.getConnection(properties.getProperty("database.url"),
-				properties.getProperty("database.user"), properties.getProperty("database.password"));
-		connection.setCatalog("sakila");
-		inputStream.close();
-		return connection;
 	}
 
 	private static List<File> getDefinitionFiles(final String arg) throws FileNotFoundException, IOException {

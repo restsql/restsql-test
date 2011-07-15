@@ -1,11 +1,10 @@
 /* Copyright (c) restSQL Project Contributors. Licensed under MIT. */
 package org.restsql.core;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
-import org.restsql.core.Config;
-import org.restsql.core.SqlResourceException;
 
 public class ConfigTest {
 
@@ -26,6 +25,6 @@ public class ConfigTest {
 	@Test
 	public void testException() {
 		SqlResourceException e = new SqlResourceException(new SqlResourceException("blah"), "select * from temp");
-		System.out.println(e.toString());
+		assertEquals("org.restsql.core.SqlResourceException: blah :: select * from temp", e.toString());
 	}
 }
