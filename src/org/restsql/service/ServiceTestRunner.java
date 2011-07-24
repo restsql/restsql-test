@@ -4,6 +4,7 @@ package org.restsql.service;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
@@ -27,10 +28,12 @@ public class ServiceTestRunner {
 	public final static String SCOPE_ALL = "%";
 	public final static String TEST_CASE_DIR = "obj/bin/resources/xml/service/testcase";
 	public final static String TEST_RESULTS_DIR = "obj/test";
+	public static final String FAILURES_AND_ERRORS_LOG = TEST_RESULTS_DIR + "/FailuresAndErrors.log";
 
 	static {
 		if (System.getProperty(Config.KEY_RESTSQL_PROPERTIES) == null) {
-			System.setProperty(Config.KEY_RESTSQL_PROPERTIES, "/resources/properties/restsql-mysql.properties");
+			System.setProperty(Config.KEY_RESTSQL_PROPERTIES,
+					"/resources/properties/restsql-mysql.properties");
 		}
 		System.out.println("Using " + System.getProperty(Config.KEY_RESTSQL_PROPERTIES));
 	}
@@ -60,6 +63,8 @@ public class ServiceTestRunner {
 			System.out.println("Tests run: " + result.runCount() + ", Failures: " + result.failureCount()
 					+ ", Errors: " + result.errorCount() + ", Time elapsed: "
 					+ (float) listener.getTotalElapsedTime() / 1000 + " sec");
+
+			listener.printNonPassingTests();
 
 			if (result.wasSuccessful()) {
 				System.exit(0);
@@ -171,17 +176,22 @@ public class ServiceTestRunner {
 	static class ServiceTestListener implements TestListener {
 		private long elapsedTime;
 		private Throwable error, failure;
+		private final List<ServiceTestCase> nonPassingTests = new ArrayList<ServiceTestCase>();
 		private long startTime;
 		private long totalElapsedTime;
 
 		@Override
 		public void addError(final Test test, final Throwable e) {
 			error = e;
+			ServiceTestCaseHelper.renameLog(test, "Error--");
+			nonPassingTests.add((ServiceTestCase) test);
 		}
 
 		@Override
 		public void addFailure(final Test test, final AssertionFailedError f) {
 			failure = f;
+			ServiceTestCaseHelper.renameLog(test, "Failure--");
+			nonPassingTests.add((ServiceTestCase) test);
 		}
 
 		@Override
@@ -201,8 +211,31 @@ public class ServiceTestRunner {
 			return elapsedTime;
 		}
 
+		public List<ServiceTestCase> getNonPassingTests() {
+			return nonPassingTests;
+		}
+
 		public long getTotalElapsedTime() {
 			return totalElapsedTime;
+		}
+
+		public void printNonPassingTests() {
+			if (nonPassingTests.size() > 0) {
+				File file = new File(FAILURES_AND_ERRORS_LOG);
+				FileOutputStream outputStream;
+				try {
+					outputStream = new FileOutputStream(file);
+					System.out.println("\nFailures and Errors:");
+					for (ServiceTestCase testCase : nonPassingTests) {
+						String name = testCase.getTestCaseCategory() + "/" + testCase.getTestCaseName() + "\n";
+						System.out.print("   " + name);
+						outputStream.write(name.getBytes());
+					}
+					outputStream.close();
+				} catch (IOException exception) {
+					exception.printStackTrace();
+				}
+			}
 		}
 
 		@Override

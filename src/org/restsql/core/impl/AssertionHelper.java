@@ -5,12 +5,25 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.fail;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.restsql.core.ColumnMetaData;
 
 public class AssertionHelper {
+
+	public static void assertColumnMetaData(final ColumnMetaData actual, final int columnNumber,
+			final boolean primaryKey, final String catalogName, final String tableName,
+			final String columnName, final String columnLabel, final int columnType) {
+		assertEquals("column number", columnNumber, actual.getColumnNumber());
+		assertEquals("primary key", primaryKey, actual.isPrimaryKey());
+		assertEquals("catalog name", catalogName, actual.getDatabaseName());
+		assertEquals("table name", tableName, actual.getTableName());
+		assertEquals("column name", columnName, actual.getColumnName());
+		assertEquals("column label", columnLabel, actual.getColumnLabel());
+		assertEquals("column type", columnType, actual.getColumnType());
+	}
 
 	static void assertActor(final boolean hierarchical, final Map<String, Object> row, final int actor_id,
 			final String first_name, final String last_name) {
@@ -29,21 +42,10 @@ public class AssertionHelper {
 				columnLabel, columnType);
 	}
 
-	public static void assertColumnMetaData(ColumnMetaData actual, int columnNumber, boolean primaryKey,
-			String catalogName, String tableName, String columnName, String columnLabel, int columnType) {
-		assertEquals("column number", columnNumber, actual.getColumnNumber());
-		assertEquals("primary key", primaryKey, actual.isPrimaryKey());
-		assertEquals("catalog name", catalogName, actual.getDatabaseName());
-		assertEquals("table name", tableName, actual.getTableName());
-		assertEquals("column name", columnName, actual.getColumnName());
-		assertEquals("column label", columnLabel, actual.getColumnLabel());
-		assertEquals("column type", columnType, actual.getColumnType());
-	}
-
 	static void assertFilmBasics(final List<Map<String, Object>> rows, final int film_id, final String title,
 			final int year) {
 		boolean rowFound = false;
-		for (Map<String, Object> row : rows) {
+		for (final Map<String, Object> row : rows) {
 			if (row.get("film_id").equals(film_id)) {
 				assertFilmBasics(row, film_id, title, year);
 				rowFound = true;
@@ -101,6 +103,12 @@ public class AssertionHelper {
 		assertEquals(3, row.size());
 		assertEquals(new Integer(language_id), row.get("language_id"));
 		assertEquals(language, row.get("name"));
+	}
+
+	static void assertTestTimestamp(final Map<String, Object> row, final int id, final Date time) {
+		assertEquals(2, row.size());
+		assertEquals(new Integer(id), row.get("id"));
+		assertEquals(time, row.get("time"));
 	}
 
 }

@@ -1,4 +1,4 @@
-README.txt (14-Jul-2011)
+README.txt (23-Jul-2011)
 
 restSQL Test Deployment Guide
 
@@ -19,7 +19,13 @@ restSQL binary distributions contain three libraries:
 
 restSQL source distributions consist of one jar:
     1. restsql-{version}-src.jar    (service and core framework)
-    
+
+
+-------------------------------------------------------------------------------
+Versions
+
+The restsql and restsql-sdk versions are found in the jar and war's META-INF/MANIFEST.MF. It is also found in the the source tree in restsql/build.properties and restsql-sdk/build.properties in the property build.version. 
+
 
 -------------------------------------------------------------------------------
 Installing restSQL Test
@@ -40,13 +46,13 @@ By default, the tests will use the restsql properties file src/resources/propert
 
 Test results will appear on the screen. Test detail is available in restsql-test/obj/test.
 
-PostgreSQL Notes: Five test cases that pass with MySQL are expected to fail with PostgreSQL. The first one returns a database-specific error:
+PostgreSQL Notes:  Five or more test cases that pass with MySQL are expected to fail with PostgreSQL. The first one returns a database-specific error:
 	Negative/TestSelect_ErrorInQuery.xml
-The other four return the correct data but in a different order than MySQL.
+The other return the correct data but in a different order than MySQL.
 	FlatManyToOne/TestSelect_Limited.xml
-	HierOneToMany/TestUpdate_MultiRowParentAndChild_ByBody.xml
 	HierManyToManyExt/TestUpdate_MultiRowParentAndChild_ByBody.xml
 	HierManyToMany/TestInsert_MultiRowParentAndChild_ByBody.xml
+	HierOneToMany/<multiple>
 
 -------------------------------------------------------------------------------
 License

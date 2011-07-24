@@ -2,17 +2,21 @@
 package org.restsql.service;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Scanner;
+
+import junit.framework.Test;
 
 import org.restsql.service.testcase.Step;
 
 public class ServiceTestCaseHelper {
-	public static final int STATUS_NOT_APPLICABLE = -1;
-	private static final String TRACE_OUTPUT_DIR = "obj/test";
+	static final int STATUS_NOT_APPLICABLE = -1;
 
 	static void executeSetupOrTeardownSql(final Connection connection, final String action,
 			final List<String> sqls) {
@@ -38,12 +42,41 @@ public class ServiceTestCaseHelper {
 				+ step.getRequest().getUri());
 	}
 
+	static void renameLog(final Test test, final String prefix) {
+		final ServiceTestCase testCase = (ServiceTestCase) test;
+		final String dirName = ServiceTestRunner.TEST_RESULTS_DIR + "/" + testCase.getTestCaseCategory();
+		final String logFileName = getFileNameFromTestCaseName(testCase.getTestCaseName());
+		final File oldFile = new File(dirName + "/" + logFileName);
+		final File newFile = new File(dirName + "/" + prefix + logFileName);
+		// renameTo doesn't work so open old and copy content to new, then delete old
+		Scanner scan;
+		try {
+			scan = new Scanner(oldFile);
+			scan.useDelimiter("\\Z");
+			final String content = scan.next();
+			scan.close();
+			final FileOutputStream outputStream = new FileOutputStream(newFile, true);
+			outputStream.write(content.getBytes());
+			outputStream.close();
+			oldFile.delete();
+		} catch (final FileNotFoundException exception) {
+			System.out.println("Couldn't find log file: " + exception.toString());
+		} catch (final IOException exception) {
+			System.out.println("Couldn't read log file: " + exception.toString());
+		}
+	}
+
+	private static String getFileNameFromTestCaseName(final String testCaseName) {
+		final String fileName = testCaseName.substring(0, testCaseName.indexOf(".")) + ".log";
+		return fileName;
+	}
+
 	private final File traceFile;
 
 	ServiceTestCaseHelper(final String testCaseName, final String testCaseCategory) {
-		File dir = new File(TRACE_OUTPUT_DIR + "/" + testCaseCategory);
+		final File dir = new File(ServiceTestRunner.TEST_RESULTS_DIR + "/" + testCaseCategory);
 		dir.mkdir();
-		String fileName = testCaseName.substring(0, testCaseName.indexOf(".")) + ".log";
+		final String fileName = getFileNameFromTestCaseName(testCaseName);
 		traceFile = new File(dir.getPath() + "/" + fileName);
 		traceFile.delete();
 	}
@@ -73,15 +106,4 @@ public class ServiceTestCaseHelper {
 			exception.printStackTrace();
 		}
 	}
-
-	void writeSuccess() {
-		try {
-			final FileOutputStream outputStream = new FileOutputStream(traceFile, true);
-			outputStream.write("\n\n--- TEST PASSED ---".getBytes());
-			outputStream.close();
-		} catch (final Exception exception) {
-			exception.printStackTrace();
-		}
-	}
-
 }

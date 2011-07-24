@@ -5,4 +5,14 @@
 # 	e.g. HierManyToMany/*
 # Use # to comment out a line
 
-HierOneToMany/TestInsert_MultiRowParent_ByBody.xml
+FlatManyToOne/TestSelect_Limited.xml
+HierManyToMany/TestInsert_MultiRowParentAndChild_ByBody.xml
+HierManyToManyExt/TestUpdate_MultiRowParentAndChild_ByBody.xml
+HierOneToMany/TestDelete_MultiRowChildren_ByPath.xml
+HierOneToMany/TestDelete_SingleRowParentNoChildren_ByPath.xml
+HierOneToMany/TestDelete_SingleRowParentNoChildren_ByQuery.xml
+HierOneToMany/TestInsert_MultiRowChildren_ByBody.xml
+HierOneToMany/TestSelect_ByQuery.xml
+HierOneToMany/TestUpdate_MultiRowChild_ByPath.xml
+HierOneToMany/TestUpdate_MultiRowParentAndChild_ByBody.xml
+Negative/TestSelect_ErrorInQuery.xml

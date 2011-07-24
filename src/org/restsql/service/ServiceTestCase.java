@@ -156,7 +156,6 @@ public class ServiceTestCase extends TestCase {
 			ServiceTestCase.assertEquals(step, "header " + header.getName() + " value", header.getValue(),
 					actualValue.toString());
 		}
-		helper.writeSuccess();
 	}
 
 	private void testJavaStep(final Step step) throws SqlResourceException, ParserConfigurationException,
@@ -172,7 +171,6 @@ public class ServiceTestCase extends TestCase {
 							ServiceTestCaseHelper.STATUS_NOT_APPLICABLE, step.getResponse().getBody(),
 							response);
 					ServiceTestCase.assertEquals(step, "body", step.getResponse().getBody(), response);
-					helper.writeSuccess();
 				} catch (SqlResourceException exception) {
 					handleException(step, exception);
 				}
@@ -198,7 +196,6 @@ public class ServiceTestCase extends TestCase {
 						helper.writeResponseTrace(step, 200, 200, "", "");
 						assertEquals("status", step.getResponse().getStatus(), 200);
 					}
-					helper.writeSuccess();
 				} catch (SqlResourceException exception) {
 					handleException(step, exception);
 				}
@@ -219,7 +216,6 @@ public class ServiceTestCase extends TestCase {
 				.getBody(), exception.getMessage());
 		assertEquals(step.getResponse().getStatus(), actualStatus);
 		assertEquals("response body", step.getResponse().getBody(), exception.getMessage());
-		helper.writeSuccess();
 	}
 
 	public enum InterfaceStyle {
