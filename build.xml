@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="restsql-test" default="test-all">
 	<property file="build.properties" />
+	<property name="api-test.dir" value="obj/test/api" />
 
 	<taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask" classpath="../restsql/lib/jaxb-xjc.jar" />
 
-	<target name="test-all" depends="test-api,test-service-http,test-report" />
+	<target name="test-all" depends="test-api,test-api-report,test-service-http" />
 
 	<target name="clean">
 		<delete dir="obj" failonerror="false" includeEmptyDirs="true" quiet="true" />
@@ -42,32 +43,32 @@
 
 	<target name="test-api" depends="compile-tests">
 		<!-- Create output dir -->
-		<delete dir="obj/test" />
-		<mkdir dir="obj/test" />
+		<delete dir="${api-test.dir}" />
+		<mkdir dir="${api-test.dir}" />
 
 		<!-- Execute tests -->
-		<junit fork="true" showoutput="true" printsummary="true" tempdir="obj/test" dir="${basedir}">
+		<junit fork="true" showoutput="true" printsummary="true" tempdir="${api-test.dir}" dir="${basedir}">
 			<sysproperty key="org.restsql.properties" value="${org.restsql.properties}" />
 			<classpath path="${test-exec.classpath}" />
 			<formatter type="xml" />
-			<batchtest todir="obj/test">
-				<fileset dir="src" includes="**/*Test.*" excludes="" />
+			<batchtest todir="${api-test.dir}">
+				<fileset dir="src" includes="**/*Test.*" excludes="**/Base*.*" />
 			</batchtest>
 		</junit>
 	</target>
 
 	<!-- Creates report for API test -->
-	<target name="test-report">
+	<target name="test-api-report">
 		<!-- Create output dir -->
-		<delete dir="obj/test/report" />
-		<mkdir dir="obj/test/report" />
+		<delete dir="${api-test.dir}/report" />
+		<mkdir dir="${api-test.dir}/report" />
 
 		<!-- Create report -->
-		<junitreport todir="obj/test">
-			<fileset dir="obj/test">
+		<junitreport todir="${api-test.dir}">
+			<fileset dir="${api-test.dir}">
 				<include name="TEST-*.xml" />
 			</fileset>
-			<report format="frames" todir="obj/test/report" />
+			<report format="frames" todir="${api-test.dir}/report" />
 		</junitreport>
 	</target>
 

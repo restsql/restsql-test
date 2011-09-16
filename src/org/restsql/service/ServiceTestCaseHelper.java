@@ -88,7 +88,7 @@ public class ServiceTestCaseHelper {
 			outputStream.write("\nstep ".getBytes());
 			outputStream.write(step.getName().getBytes());
 			if (expectedStatus != STATUS_NOT_APPLICABLE) {
-				outputStream.write(" exected status: ".getBytes());
+				outputStream.write(" expected status: ".getBytes());
 				outputStream.write(String.valueOf(expectedStatus).getBytes());
 				outputStream.write(" actual: ".getBytes());
 				outputStream.write(String.valueOf(actualStatus).getBytes());

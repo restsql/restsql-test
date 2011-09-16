@@ -1,8 +1,8 @@
-README.txt (23-Jul-2011)
+README.txt (15-Sep-2011)
 
 restSQL Test Deployment Guide
 
-Project website is at http://restsql.org. Distributions at http://restsql.org/dist. Source code hosted at http://github.com/restsql.
+Project website is at http://restsql.org. Distributions at http://restsql.org/dist. Release history at http://restsql.org/doc/ReleaseHistory.html. Source code hosted at http://github.com/restsql.
 
 -------------------------------------------------------------------------------
 Structure and Distributions
@@ -38,17 +38,15 @@ Database: If you have not deployed the SDK yet, you will need to deploy the exte
 
 Execution: The tests are executed using the Ant build file (restsql-test/build.xml). Executing the default target, all, will run everything, but you can also run test-api (Java API) or test-service (HTTP API) to run one or either half. If the service is not running in the default location, http://localhost:8080/restsql/, then the System Property, org.restsql.baseUri, must be set. For example:
 
-    ant -Dorg.restsql.baseUri=http://somehost:8080/restsql-0.5/ test-service-http
+    ant -Dorg.restsql.baseUri=http://somehost:8080/restsql-0.7/ test-service-http
 
 By default, the tests will use the restsql properties file src/resources/properties/restsql-mysql.properties. If you are using PostgreSQL, you must explicitly instruct the test harness to use the postgresql properties. Set the System property org.restsql.properties as follows at ant execution:
 	
 	ant -Dorg.restsql.properties=/resources/properties/restsql-postgresql.properties 
 
-Test results will appear on the screen. Test detail is available in restsql-test/obj/test.
+Test results will appear on the console. Test detail is available in restsql-test/obj/test.
 
-PostgreSQL Notes:  Five or more test cases that pass with MySQL are expected to fail with PostgreSQL. The first one returns a database-specific error:
-	Negative/TestSelect_ErrorInQuery.xml
-The other return the correct data but in a different order than MySQL.
+PostgreSQL Notes:  At least ten test cases that pass with MySQL are expected to fail with PostgreSQL because they return data in a different order than MySQL, including:
 	FlatManyToOne/TestSelect_Limited.xml
 	HierManyToManyExt/TestUpdate_MultiRowParentAndChild_ByBody.xml
 	HierManyToMany/TestInsert_MultiRowParentAndChild_ByBody.xml

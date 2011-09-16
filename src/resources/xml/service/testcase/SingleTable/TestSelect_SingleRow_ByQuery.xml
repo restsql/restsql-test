@@ -4,7 +4,6 @@
 	<step name="execute">
 		<request accept="application/xml" method="GET" uri="res/SingleTable?actor_id=99" />
 		<response>
-			<header name="Server" value="Apache-Coyote/1.1" />
 			<body>
 <![CDATA[
 <readResponse>

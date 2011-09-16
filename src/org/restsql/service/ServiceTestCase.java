@@ -10,12 +10,12 @@ import javax.xml.parsers.ParserConfigurationException;
 import junit.framework.TestCase;
 
 import org.restsql.core.Factory;
+import org.restsql.core.Factory.SqlResourceFactoryException;
 import org.restsql.core.InvalidRequestException;
 import org.restsql.core.Request;
+import org.restsql.core.Request.Type;
 import org.restsql.core.SqlResource;
 import org.restsql.core.SqlResourceException;
-import org.restsql.core.Factory.SqlResourceFactoryException;
-import org.restsql.core.Request.Type;
 import org.restsql.service.testcase.Header;
 import org.restsql.service.testcase.ServiceTestCaseDefinition;
 import org.restsql.service.testcase.Step;
@@ -25,6 +25,7 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
+import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 
 public class ServiceTestCase extends TestCase {
 	private static final String DEFAULT_BASE_URI = "http://localhost:8080/restsql/";
@@ -111,12 +112,17 @@ public class ServiceTestCase extends TestCase {
 
 	private void testHttpStep(final Client client, final Step step) {
 		final WebResource resource = client.resource(System.getProperty("org.restsql.baseUri",
-				DEFAULT_BASE_URI)
-				+ step.getRequest().getUri());
+				DEFAULT_BASE_URI) + step.getRequest().getUri());
 		final String accept = step.getRequest().getAccept();
 		final String contentType = step.getRequest().getContentType();
 		String requestBody = null;
 		Builder builder = null;
+
+		// Add authentication credentials
+		resource.addFilter(new HTTPBasicAuthFilter(step.getRequest().getUser(), step.getRequest()
+				.getPassword()));
+
+		// Get the body and if method = delete, use override header -- jersey client doesn't allow bodies with delete
 		if (step.getRequest().getBody() != null) {
 			requestBody = step.getRequest().getBody().toString();
 			if (step.getRequest().getMethod().equals("DELETE")) {
@@ -127,22 +133,32 @@ public class ServiceTestCase extends TestCase {
 		if (builder == null) {
 			builder = resource.getRequestBuilder();
 		}
+
+		// Add headers
 		for (final Header header : step.getRequest().getHeader()) {
 			builder = builder.header(header.getName(), header.getValue());
 		}
 
-		final ClientResponse response = builder.accept(accept).type(contentType).method(
-				step.getRequest().getMethod(), ClientResponse.class, requestBody);
+		// Send the request, get the response body, and log results
+		final ClientResponse response = builder.accept(accept).type(contentType)
+				.method(step.getRequest().getMethod(), ClientResponse.class, requestBody);
 		final String actualResponseBody = response.getEntity(String.class);
-
 		helper.writeResponseTrace(step, step.getResponse().getStatus(), response.getStatus(), step
 				.getResponse().getBody(), actualResponseBody);
+
+		// Assert status
 		ServiceTestCase.assertEquals(step, "status", step.getResponse().getStatus(), response.getStatus());
-		if (step.getResponse().getBody() == null) {
-			ServiceTestCase.assertEquals(step, "body", null, actualResponseBody);
-		} else {
-			ServiceTestCase.assertEquals(step, "body", step.getResponse().getBody(), actualResponseBody);
+
+		// Assert body if declared
+		if (step.getResponse().getBody() != null) {
+			if (step.getResponse().getBody().length() == 0) {
+				ServiceTestCase.assertEquals(step, "body", null, actualResponseBody);
+			} else {
+				ServiceTestCase.assertEquals(step, "body", step.getResponse().getBody(), actualResponseBody);
+			}
 		}
+		
+		// Assert headers
 		for (final Header header : step.getResponse().getHeader()) {
 			ServiceTestCase.assertTrue(step, "expected header " + header.getName(), response.getHeaders()
 					.containsKey(header.getName()));
@@ -166,11 +182,17 @@ public class ServiceTestCase extends TestCase {
 			if (request.getType() == Type.SELECT) {
 				try {
 					final SqlResource sqlResource = Factory.getSqlResource(request.getSqlResource());
-					final String response = sqlResource.readXml(request);
+					String actualBody = sqlResource.readXml(request); 
+					String expectedBody = null;
+					if (step.getResponse().getBody() != null) {
+						expectedBody = step.getResponse().getBody();
+					} else {
+						actualBody = null;
+					}
 					helper.writeResponseTrace(step, ServiceTestCaseHelper.STATUS_NOT_APPLICABLE,
-							ServiceTestCaseHelper.STATUS_NOT_APPLICABLE, step.getResponse().getBody(),
-							response);
-					ServiceTestCase.assertEquals(step, "body", step.getResponse().getBody(), response);
+							ServiceTestCaseHelper.STATUS_NOT_APPLICABLE, expectedBody,
+							actualBody);
+					ServiceTestCase.assertEquals(step, "body", expectedBody, actualBody);
 				} catch (SqlResourceException exception) {
 					handleException(step, exception);
 				}
@@ -179,9 +201,9 @@ public class ServiceTestCase extends TestCase {
 					final SqlResource sqlResource = Factory.getSqlResource(request.getSqlResource());
 					int rowsAffected = 0;
 					if (step.getRequest().getBody() != null) {
-						rowsAffected = XmlRequestProcessor.execWrite(request.getType(), request
-								.getResourceIdentifiers(), sqlResource, step.getRequest().getBody(), request
-								.getLogger());
+						rowsAffected = XmlRequestProcessor.execWrite(request.getType(),
+								request.getResourceIdentifiers(), sqlResource, step.getRequest().getBody(),
+								request.getLogger());
 					} else {
 						rowsAffected = sqlResource.write(request);
 					}
@@ -212,10 +234,14 @@ public class ServiceTestCase extends TestCase {
 		} else { // exception instanceof SqlResourceException
 			actualStatus = 500;
 		}
-		helper.writeResponseTrace(step, step.getResponse().getStatus(), actualStatus, step.getResponse()
-				.getBody(), exception.getMessage());
+		String expectedBody = null, actualBody = null;
+		if (step.getResponse().getBody() != null) {
+			expectedBody = step.getResponse().getBody();
+			actualBody = exception.getMessage();
+		}
+		helper.writeResponseTrace(step, step.getResponse().getStatus(), actualStatus, expectedBody, actualBody);
 		assertEquals(step.getResponse().getStatus(), actualStatus);
-		assertEquals("response body", step.getResponse().getBody(), exception.getMessage());
+		assertEquals("response body", expectedBody, actualBody);
 	}
 
 	public enum InterfaceStyle {

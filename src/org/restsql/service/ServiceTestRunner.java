@@ -27,7 +27,7 @@ import org.restsql.service.testcase.ServiceTestCaseDefinition;
 public class ServiceTestRunner {
 	public final static String SCOPE_ALL = "%";
 	public final static String TEST_CASE_DIR = "obj/bin/resources/xml/service/testcase";
-	public final static String TEST_RESULTS_DIR = "obj/test";
+	public final static String TEST_RESULTS_DIR = "obj/test/service";
 	public static final String FAILURES_AND_ERRORS_LOG = TEST_RESULTS_DIR + "/FailuresAndErrors.log";
 
 	static {
@@ -81,16 +81,18 @@ public class ServiceTestRunner {
 		boolean success = true;
 		for (final File file : files) {
 			if (file != null && file.getPath().endsWith(".xml")) {
+				final String testCaseName = file.getName();
+				final String categoryName = file.getParentFile().getName();
 				if (interfaceStyle == InterfaceStyle.Java
-						&& (file.getName().contains("ResourceNotFound") || file.getName().contains(
-								"FormParam"))) {
+						&& (testCaseName.contains("ResourceNotFound") || testCaseName.contains("FormParam") || categoryName
+								.equals("Security"))) {
 					// exclude
+					System.out.println("Skipping " + categoryName + "/" + testCaseName);
 				} else {
 					try {
-						final String category = file.getParentFile().getName();
 						final ServiceTestCaseDefinition definition = XmlHelper.unmarshallDefinition(file);
-						final ServiceTestCase testCase = new ServiceTestCase(interfaceStyle, category, file
-								.getName(), connection, definition);
+						final ServiceTestCase testCase = new ServiceTestCase(interfaceStyle, categoryName,
+								testCaseName, connection, definition);
 						suite.addTest(testCase);
 					} catch (final Exception exception) {
 						System.out.println("Error loading " + file);
@@ -227,7 +229,8 @@ public class ServiceTestRunner {
 					outputStream = new FileOutputStream(file);
 					System.out.println("\nFailures and Errors:");
 					for (ServiceTestCase testCase : nonPassingTests) {
-						String name = testCase.getTestCaseCategory() + "/" + testCase.getTestCaseName() + "\n";
+						String name = testCase.getTestCaseCategory() + "/" + testCase.getTestCaseName()
+								+ "\n";
 						System.out.print("   " + name);
 						outputStream.write(name.getBytes());
 					}
