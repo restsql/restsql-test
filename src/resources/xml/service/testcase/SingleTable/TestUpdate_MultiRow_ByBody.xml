@@ -10,8 +10,8 @@
 			<body>
 <![CDATA[
 <request>
-	<actor actor_id="1000" first_name="_Jack" last_name="Daniels" />
-	<actor actor_id="1001" first_name="_Jack" last_name="Smith" />
+	<actor id="1000" first_name="_Jack" surname="Daniels" />
+	<actor id="1001" first_name="_Jack" surname="Smith" />
 </request>
 ]]>
 			</body>
@@ -31,8 +31,8 @@
 			<body>
 <![CDATA[
 <readResponse>
-	<actor actor_id="1000" first_name="_Jack" last_name="Daniels" />
-	<actor actor_id="1001" first_name="_Jack" last_name="Smith" />
+	<actor id="1000" first_name="_Jack" surname="Daniels" />
+	<actor id="1001" first_name="_Jack" surname="Smith" />
 </readResponse>
 ]]>
 			</body>

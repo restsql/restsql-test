@@ -14,12 +14,12 @@
 			<body>
 <![CDATA[
 <request>
-	<language language_id="100">
-		<film film_id="5001" />
-		<film film_id="5000" />
-	</language>
-	<language language_id="100" />
-	<language language_id="101" />
+	<lang language_id="100">
+		<movie film_id="5001" />
+		<movie film_id="5000" />
+	</lang>
+	<lang language_id="100" />
+	<lang language_id="101" />
 </request>
 ]]>
 			</body>
@@ -33,7 +33,7 @@
 		</response>
 	</step>
 	<step name="verify">
-		<request method="GET" uri="res/HierOneToMany?name=New%25" />
+		<request method="GET" uri="res/HierOneToMany?langName=New%25" />
 		<response>
 			<body>
 <![CDATA[

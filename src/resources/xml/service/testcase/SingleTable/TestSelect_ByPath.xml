@@ -7,7 +7,7 @@
 			<body>
 <![CDATA[
 <readResponse>
-	<actor actor_id="99" first_name="JIM" last_name="MOSTEL" />
+	<actor id="99" first_name="JIM" surname="MOSTEL" />
 </readResponse>
 ]]>
 			</body>

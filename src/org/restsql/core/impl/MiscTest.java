@@ -45,7 +45,7 @@ public class MiscTest extends SqlResourceTestBase {
 	public void testNullTimestamp() throws SqlResourceException, ParseException {
 		final Request request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(),
 				null, null);
-		final List<Map<String, Object>> results = sqlResource.readCollection(request);
+		final List<Map<String, Object>> results = sqlResource.readAsCollection(request);
 		assertEquals(2, results.size());
 		AssertionHelper.assertTestTimestamp(results.get(0), 1000, null);
 		AssertionHelper.assertTestTimestamp(results.get(1), 1001, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")

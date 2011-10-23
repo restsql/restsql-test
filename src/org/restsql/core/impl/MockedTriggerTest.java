@@ -28,13 +28,13 @@ public class MockedTriggerTest extends BaseTestCase {
 		TriggerManager.addTrigger(trigger, sqlResource.getName());
 
 		final Request insertRequest = RequestFactoryHelper.getRequest(Request.Type.INSERT, sqlResource.getName(), null,
-				new String[] { "actor_id", "1003", "first_name", "Patty", "last_name", "White" });
+				new String[] { "id", "1003", "first_name", "Patty", "surname", "White" });
 		final Request selectRequest = RequestFactoryHelper.getRequest(Type.SELECT, sqlResource.getName(), new String[] {
-				"actor_id", "1003" }, null);
+				"id", "1003" }, null);
 		final Request updateRequest = RequestFactoryHelper.getRequest(Type.UPDATE, sqlResource.getName(), new String[] {
-				"actor_id", "1003" }, new String[] { "last_name", "Black" });
+				"id", "1003" }, new String[] { "surname", "Black" });
 		final Request deleteRequest = RequestFactoryHelper.getRequest(Type.DELETE, sqlResource.getName(), new String[] {
-				"actor_id", "1003" }, null);
+				"id", "1003" }, null);
 
 		context.checking(new Expectations() {
 			{
@@ -50,7 +50,7 @@ public class MockedTriggerTest extends BaseTestCase {
 		});
 
 		sqlResource.write(insertRequest);
-		sqlResource.readXml(selectRequest);
+		sqlResource.readAsXml(selectRequest);
 		sqlResource.write(updateRequest);
 		sqlResource.write(deleteRequest);
 	}

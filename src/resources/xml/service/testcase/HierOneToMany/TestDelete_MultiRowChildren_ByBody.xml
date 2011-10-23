@@ -14,13 +14,13 @@
 			<body>
 <![CDATA[
 <request>
-	<language language_id="100" name="New Esperanto">
-		<film year="2012" title="BLOOD PURPLE" film_id="5001" />
-	</language>
-	<language language_id="101" name="New Greek">
-		<film year="2012" title="THE DARKENING" film_id="5002" />
-		<film year="2012" title="THE LIGHTENING" film_id="5003" />
-	</language>
+	<lang language_id="100" langName="New Esperanto">
+		<movie year="2012" title="BLOOD PURPLE" film_id="5001" />
+	</lang>
+	<lang language_id="101" langName="New Greek">
+		<movie year="2012" title="THE DARKENING" film_id="5002" />
+		<movie year="2012" title="THE LIGHTENING" film_id="5003" />
+	</lang>
 </request>
 ]]>
 			</body>
@@ -34,16 +34,16 @@
 		</response>
 	</step>
 	<step name="verify">
-		<request method="GET" uri="res/HierOneToMany?name=New%25" />
+		<request method="GET" uri="res/HierOneToMany?langName=New%25" />
 		<response>
 			<body>
 <![CDATA[
 <readResponse>
-	<language language_id="100" name="New Esperanto">
-		<film year="2011" title="ESCAPE FROM TOMORROW" film_id="5000" />
-	</language>
-	<language language_id="101" name="New Greek">
-	</language>
+	<lang language_id="100" langName="New Esperanto">
+		<movie year="2011" title="ESCAPE FROM TOMORROW" film_id="5000" />
+	</lang>
+	<lang language_id="101" langName="New Greek">
+	</lang>
 </readResponse>
 ]]>
 		</body>

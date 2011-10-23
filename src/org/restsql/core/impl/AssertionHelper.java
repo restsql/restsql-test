@@ -28,9 +28,9 @@ public class AssertionHelper {
 	static void assertActor(final boolean hierarchical, final Map<String, Object> row, final int actor_id,
 			final String first_name, final String last_name) {
 		assertEquals(3 + (hierarchical ? 1 : 0), row.size());
-		assertEquals(new Integer(actor_id), row.get("actor_id"));
+		assertEquals(new Integer(actor_id), (hierarchical ? row.get("actor_id") : row.get("id")));
 		assertEquals(first_name, row.get("first_name"));
-		assertEquals(last_name, row.get("last_name"));
+		assertEquals(last_name, (hierarchical ? row.get("last_name") : row.get("surname")));
 	}
 
 	static void assertColumnMetaData(final Map<String, ColumnMetaData> columns, final int columnNumber,
@@ -102,7 +102,7 @@ public class AssertionHelper {
 			final String language) {
 		assertEquals(3, row.size());
 		assertEquals(new Integer(language_id), row.get("language_id"));
-		assertEquals(language, row.get("name"));
+		assertEquals(language, row.get("langName"));
 	}
 
 	static void assertTestTimestamp(final Map<String, Object> row, final int id, final Date time) {

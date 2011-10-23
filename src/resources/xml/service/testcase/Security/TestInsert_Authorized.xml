@@ -6,7 +6,7 @@
 			user="limited" password="limited">
 			<body>
 <![CDATA[
-actor_id=1000&first_name=_Jack&last_name=Daniels
+id=1000&first_name=_Jack&surname=Daniels
 ]]>
 			</body>
 		</request>
@@ -25,7 +25,7 @@ actor_id=1000&first_name=_Jack&last_name=Daniels
 			<body>
 <![CDATA[
 <readResponse>
-	<actor actor_id="1000" first_name="_Jack" last_name="Daniels" />
+	<actor id="1000" first_name="_Jack" surname="Daniels" />
 </readResponse>
 ]]>
 			</body>

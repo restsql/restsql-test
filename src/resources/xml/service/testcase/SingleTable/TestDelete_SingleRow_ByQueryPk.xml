@@ -5,7 +5,7 @@
 		<sql>INSERT INTO actor (actor_id,first_name,last_name) VALUES (1000,'John','Smith')</sql>
 	</setup>
 	<step name="execute">
-		<request method="DELETE" uri="res/SingleTable?actor_id=1000" />
+		<request method="DELETE" uri="res/SingleTable?id=1000" />
 		<response>
 			<body>
 <![CDATA[
@@ -15,7 +15,7 @@
 		</response>
 	</step>
 	<step name="verify">
-		<request uri="res/SingleTable?actor_id=1000" method="GET" />
+		<request uri="res/SingleTable?id=1000" method="GET" />
 		<response>
 			<body>
 <![CDATA[

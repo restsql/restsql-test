@@ -160,15 +160,15 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 		// Pks
 		assertEquals(1, table.getPrimaryKeys().size());
 		AssertionHelper.assertColumnMetaData(table.getPrimaryKeys().get(0), 1, true, "sakila", "actor",
-				"actor_id", "actor_id", Types.SMALLINT);
+				"actor_id", "id", Types.SMALLINT);
 
 		assertEquals(3, table.getColumns().size());
 		AssertionHelper.assertColumnMetaData(table.getColumns(), 1, true, "sakila", "actor", "actor_id",
-				"actor_id", Types.SMALLINT);
+				"id", Types.SMALLINT);
 		AssertionHelper.assertColumnMetaData(table.getColumns(), 2, false, "sakila", "actor", "first_name",
 				"first_name", Types.VARCHAR);
 		AssertionHelper.assertColumnMetaData(table.getColumns(), 3, false, "sakila", "actor", "last_name",
-				"last_name", Types.VARCHAR);
+				"surname", Types.VARCHAR);
 
 	}
 

@@ -6,7 +6,7 @@
 			<body>
 <![CDATA[
 <request>
-	<actor actor_id="1000" first_name="A first name that is too long for the domain rule" last_name="Daniels" />
+	<actor id="1000" first_name="A first name that is too long for the domain rule" surname="Daniels" />
 </request>
 ]]>
 		</body>

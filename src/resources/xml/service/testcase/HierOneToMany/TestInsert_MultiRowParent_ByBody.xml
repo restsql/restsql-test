@@ -6,8 +6,8 @@
 			<body>
 <![CDATA[
 <request>
-	<language language_id="100" name="New Esperanto"/>
-	<language language_id="101" name="New Greek"/>
+	<lang language_id="100" langName="New Esperanto"/>
+	<lang language_id="101" langName="New Greek"/>
 </request>
 ]]>
 			</body>
@@ -21,15 +21,15 @@
 		</response>
 	</step>
 	<step name="verify">
-		<request method="GET" uri="res/HierOneToMany?name=New%25" />
+		<request method="GET" uri="res/HierOneToMany?langName=New%25" />
 		<response>
 			<body>
 <![CDATA[
 <readResponse>
-	<language language_id="100" name="New Esperanto">
-	</language>
-	<language language_id="101" name="New Greek">
-	</language>
+	<lang language_id="100" langName="New Esperanto">
+	</lang>
+	<lang language_id="101" langName="New Greek">
+	</lang>
 </readResponse>
 ]]>
 		</body>

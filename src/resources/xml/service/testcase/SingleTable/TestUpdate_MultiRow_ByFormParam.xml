@@ -6,10 +6,10 @@
 		<sql>INSERT INTO actor (actor_id,first_name,last_name) VALUES (1001,'Sally','_Smith')</sql>
 	</setup>
 	<step name="execute">
-		<request method="PUT" uri="res/SingleTable?last_name=_Smith" contentType="application/x-www-form-urlencoded">
+		<request method="PUT" uri="res/SingleTable?surname=_Smith" contentType="application/x-www-form-urlencoded">
 			<body>
 <![CDATA[
-first_name=_Jack&last_name=Blacksmith
+first_name=_Jack&surname=Blacksmith
 ]]>
 			</body>
 		</request>
@@ -28,8 +28,8 @@ first_name=_Jack&last_name=Blacksmith
 			<body>
 <![CDATA[
 <readResponse>
-	<actor actor_id="1000" first_name="_Jack" last_name="Blacksmith" />
-	<actor actor_id="1001" first_name="_Jack" last_name="Blacksmith" />
+	<actor id="1000" first_name="_Jack" surname="Blacksmith" />
+	<actor id="1001" first_name="_Jack" surname="Blacksmith" />
 </readResponse>
 ]]>
 			</body>

@@ -10,8 +10,8 @@
 			<body>
 <![CDATA[
 <request>
-	<actor actor_id="1000" />
-	<actor actor_id="1001" />
+	<actor id="1000" />
+	<actor id="1001" />
 </request>
 ]]>
 			</body>

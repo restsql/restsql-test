@@ -63,7 +63,7 @@ public class SqlResourceHierOneToManyWriteTest extends SqlResourceTestBase {
 		// Verify update
 		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), new String[] {
 				"language_id", "102" }, null);
-		final List<Map<String, Object>> results = sqlResource.readCollection(request);
+		final List<Map<String, Object>> results = sqlResource.readAsCollection(request);
 		assertEquals(0, results.size());
 	}
 
@@ -79,7 +79,7 @@ public class SqlResourceHierOneToManyWriteTest extends SqlResourceTestBase {
 		// Verify update
 		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), new String[] {
 				"language_id", "101" }, null);
-		final List<Map<String, Object>> results = sqlResource.readCollection(request);
+		final List<Map<String, Object>> results = sqlResource.readAsCollection(request);
 		assertEquals(0, results.size());
 	}
 
@@ -88,7 +88,7 @@ public class SqlResourceHierOneToManyWriteTest extends SqlResourceTestBase {
 			SqlResourceException, InvalidRequestException {
 		// Update test fixture
 		Request request = RequestFactoryHelper.getRequest(Request.Type.DELETE, sqlResource.getName(), null, new String[] {
-				"name", "New%" }, null);
+				"langName", "New%" }, null);
 		sqlResource.write(request);
 	}
 
@@ -97,7 +97,7 @@ public class SqlResourceHierOneToManyWriteTest extends SqlResourceTestBase {
 			InvalidRequestException {
 		// Update test fixture
 		Request request = RequestFactoryHelper.getRequest(Request.Type.DELETE, sqlResource.getName(), null, new String[] {
-				"name", "%Latin" }, null);
+				"langName", "%Latin" }, null);
 		int rowsAffected = sqlResource.write(request);
 		assertEquals(2, rowsAffected);
 	}
@@ -117,9 +117,9 @@ public class SqlResourceHierOneToManyWriteTest extends SqlResourceTestBase {
 		// Verify update
 		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), new String[] {
 				"language_id", "101" }, null);
-		final List<Map<String, Object>> results = sqlResource.readCollection(request);
+		final List<Map<String, Object>> results = sqlResource.readAsCollection(request);
 		assertEquals(1, results.size());
-		List<Map<String, Object>> childRows = (List<Map<String, Object>>) results.get(0).get("films");
+		List<Map<String, Object>> childRows = (List<Map<String, Object>>) results.get(0).get("movies");
 		assertEquals(0, childRows.size());
 	}
 
@@ -142,9 +142,9 @@ public class SqlResourceHierOneToManyWriteTest extends SqlResourceTestBase {
 		// Verify update
 		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), new String[] {
 				"language_id", "102" }, null);
-		final List<Map<String, Object>> results = sqlResource.readCollection(request);
+		final List<Map<String, Object>> results = sqlResource.readAsCollection(request);
 		assertEquals(1, results.size());
-		List<Map<String, Object>> childRows = (List<Map<String, Object>>) results.get(0).get("films");
+		List<Map<String, Object>> childRows = (List<Map<String, Object>>) results.get(0).get("movies");
 		AssertionHelper.assertFilmBasics(childRows, 5003, "BLESSED SUN", 2011);
 		AssertionHelper.assertFilmBasics(childRows, 5004, "WICKED SUN", 2011);
 	}
@@ -155,17 +155,17 @@ public class SqlResourceHierOneToManyWriteTest extends SqlResourceTestBase {
 			InvalidRequestException {
 		// Update test fixture
 		Request request = RequestFactoryHelper.getRequest(Request.Type.UPDATE, sqlResource.getName(), new String[] {
-				"language_id", "100" }, new String[] { "name", "Greater Esperanto" });
+				"language_id", "100" }, new String[] { "langName", "Greater Esperanto" });
 		final int rowsAffected = sqlResource.write(request);
 		assertEquals(1, rowsAffected);
 
 		// Verify update
 		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), new String[] {
 				"language_id", "100" }, null);
-		final List<Map<String, Object>> results = sqlResource.readCollection(request);
+		final List<Map<String, Object>> results = sqlResource.readAsCollection(request);
 		assertEquals(1, results.size());
 		AssertionHelper.assertLanguageHierarchical(results.get(0), 100, "Greater Esperanto");
-		List<Map<String, Object>> childRows = (List<Map<String, Object>>) results.get(0).get("films");
+		List<Map<String, Object>> childRows = (List<Map<String, Object>>) results.get(0).get("movies");
 		assertEquals(1, childRows.size());
 		AssertionHelper.assertFilmBasics(childRows.get(0), 5000, "ESCAPE FROM TOMORROW", 2011);
 	}
@@ -185,10 +185,10 @@ public class SqlResourceHierOneToManyWriteTest extends SqlResourceTestBase {
 		// Verify update
 		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), new String[] {
 				"language_id", "101" }, null);
-		final List<Map<String, Object>> results = sqlResource.readCollection(request);
+		final List<Map<String, Object>> results = sqlResource.readAsCollection(request);
 		assertEquals(1, results.size());
 		AssertionHelper.assertLanguageHierarchical(results.get(0), 101, "New Greek");
-		List<Map<String, Object>> childRows = (List<Map<String, Object>>) results.get(0).get("films");
+		List<Map<String, Object>> childRows = (List<Map<String, Object>>) results.get(0).get("movies");
 		assertEquals(2, childRows.size());
 		AssertionHelper.assertFilmBasics(childRows.get(0), 5001, "BLOOD BLUE", 2012);
 		AssertionHelper.assertFilmBasics(childRows.get(1), 5002, "THE DARKENING", 2012);
@@ -200,17 +200,17 @@ public class SqlResourceHierOneToManyWriteTest extends SqlResourceTestBase {
 			InvalidRequestException {
 		// Update test fixture
 		Request request = RequestFactoryHelper.getRequest(Request.Type.INSERT, sqlResource.getName(), null, new String[] {
-				"language_id", "104", "name", "Old Esperanto" });
+				"language_id", "104", "langName", "Old Esperanto" });
 		final int rowsAffected = sqlResource.write(request);
 		assertEquals(1, rowsAffected);
 
 		// Verify update
 		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), new String[] {
 				"language_id", "104" }, null);
-		final List<Map<String, Object>> results = sqlResource.readCollection(request);
+		final List<Map<String, Object>> results = sqlResource.readAsCollection(request);
 		assertEquals(1, results.size());
 		AssertionHelper.assertLanguageHierarchical(results.get(0), 104, "Old Esperanto");
-		List<Map<String, Object>> childRows = (List<Map<String, Object>>) results.get(0).get("films");
+		List<Map<String, Object>> childRows = (List<Map<String, Object>>) results.get(0).get("movies");
 		assertEquals(0, childRows.size());
 	}
 
@@ -220,30 +220,30 @@ public class SqlResourceHierOneToManyWriteTest extends SqlResourceTestBase {
 			InvalidRequestException {
 		// Update test fixture
 		Request request = RequestFactoryHelper.getRequest(Request.Type.UPDATE, sqlResource.getName(), new String[] {
-				"name", "New%" }, new String[] { "name", "Unspeakable" });
+				"langName", "New%" }, new String[] { "langName", "Unspeakable" });
 		final int rowsAffected = sqlResource.write(request);
 		assertEquals(3, rowsAffected);
 
 		// Verify updates
-		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), new String[] { "name",
+		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), new String[] { "langName",
 				"Unspeakable" }, null);
-		final List<Map<String, Object>> results = sqlResource.readCollection(request);
+		final List<Map<String, Object>> results = sqlResource.readAsCollection(request);
 		assertEquals(3, results.size());
 
 		// Assert film 1
 		AssertionHelper.assertLanguageHierarchical(results.get(0), 100, "Unspeakable");
-		List<Map<String, Object>> childRows = (List<Map<String, Object>>) results.get(0).get("films");
+		List<Map<String, Object>> childRows = (List<Map<String, Object>>) results.get(0).get("movies");
 		assertEquals(1, childRows.size());
 		AssertionHelper.assertFilmBasics(childRows.get(0), 5000, "ESCAPE FROM TOMORROW", 2011);
 		// Assert film 2
 		AssertionHelper.assertLanguageHierarchical(results.get(1), 101, "Unspeakable");
-		childRows = (List<Map<String, Object>>) results.get(1).get("films");
+		childRows = (List<Map<String, Object>>) results.get(1).get("movies");
 		assertEquals(2, childRows.size());
 		AssertionHelper.assertFilmBasics(childRows.get(0), 5001, "BLOOD PURPLE", 2012);
 		AssertionHelper.assertFilmBasics(childRows.get(1), 5002, "THE DARKENING", 2012);
 		// Assert film 3
 		AssertionHelper.assertLanguageHierarchical(results.get(2), 102, "Unspeakable");
-		childRows = (List<Map<String, Object>>) results.get(2).get("films");
+		childRows = (List<Map<String, Object>>) results.get(2).get("movies");
 		assertEquals(0, childRows.size());
 	}
 }

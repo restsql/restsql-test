@@ -31,8 +31,8 @@ public class SingleTableTriggerTest extends SqlResourceTestBase {
 		SqlResource sqlResource = Factory.getSqlResource("SingleTable");
 		TriggerManager.addTrigger(new SingleTableTrigger(), sqlResource.getName());
 		Request insertRequest = RequestFactoryHelper.getRequest(Request.Type.INSERT, sqlResource.getName(), null,
-				new String[] { "actor_id", "1003", "first_name",
-						"A really long name that will throw an exception that we are expecting", "last_name",
+				new String[] { "id", "1003", "first_name",
+						"A really long name that will throw an exception that we are expecting", "surname",
 						"White" });
 		try {
 			sqlResource.write(insertRequest);
@@ -42,7 +42,7 @@ public class SingleTableTriggerTest extends SqlResourceTestBase {
 		}
 
 		insertRequest = RequestFactoryHelper.getRequest(Request.Type.INSERT, sqlResource.getName(), null, new String[] {
-				"actor_id", "1003", "first_name", "A valid name", "last_name", "White" });
+				"id", "1003", "first_name", "A valid name", "surname", "White" });
 		try {
 			sqlResource.write(insertRequest);
 		} catch (InvalidRequestException exception) {

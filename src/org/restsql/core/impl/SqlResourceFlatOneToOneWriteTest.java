@@ -60,7 +60,7 @@ public class SqlResourceFlatOneToOneWriteTest extends SqlResourceTestBase {
 		// Verify one preserved
 		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), new String[] { "film_id", "5000" },
 				null);
-		final List<Map<String, Object>> results = sqlResource.readCollection(request);
+		final List<Map<String, Object>> results = sqlResource.readAsCollection(request);
 		assertEquals(1, results.size());
 	}
 
@@ -75,7 +75,7 @@ public class SqlResourceFlatOneToOneWriteTest extends SqlResourceTestBase {
 		// Verify updates
 		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), new String[] { "film_id", "5000" },
 				null);
-		final List<Map<String, Object>> results = sqlResource.readCollection(request);
+		final List<Map<String, Object>> results = sqlResource.readAsCollection(request);
 		assertEquals(0, results.size());
 	}
 
@@ -91,7 +91,7 @@ public class SqlResourceFlatOneToOneWriteTest extends SqlResourceTestBase {
 		// Verify updates
 		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), new String[] { "film_id", "5003" },
 				null);
-		final List<Map<String, Object>> results = sqlResource.readCollection(request);
+		final List<Map<String, Object>> results = sqlResource.readAsCollection(request);
 		assertEquals(1, results.size());
 		AssertionHelper.assertFilmRating(results.get(0), 5003, "BLESSED SUN", 2011, 4, 5);
 	}
@@ -106,7 +106,7 @@ public class SqlResourceFlatOneToOneWriteTest extends SqlResourceTestBase {
 
 		// Verify updates
 		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), null, new String[] { "stars", "5" });
-		List<Map<String, Object>> results = sqlResource.readCollection(request);
+		List<Map<String, Object>> results = sqlResource.readAsCollection(request);
 		assertEquals(3, results.size());
 		AssertionHelper.assertFilmRating(results.get(0), 5000, "ESCAPE FROM TOMORROW", 2011, 1, 5);
 		AssertionHelper.assertFilmRating(results.get(1), 5001, "BLOOD PURPLE", 2013, 2, 5);
@@ -124,7 +124,7 @@ public class SqlResourceFlatOneToOneWriteTest extends SqlResourceTestBase {
 		// Verify updates
 		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), new String[] { "film_id", "5000" },
 				null);
-		final List<Map<String, Object>> results = sqlResource.readCollection(request);
+		final List<Map<String, Object>> results = sqlResource.readAsCollection(request);
 		assertEquals(1, results.size());
 		AssertionHelper.assertFilmRating(results.get(0), 5000, "ESCAPE FROM YESTERDAY", 2010, 1, 2);
 	}

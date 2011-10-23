@@ -35,7 +35,7 @@ public class SqlResourceFlatManyToOneSelectTest extends SqlResourceTestBase {
 			InvalidRequestException {
 		Request request = RequestFactoryHelper.getRequest(Request.Type.SELECT, "FlatManyToOne", null, new String[] {
 				"title", "AIRPLANE SIERRA" });
-		List<Map<String, Object>> results = sqlResource.readCollection(request);
+		List<Map<String, Object>> results = sqlResource.readAsCollection(request);
 		assertEquals(1, results.size());
 		AssertionHelper.assertFilmLanguageFlat(results.get(0), 7, "AIRPLANE SIERRA", 2006, 1, "English");
 	}
@@ -45,7 +45,7 @@ public class SqlResourceFlatManyToOneSelectTest extends SqlResourceTestBase {
 			InvalidRequestException {
 		Request request = RequestFactoryHelper.getRequest(Request.Type.SELECT, "FlatManyToOne", null, new String[] {
 				"title", "AIR%" });
-		List<Map<String, Object>> results = sqlResource.readCollection(request);
+		List<Map<String, Object>> results = sqlResource.readAsCollection(request);
 		assertEquals(2, results.size());
 		AssertionHelper.assertFilmLanguageFlat(results.get(0), 7, "AIRPLANE SIERRA", 2006, 1, "English");
 		AssertionHelper.assertFilmLanguageFlat(results.get(1), 8, "AIRPORT POLLOCK", 2006, 1, "English");
@@ -56,7 +56,7 @@ public class SqlResourceFlatManyToOneSelectTest extends SqlResourceTestBase {
 			InvalidRequestException {
 		Request request = RequestFactoryHelper.getRequest(Request.Type.SELECT, "FlatManyToOne", null, new String[] {
 				Request.PARAM_NAME_LIMIT, "10", Request.PARAM_NAME_OFFSET, "0" });
-		List<Map<String, Object>> results = sqlResource.readCollection(request);
+		List<Map<String, Object>> results = sqlResource.readAsCollection(request);
 		assertEquals(10, results.size());
 	}
 
@@ -65,7 +65,7 @@ public class SqlResourceFlatManyToOneSelectTest extends SqlResourceTestBase {
 			InvalidRequestException {
 		Request request = RequestFactoryHelper.getRequest(Request.Type.SELECT, "FlatManyToOne", null, new String[] {
 				"title", "AIR%" });
-		String results = sqlResource.readXml(request);
+		String results = sqlResource.readAsXml(request);
 		String expectedRow1 = "\n\t<film film_id=\"7\" title=\"AIRPLANE SIERRA\" year=\"2006\" language_id=\"1\" name=\"English\" />";
 		String expectedRow2 = "\n\t<film film_id=\"8\" title=\"AIRPORT POLLOCK\" year=\"2006\" language_id=\"1\" name=\"English\" />";
 		assertEquals("<readResponse>" + expectedRow1 + expectedRow2 + "\n</readResponse>", results);
@@ -78,7 +78,7 @@ public class SqlResourceFlatManyToOneSelectTest extends SqlResourceTestBase {
 		Serializer.setUseXmlSchema(true);
 		Request request = RequestFactoryHelper.getRequest(Request.Type.SELECT, "FlatManyToOne", null, new String[] {
 				"title", "AIR%" });
-		String results = sqlResource.readXml(request);
+		String results = sqlResource.readAsXml(request);
 		String expectedRow1 = "\n\t<film film_id=\"7\" title=\"AIRPLANE SIERRA\" year=\"2006\" language_id=\"1\" name=\"English\" />";
 		String expectedRow2 = "\n\t<film film_id=\"8\" title=\"AIRPORT POLLOCK\" year=\"2006\" language_id=\"1\" name=\"English\" />";
 		assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<readResponse xmlns=\"http://restsql.org/schema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://restsql.org/schema Response.xsd \">" + expectedRow1 + expectedRow2 + "\n</readResponse>", results);

@@ -8,7 +8,7 @@
 		<sql>INSERT INTO film (film_id,title,release_year,language_id,rental_duration,rental_rate,replacement_cost) VALUES (5003,'THE LIGHTENING',2012,101,0,0,0)</sql>
 	</setup>
 	<step name="execute">
-		<request method="DELETE" uri="res/HierOneToMany?name=New%20Esperanto" />
+		<request method="DELETE" uri="res/HierOneToMany?langName=New%20Esperanto" />
 		<response>
 			<body>
 <![CDATA[
@@ -18,15 +18,15 @@
 		</response>
 	</step>
 	<step name="verify">
-		<request method="GET" uri="res/HierOneToMany?name=New%25" />
+		<request method="GET" uri="res/HierOneToMany?langName=New%25" />
 		<response>
 			<body>
 <![CDATA[
 <readResponse>
-	<language language_id="101" name="New Greek">
-		<film year="2012" title="THE DARKENING" film_id="5002" />
-		<film year="2012" title="THE LIGHTENING" film_id="5003" />
-	</language>
+	<lang language_id="101" langName="New Greek">
+		<movie year="2012" title="THE DARKENING" film_id="5002" />
+		<movie year="2012" title="THE LIGHTENING" film_id="5003" />
+	</lang>
 </readResponse>
 ]]>
 			</body>

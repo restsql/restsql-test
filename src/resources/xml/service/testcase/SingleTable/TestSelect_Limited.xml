@@ -7,16 +7,16 @@
 			<body>
 <![CDATA[
 <readResponse>
-	<actor actor_id="1" first_name="PENELOPE" last_name="GUINESS" />
-	<actor actor_id="2" first_name="NICK" last_name="WAHLBERG" />
-	<actor actor_id="3" first_name="ED" last_name="CHASE" />
-	<actor actor_id="4" first_name="JENNIFER" last_name="DAVIS" />
-	<actor actor_id="5" first_name="JOHNNY" last_name="LOLLOBRIGIDA" />
-	<actor actor_id="6" first_name="BETTE" last_name="NICHOLSON" />
-	<actor actor_id="7" first_name="GRACE" last_name="MOSTEL" />
-	<actor actor_id="8" first_name="MATTHEW" last_name="JOHANSSON" />
-	<actor actor_id="9" first_name="JOE" last_name="SWANK" />
-	<actor actor_id="10" first_name="CHRISTIAN" last_name="GABLE" />
+	<actor id="1" first_name="PENELOPE" surname="GUINESS" />
+	<actor id="2" first_name="NICK" surname="WAHLBERG" />
+	<actor id="3" first_name="ED" surname="CHASE" />
+	<actor id="4" first_name="JENNIFER" surname="DAVIS" />
+	<actor id="5" first_name="JOHNNY" surname="LOLLOBRIGIDA" />
+	<actor id="6" first_name="BETTE" surname="NICHOLSON" />
+	<actor id="7" first_name="GRACE" surname="MOSTEL" />
+	<actor id="8" first_name="MATTHEW" surname="JOHANSSON" />
+	<actor id="9" first_name="JOE" surname="SWANK" />
+	<actor id="10" first_name="CHRISTIAN" surname="GABLE" />
 </readResponse>
 ]]>
 			</body>

@@ -31,9 +31,9 @@ public class TriggerManagerTest extends BaseTestCase {
 		TriggerManager.loadTriggers(definitions);
 
 		SqlResource sqlResource = Factory.getSqlResource("SingleTable");
-		Request request = RequestFactoryHelper.getRequest(Type.SELECT, sqlResource.getName(), new String[] { "actor_id",
+		Request request = RequestFactoryHelper.getRequest(Type.SELECT, sqlResource.getName(), new String[] { "id",
 				"1" }, null);
-		sqlResource.readXml(request);
+		sqlResource.readAsXml(request);
 		assertEquals("size all", 1, allRequests.size());
 		assertEquals("size singleTable", 1, singleTableRequests.size());
 		assertEquals("size multi", 1, multiRequests.size());
@@ -41,7 +41,7 @@ public class TriggerManagerTest extends BaseTestCase {
 		sqlResource = Factory.getSqlResource("SingleTable_MultiPK");
 		request = RequestFactoryHelper.getRequest(Type.SELECT, sqlResource.getName(), new String[] { "actorId", "1" },
 				null);
-		sqlResource.readXml(request);
+		sqlResource.readAsXml(request);
 		assertEquals("size all", 2, allRequests.size());
 		assertEquals("size singleTable", 1, singleTableRequests.size());
 		assertEquals("size multi", 2, multiRequests.size());
@@ -49,7 +49,7 @@ public class TriggerManagerTest extends BaseTestCase {
 		sqlResource = Factory.getSqlResource("FlatManyToOne");
 		request = RequestFactoryHelper.getRequest(Type.SELECT, sqlResource.getName(), new String[] { "film_id", "1" },
 				null);
-		sqlResource.readXml(request);
+		sqlResource.readAsXml(request);
 		assertEquals("size all", 3, allRequests.size());
 		assertEquals("size singleTable", 1, singleTableRequests.size());
 		assertEquals("size multi", 2, multiRequests.size());

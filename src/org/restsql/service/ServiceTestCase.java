@@ -182,7 +182,7 @@ public class ServiceTestCase extends TestCase {
 			if (request.getType() == Type.SELECT) {
 				try {
 					final SqlResource sqlResource = Factory.getSqlResource(request.getSqlResource());
-					String actualBody = sqlResource.readXml(request); 
+					String actualBody = sqlResource.readAsXml(request); 
 					String expectedBody = null;
 					if (step.getResponse().getBody() != null) {
 						expectedBody = step.getResponse().getBody();
@@ -193,8 +193,9 @@ public class ServiceTestCase extends TestCase {
 							ServiceTestCaseHelper.STATUS_NOT_APPLICABLE, expectedBody,
 							actualBody);
 					ServiceTestCase.assertEquals(step, "body", expectedBody, actualBody);
+					request.getLogger().log(200);
 				} catch (SqlResourceException exception) {
-					handleException(step, exception);
+					handleException(request, step, exception);
 				}
 			} else {
 				try {
@@ -218,14 +219,15 @@ public class ServiceTestCase extends TestCase {
 						helper.writeResponseTrace(step, 200, 200, "", "");
 						assertEquals("status", step.getResponse().getStatus(), 200);
 					}
+					request.getLogger().log(200);
 				} catch (SqlResourceException exception) {
-					handleException(step, exception);
+					handleException(request, step, exception);
 				}
 			}
 		}
 	}
 
-	private void handleException(Step step, SqlResourceException exception) {
+	private void handleException(Request request, Step step, SqlResourceException exception) {
 		int actualStatus;
 		if (exception instanceof InvalidRequestException) {
 			actualStatus = 400;
@@ -240,6 +242,7 @@ public class ServiceTestCase extends TestCase {
 			actualBody = exception.getMessage();
 		}
 		helper.writeResponseTrace(step, step.getResponse().getStatus(), actualStatus, expectedBody, actualBody);
+		request.getLogger().log(actualStatus, exception);
 		assertEquals(step.getResponse().getStatus(), actualStatus);
 		assertEquals("response body", expectedBody, actualBody);
 	}
