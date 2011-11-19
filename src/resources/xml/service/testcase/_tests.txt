@@ -5,4 +5,5 @@
 # 	e.g. HierManyToMany/*
 # Use # to comment out a line
 
-SingleTable/*
+#SingleTable/*
+SingleTable/TestSelect_Limited_sub.sub.SingleTable.xml

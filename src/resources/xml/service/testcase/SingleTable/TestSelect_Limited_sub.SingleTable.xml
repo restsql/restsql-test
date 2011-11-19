@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://restsql.org/schema ServiceTestCaseDefinition.xsd ">
+	<step name="execute">
+		<request method="GET" uri="res/sub.SingleTable?_limit=10&amp;_offset=0" />
+		<response>
+			<body>
+<![CDATA[
+<readResponse>
+	<pelicula film_id="1" title="ACADEMY DINOSAUR" release_year="2006" />
+	<pelicula film_id="2" title="ACE GOLDFINGER" release_year="2006" />
+	<pelicula film_id="3" title="ADAPTATION HOLES" release_year="2006" />
+	<pelicula film_id="4" title="AFFAIR PREJUDICE" release_year="2006" />
+	<pelicula film_id="5" title="AFRICAN EGG" release_year="2006" />
+	<pelicula film_id="6" title="AGENT TRUMAN" release_year="2006" />
+	<pelicula film_id="7" title="AIRPLANE SIERRA" release_year="2006" />
+	<pelicula film_id="8" title="AIRPORT POLLOCK" release_year="2006" />
+	<pelicula film_id="9" title="ALABAMA DEVIL" release_year="2006" />
+	<pelicula film_id="10" title="ALADDIN CALENDAR" release_year="2006" />
+</readResponse>
+]]>
+			</body>
+		</response>
+	</step>
+</tc:testcase>

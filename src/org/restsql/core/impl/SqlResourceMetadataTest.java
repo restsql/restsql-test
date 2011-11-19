@@ -175,7 +175,7 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 	@Test
 	public void testGetTables_HierManyToManyExt() throws SqlResourceException {
 		final SqlResource sqlResource = Factory.getSqlResource("HierManyToManyExt");
-		SqlResourceMetaData metaData = ((SqlResourceImpl) sqlResource).getSqlResourceMetaData();
+		SqlResourceMetaData metaData = ((SqlResourceImpl) sqlResource).getMetaData();
 
 		assertTrue(sqlResource.isHierarchical());
 		assertEquals(5, sqlResource.getTables().size());
@@ -298,5 +298,51 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 		assertEquals("year", metaData.getChildReadColumns().get(2).getColumnLabel());
 		assertEquals("film_rating_id", metaData.getChildReadColumns().get(3).getColumnLabel());
 		assertEquals("stars", metaData.getChildReadColumns().get(4).getColumnLabel());
+	}
+
+	@Test
+	public void testGetTables_SingleTableAliased() throws SqlResourceException {
+		final SqlResource sqlResource = Factory.getSqlResource("SingleTableAliased");
+
+		assertEquals(1, sqlResource.getTables().size());
+		final TableMetaData table = sqlResource.getTables().get(getQualifiedTableName("film"));
+		assertNotNull(table);
+		assertEquals("sakila", table.getDatabaseName());
+		assertEquals("film", table.getTableName());
+		assertEquals("movie", table.getTableAlias());
+
+		// Pks
+		assertEquals(1, table.getPrimaryKeys().size());
+		assertEquals("film_id", table.getPrimaryKeys().get(0).getColumnName());
+
+		// Columns
+		assertEquals(3, table.getColumns().size());
+		AssertionHelper.assertColumnMetaData(table.getColumns(), 1, true, "sakila", "film", "film_id",
+				"id", Types.SMALLINT);
+		AssertionHelper.assertColumnMetaData(table.getColumns(), 2, false, "sakila", "film", "title",
+				"title", Types.VARCHAR);
+		AssertionHelper.assertColumnMetaData(table.getColumns(), 3, false, "sakila", "film", "release_year",
+				"year", (getDatabaseType() == DatabaseType.PostgreSql) ? Types.INTEGER : Types.DATE);
+	}
+
+	@Test
+	public void testGetTables_SingleTableSub() throws SqlResourceException {
+		SqlResource sqlResource = Factory.getSqlResource("sub.SingleTable");
+		
+		assertEquals(1, sqlResource.getTables().size());
+		TableMetaData table = sqlResource.getTables().get(getQualifiedTableName("film"));
+		assertNotNull(table);
+		assertEquals("sakila", table.getDatabaseName());
+		assertEquals("film", table.getTableName());
+		assertEquals("pelicula", table.getTableAlias());
+
+		sqlResource = Factory.getSqlResource("sub.sub.SingleTable");
+		
+		assertEquals(1, sqlResource.getTables().size());
+		table = sqlResource.getTables().get(getQualifiedTableName("language"));
+		assertNotNull(table);
+		assertEquals("sakila", table.getDatabaseName());
+		assertEquals("language", table.getTableName());
+		assertEquals("language", table.getTableAlias());
 	}
 }

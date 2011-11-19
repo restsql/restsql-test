@@ -76,7 +76,7 @@ public class SqlResourceSingleTableTest extends SqlResourceTestBase {
 		Request request = RequestFactoryHelper.getRequest(Request.Type.INSERT, sqlResource.getName(), null, new String[] {
 				"id", "1003", "first_name", "Patty", "surname", "White" });
 		final Map<String, SqlBuilder.SqlStruct> sql = Factory.getSqlBuilder().buildWriteSql(((SqlResourceImpl) sqlResource)
-				.getSqlResourceMetaData(), request, false);
+				.getMetaData(), request, false);
 		String qualifiedTableName = getQualifiedTableName("actor");
 		assertEquals("INSERT INTO " + qualifiedTableName + " (actor_id,first_name,last_name) VALUES (1003,'Patty','White')", sql
 				.get(qualifiedTableName).getMain().toString());

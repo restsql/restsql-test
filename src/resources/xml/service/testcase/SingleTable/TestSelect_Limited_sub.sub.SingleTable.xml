@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://restsql.org/schema ServiceTestCaseDefinition.xsd ">
+	<step name="execute">
+		<request method="GET" uri="res/sub.sub.SingleTable?_limit=10&amp;_offset=0" />
+		<response>
+			<body>
+<![CDATA[
+<readResponse>
+	<language language_id="1" name="English" />
+	<language language_id="2" name="Italian" />
+	<language language_id="3" name="Japanese" />
+	<language language_id="4" name="Mandarin" />
+	<language language_id="5" name="French" />
+	<language language_id="6" name="German" />
+</readResponse>
+]]>
+			</body>
+		</response>
+	</step>
+</tc:testcase>

@@ -74,8 +74,8 @@ public class SqlResourceFlatManyToOneSelectTest extends SqlResourceTestBase {
 	@Test
 	public void testExecSelectXml_Flat_WithLikeParameter_Schema() throws SqlResourceException, SqlResourceFactoryException,
 			InvalidRequestException {
-		Serializer.setUseXmlDirective(true);
-		Serializer.setUseXmlSchema(true);
+		ResultsSerializer.setUseXmlDirective(true);
+		ResultsSerializer.setUseXmlSchema(true);
 		Request request = RequestFactoryHelper.getRequest(Request.Type.SELECT, "FlatManyToOne", null, new String[] {
 				"title", "AIR%" });
 		String results = sqlResource.readAsXml(request);

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rs:sqlResource xmlns:rs="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://restsql.org/schema SqlResource.xsd " defaultDatabase="sakila" parent="film_actor">
+	xsi:schemaLocation="http://restsql.org/schema SqlResource.xsd " defaultDatabase="sakila"
+	parent="language">
 	<query>
-		select actor_id "actorId", film_id
-		from film_actor
+		select language_id, language.name
+		from language
 	</query>
 </rs:sqlResource>

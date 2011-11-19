@@ -23,6 +23,20 @@ public class SqlResourceFactoryTest extends BaseTestCase {
 	}
 
 	@Test
+	public void testGetSqlResourceSubdirs() throws SqlResourceFactoryException, SqlResourceException {
+		SqlResource sqlResource = Factory.getSqlResource("sub.SingleTable");
+		assertEquals("sub.SingleTable", sqlResource.getName());
+		assertEquals("sakila", sqlResource.getDefinition().getDefaultDatabase());
+		assertEquals("film", sqlResource.getDefinition().getParent());
+		assertEquals("pelicula", sqlResource.getDefinition().getParentAlias());
+
+		sqlResource = Factory.getSqlResource("sub.sub.SingleTable");
+		assertEquals("sub.sub.SingleTable", sqlResource.getName());
+		assertEquals("sakila", sqlResource.getDefinition().getDefaultDatabase());
+		assertEquals("language", sqlResource.getDefinition().getParent());
+	}
+
+	@Test
 	public void testIsSqlResourceLoaded() throws SqlResourceFactoryException, SqlResourceException {
 		SqlResourceFactoryImpl factory = new SqlResourceFactoryImpl();
 		SqlResource sqlResource = factory.getSqlResource("HierManyToMany");
@@ -33,7 +47,20 @@ public class SqlResourceFactoryTest extends BaseTestCase {
 	@Test
 	public void testGetSqlResourceNames() {
 		List<String> resNames = Factory.getSqlResourceNames();
-		assertTrue(resNames.size() > 1);
+		assertEquals(13, resNames.size());
+		assertEquals("ErrorInQuery", resNames.get(0));
+		assertEquals("FlatManyToOne", resNames.get(1));
+		assertEquals("FlatOneToOne", resNames.get(2));
+		assertEquals("HierManyToMany", resNames.get(3));
+		assertEquals("HierManyToManyExt", resNames.get(4));
+		assertEquals("HierOneToMany", resNames.get(5));
+		assertEquals("SingleTable", resNames.get(6));
+		assertEquals("SingleTableAliased", resNames.get(7));
+		assertEquals("SingleTable_FilmRating", resNames.get(8));
+		assertEquals("SingleTable_MultiPK", resNames.get(9));
+		assertEquals("TestTimestamp", resNames.get(10));
+		assertEquals("sub.SingleTable", resNames.get(11));
+		assertEquals("sub.sub.SingleTable", resNames.get(12));
 	}
 
 	@Test

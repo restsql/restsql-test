@@ -67,7 +67,7 @@ public class ServiceTestCaseHelper {
 	}
 
 	private static String getFileNameFromTestCaseName(final String testCaseName) {
-		final String fileName = testCaseName.substring(0, testCaseName.indexOf(".")) + ".log";
+		final String fileName = testCaseName.substring(0, testCaseName.lastIndexOf(".")) + ".log";
 		return fileName;
 	}
 
