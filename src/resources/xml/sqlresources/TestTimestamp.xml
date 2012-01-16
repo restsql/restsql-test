@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rs:sqlResource xmlns:rs="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://restsql.org/schema SqlResource.xsd " defaultDatabase="sakila" parent="test_timestamp">
+	xsi:schemaLocation="http://restsql.org/schema ../../../../../restsql/src/resources/xml/SqlResource.xsd">
 	<query>
 		select id, time
 		from test_timestamp
 	</query>
+	<metadata>
+		<database default="sakila" />
+		<table name="test_timestamp" role="Parent" />
+	</metadata>
 </rs:sqlResource>

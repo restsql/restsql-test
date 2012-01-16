@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://restsql.org/schema ServiceTestCaseDefinition.xsd ">
+	<setup>
+		<sql>INSERT INTO language (language_id,name) VALUES (100,'New Esperanto')</sql>
+		<sql>INSERT INTO language (language_id,name) VALUES (101,'New Greek')</sql>
+		<sql>INSERT INTO language (language_id,name) VALUES (102,'New Grupo')</sql>
+		<sql>INSERT INTO film (film_id,title,release_year,language_id,rental_duration,rental_rate,replacement_cost) VALUES (5000,'ESCAPE FROM TOMORROW',2011,100,0,0,0)</sql>
+		<sql>INSERT INTO film (film_id,title,release_year,language_id,rental_duration,rental_rate,replacement_cost) VALUES (5001,'BLOOD PURPLE',2012,100,0,0,0)</sql>
+		<sql>INSERT INTO film (film_id,title,release_year,language_id,rental_duration,rental_rate,replacement_cost) VALUES (5002,'THE DARKENING',2012,101,0,0,0)</sql>
+		<sql>INSERT INTO film_comment (film_id,comment) VALUES (5000,'not so bad')</sql>
+		<sql>INSERT INTO film_comment (film_id,comment) VALUES (5001,'loved it')</sql>
+		<sql>INSERT INTO film_comment (film_id,comment) VALUES (5002,'I laughed, I cried')</sql>
+		<sql>INSERT INTO film_genre (film_id,genre) VALUES (5000,'SCIENCE FICTION')</sql>
+		<sql>INSERT INTO film_genre (film_id,genre) VALUES (5001,'HORROR')</sql>
+		<sql>INSERT INTO film_genre (film_id,genre) VALUES (5002,'HORROR')</sql>
+		<sql>INSERT INTO film_origin (film_id,city,country) VALUES (5000,'New York', 'USA')</sql>
+		<sql>INSERT INTO film_origin (film_id,city,country) VALUES (5001,'Hollywood', 'USA')</sql>
+		<sql>INSERT INTO film_origin (film_id,city,country) VALUES (5002,'Hollywood', 'USA')</sql>
+	</setup>
+	<step name="execute">
+		<request method="PUT" uri="res/HierOneToManyMultiExt" >
+			<body>
+<![CDATA[
+<request>
+	<lang language_id="100">
+		<movie year="2011" title="ESCAPE FROM TOMORROW2" film_id="5000" comment="We like it" />
+	</lang>
+	<lang language_id="100" langName="New Spanish" />
+	<lang language_id="101" langName="New Latin"/>
+</request>
+]]>
+			</body>
+		</request>
+		<response>
+			<body>
+<![CDATA[
+<writeResponse rowsAffected="4" />
+]]>
+				</body>
+		</response>
+	</step>
+	<step name="verify">
+		<request method="GET" uri="res/HierOneToManyMultiExt?langName=New%25" />
+		<response>
+			<body>
+<![CDATA[
+<readResponse>
+	<lang language_id="100" langName="New Spanish">
+		<movie genre="SCIENCE FICTION" title="ESCAPE FROM TOMORROW2" year="2011" film_id="5000" comment="We like it" city="New York" country="USA" />
+		<movie genre="HORROR" title="BLOOD PURPLE" year="2012" film_id="5001" comment="loved it" city="Hollywood" country="USA" />
+	</lang>
+	<lang language_id="101" langName="New Latin">
+		<movie genre="HORROR" title="THE DARKENING" year="2012" film_id="5002" comment="I laughed, I cried" city="Hollywood" country="USA" />
+	</lang>
+	<lang language_id="102" langName="New Grupo">
+	</lang>
+</readResponse>
+]]>
+		</body>
+		</response>
+	</step>
+	<teardown>
+		<sql>DELETE FROM film_comment</sql>
+		<sql>DELETE FROM film_genre</sql>
+		<sql>DELETE FROM film_origin</sql>
+		<sql>DELETE FROM film WHERE film_id between 5000 and 5500</sql>
+		<sql>DELETE FROM language WHERE language_id between 100 and 150</sql>
+	</teardown>
+</tc:testcase>

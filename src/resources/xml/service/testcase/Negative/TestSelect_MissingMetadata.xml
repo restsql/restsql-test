@@ -2,7 +2,9 @@
 <tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://restsql.org/schema ServiceTestCaseDefinition.xsd ">
 	<step name="execute">
-		<request method="GET" uri="res/negative.ErrorInQuery" />
-		<response status="500" />
+		<request method="GET" uri="res/negative.MissingMetadata" />
+		<response status="500">
+			<body>Definition requires one metadata element</body>
+		</response>
 	</step>
 </tc:testcase>

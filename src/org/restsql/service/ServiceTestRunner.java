@@ -27,7 +27,8 @@ import org.restsql.service.testcase.ServiceTestCaseDefinition;
 public class ServiceTestRunner {
 	public final static String SCOPE_ALL = "%";
 	public final static String TEST_CASE_DIR = "obj/bin/resources/xml/service/testcase";
-	public final static String TEST_RESULTS_DIR = "obj/test/service";
+	public final static String TEST_RESULTS_BASE_DIR = "obj/test";
+	public final static String TEST_RESULTS_DIR = TEST_RESULTS_BASE_DIR + "/service";
 	public static final String FAILURES_AND_ERRORS_LOG = TEST_RESULTS_DIR + "/FailuresAndErrors.log";
 
 	static {
@@ -106,8 +107,14 @@ public class ServiceTestRunner {
 	}
 
 	private static void cleanResultsDir() {
-		// Clean results dir
-		final File dir = new File(TEST_RESULTS_DIR);
+		// Create base dir
+		File dir = new File(TEST_RESULTS_BASE_DIR);
+		if (!dir.exists()) {
+			dir.mkdir();
+		}
+		
+		// Create or clean results dir
+		dir = new File(TEST_RESULTS_DIR);
 		if (dir.exists()) {
 			final File[] subDirs = dir.listFiles();
 			if (subDirs != null) {

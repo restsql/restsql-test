@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rs:sqlResource xmlns:rs="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://restsql.org/schema SqlResource.xsd " defaultDatabase="sakila"
-	parent="language">
+	xsi:schemaLocation="http://restsql.org/schema ../../../../../../../restsql/src/resources/xml/SqlResource.xsd">
 	<query>
 		select language_id, language.name
 		from language
 	</query>
+	<metadata>
+		<database default="sakila" />
+		<table name="language" role="Parent" />
+	</metadata>
 </rs:sqlResource>

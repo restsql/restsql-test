@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://restsql.org/schema ServiceTestCaseDefinition.xsd ">
+	<setup>
+		<sql>INSERT INTO actor (actor_id,first_name,last_name) VALUES (1000,'John','_Black')</sql>
+		<sql>INSERT INTO actor (actor_id,first_name,last_name) VALUES (1001,'Bob','_Black')</sql>
+		<sql>INSERT INTO actor (actor_id,first_name,last_name) VALUES (1002,'Manuel','_Black')</sql>
+		<sql>INSERT INTO actor_genre (actor_genre_id,actor_id,name) VALUES (1,1000,'SCIENCE_FICTION')</sql>
+		<sql>INSERT INTO actor_genre (actor_genre_id,actor_id,name) VALUES (3,1002,'DRAMA')</sql>
+		<sql>INSERT INTO film (film_id,title,release_year,language_id,rental_duration,rental_rate,replacement_cost) VALUES (5000,'ESCAPE FROM TOMORROW',2011,1,0,0,0)</sql>
+		<sql>INSERT INTO film (film_id,title,release_year,language_id,rental_duration,rental_rate,replacement_cost) VALUES (5001,'BLOOD PURPLE',2012,1,0,0,0)</sql>
+		<sql>INSERT INTO film (film_id,title,release_year,language_id,rental_duration,rental_rate,replacement_cost) VALUES (5002,'THE DARKENING',2012,1,0,0,0)</sql>
+		<sql>INSERT INTO film_comment (film_id,comment) VALUES (5000,'not so bad')</sql>
+		<sql>INSERT INTO film_comment (film_id,comment) VALUES (5001,'loved it')</sql>
+		<sql>INSERT INTO film_comment (film_id,comment) VALUES (5002,'I laughed, I cried')</sql>
+		<sql>INSERT INTO film_genre (film_id,genre) VALUES (5000,'SCIENCE FICTION')</sql>
+		<sql>INSERT INTO film_genre (film_id,genre) VALUES (5001,'HORROR')</sql>
+		<sql>INSERT INTO film_genre (film_id,genre) VALUES (5002,'HORROR')</sql>
+		<sql>INSERT INTO film_origin (film_id,city,country) VALUES (5000,'New York', 'USA')</sql>
+		<sql>INSERT INTO film_origin (film_id,city,country) VALUES (5001,'Hollywood', 'USA')</sql>
+		<sql>INSERT INTO film_origin (film_id,city,country) VALUES (5002,'Hollywood', 'USA')</sql>
+		<sql>INSERT INTO film_actor (film_id,actor_id) VALUES (5000,1000)</sql>
+		<sql>INSERT INTO film_actor (film_id,actor_id) VALUES (5002,1000)</sql>
+		<sql>INSERT INTO film_actor (film_id,actor_id) VALUES (5001,1001)</sql>
+		<sql>INSERT INTO film_actor (film_id,actor_id) VALUES (5002,1001)</sql>
+	</setup>
+	<step name="execute">
+		<request method="PUT" uri="res/HierManyToManyMultiExt" >
+			<body>
+<![CDATA[
+<request>
+	<actor actor_id="1000">
+		<film year="2011" title="ESCAPE FROM TOMORROW2" film_id="5000" comment="We like it" />
+	</actor>
+	<actor actor_id="1000" first_name="_Jack" last_name="Daniels" name="COMEDY" />
+	<actor actor_id="1001" first_name="_Jack" last_name="Smith" />
+</request>
+]]>
+			</body>
+		</request>
+		<response>
+			<body>
+<![CDATA[
+<writeResponse rowsAffected="5" />
+]]>
+				</body>
+		</response>
+	</step>
+	<step name="verify">
+		<request method="GET" uri="res/HierManyToManyMultiExt?first_name=_Jack" />
+		<response>
+			<body>
+<![CDATA[
+<readResponse>
+	<actor last_name="Daniels" first_name="_Jack" actor_id="1000" actor_genre_id="1" name="COMEDY">
+		<film genre="SCIENCE FICTION" title="ESCAPE FROM TOMORROW2" year="2011" film_id="5000" comment="We like it" city="New York" country="USA" />
+		<film genre="HORROR" title="THE DARKENING" year="2012" film_id="5002" comment="I laughed, I cried" city="Hollywood" country="USA" />
+	</actor>
+	<actor last_name="Smith" first_name="_Jack" actor_id="1001">
+		<film genre="HORROR" title="BLOOD PURPLE" year="2012" film_id="5001" comment="loved it" city="Hollywood" country="USA" />
+		<film genre="HORROR" title="THE DARKENING" year="2012" film_id="5002" comment="I laughed, I cried" city="Hollywood" country="USA" />
+	</actor>
+</readResponse>
+]]>
+		</body>
+		</response>
+	</step>
+	<teardown>
+		<sql>DELETE FROM actor_genre</sql>
+		<sql>DELETE FROM film_comment</sql>
+		<sql>DELETE FROM film_genre</sql>
+		<sql>DELETE FROM film_origin</sql>
+		<sql>DELETE FROM film_actor WHERE actor_id between 1000 and 1100</sql>
+		<sql>DELETE FROM actor WHERE actor_id between 1000 and 1100</sql>
+		<sql>DELETE FROM film WHERE film_id between 5000 and 5500</sql>
+	</teardown>
+</tc:testcase>

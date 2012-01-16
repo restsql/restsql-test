@@ -208,6 +208,7 @@ public class ServiceTestCase extends TestCase {
 					} else {
 						rowsAffected = sqlResource.write(request);
 					}
+					request.getLogger().log(200);
 					if (step.getResponse().getStatus() == 200) {
 						final int expectedRowsAffected = XmlHelper.unmarshallWriteResponse(step.getResponse()
 								.getBody());
@@ -219,7 +220,6 @@ public class ServiceTestCase extends TestCase {
 						helper.writeResponseTrace(step, 200, 200, "", "");
 						assertEquals("status", step.getResponse().getStatus(), 200);
 					}
-					request.getLogger().log(200);
 				} catch (SqlResourceException exception) {
 					handleException(request, step, exception);
 				}

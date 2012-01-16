@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rs:sqlResource xmlns:rs="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://restsql.org/schema ../../../../../restsql/src/resources/xml/SqlResource.xsd">
+	<query>
+		select film.film_id, title, release_year "year", language_id, comment, genre, city, country
+		from film_origin, film_genre, film_comment, film
+		where film.film_id = film_comment.film_id
+		and film.film_id = film_genre.film_id
+		and film.film_id = film_origin.film_id
+	</query>
+	<metadata>
+		<database default="sakila" />
+		<table name="film" role="Parent" />
+		<table name="film_comment" role="ParentExtension" />
+		<table name="film_genre" role="ParentExtension" />
+		<table name="film_origin" role="ParentExtension" />
+	</metadata>
+</rs:sqlResource>

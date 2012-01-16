@@ -2,13 +2,19 @@
 <rs:sqlResource xmlns:rs="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://restsql.org/schema ../../../../../restsql/src/resources/xml/SqlResource.xsd">
 	<query>
-		select language.language_id, language.name "langName", film_id, title, release_year "year"
+		select language.language_id, language.name "langName", film.film_id, title, release_year "year", comment, genre, city, country
 		from language
 		left outer join film on film.language_id = language.language_id
+		left outer join film_comment on film.film_id = film_comment.film_id
+		left outer join film_genre on film.film_id = film_genre.film_id
+		left outer join film_origin on film.film_id = film_origin.film_id
 	</query>
 	<metadata>
 		<database default="sakila" />
 		<table name="language" alias="lang" role="Parent" />
 		<table name="film" alias="movie" role="Child" />
+		<table name="film_comment" role="ChildExtension" />
+		<table name="film_genre" role="ChildExtension" />
+		<table name="film_origin" role="ChildExtension" />
 	</metadata>
 </rs:sqlResource>

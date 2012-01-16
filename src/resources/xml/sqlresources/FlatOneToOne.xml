@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rs:sqlResource xmlns:rs="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://restsql.org/schema SqlResource.xsd " defaultDatabase="sakila" parent="film"
-	parentExt="film_rating">
+	xsi:schemaLocation="http://restsql.org/schema ../../../../../restsql/src/resources/xml/SqlResource.xsd">
 	<query>
 		select film.film_id, title, release_year "year",
 		language_id,rental_duration,rental_rate,replacement_cost, film_rating_id, stars
@@ -9,4 +8,9 @@
 		film_rating
 		where film.film_id = film_rating.film_id
 	</query>
+	<metadata>
+		<database default="sakila" />
+		<table name="film" role="Parent" />
+		<table name="film_rating" role="ParentExtension" />
+	</metadata>
 </rs:sqlResource>

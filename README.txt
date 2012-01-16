@@ -1,4 +1,4 @@
-README.txt (23-Oct-2011)
+README.txt (15-Jan-2011)
 
 restSQL Test Deployment Guide
 
@@ -45,12 +45,6 @@ By default, the tests will use the restsql properties file src/resources/propert
 	ant -Dorg.restsql.properties=/resources/properties/restsql-postgresql.properties 
 
 Test results will appear on the console. Test detail is available in restsql-test/obj/test.
-
-PostgreSQL Notes:  At least ten test cases that pass with MySQL are expected to fail with PostgreSQL because they return data in a different order than MySQL, including:
-	FlatManyToOne/TestSelect_Limited.xml
-	HierManyToManyExt/TestUpdate_MultiRowParentAndChild_ByBody.xml
-	HierManyToMany/TestInsert_MultiRowParentAndChild_ByBody.xml
-	HierOneToMany/<multiple>
 
 -------------------------------------------------------------------------------
 License

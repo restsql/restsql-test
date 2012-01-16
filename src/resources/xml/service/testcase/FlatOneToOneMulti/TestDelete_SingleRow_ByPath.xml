@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://restsql.org/schema ServiceTestCaseDefinition.xsd ">
+	<setup>
+		<sql>INSERT INTO film (film_id,title,release_year,language_id,rental_duration,rental_rate,replacement_cost) VALUES (5000,'ESCAPE FROM TOMORROW',2011,1,0,0,0)</sql>
+		<sql>INSERT INTO film (film_id,title,release_year,language_id,rental_duration,rental_rate,replacement_cost) VALUES (5001,'BLOOD PURPLE',2012,1,0,0,0)</sql>
+		<sql>INSERT INTO film (film_id,title,release_year,language_id,rental_duration,rental_rate,replacement_cost) VALUES (5002,'THE DARKENING',2012,1,0,0,0)</sql>
+		<sql>INSERT INTO film_comment (film_id,comment) VALUES (5000,'not so bad')</sql>
+		<sql>INSERT INTO film_comment (film_id,comment) VALUES (5001,'loved it')</sql>
+		<sql>INSERT INTO film_comment (film_id,comment) VALUES (5002,'I laughed, I cried')</sql>
+		<sql>INSERT INTO film_genre (film_id,genre) VALUES (5000,'SCIENCE FICTION')</sql>
+		<sql>INSERT INTO film_genre (film_id,genre) VALUES (5001,'HORROR')</sql>
+		<sql>INSERT INTO film_genre (film_id,genre) VALUES (5002,'HORROR')</sql>
+		<sql>INSERT INTO film_origin (film_id,city,country) VALUES (5000,'New York', 'USA')</sql>
+		<sql>INSERT INTO film_origin (film_id,city,country) VALUES (5001,'Hollywood', 'USA')</sql>
+		<sql>INSERT INTO film_origin (film_id,city,country) VALUES (5002,'Hollywood', 'USA')</sql>
+	</setup>
+	<step name="execute">
+		<request method="DELETE" uri="res/FlatOneToOneMulti/5000" />
+		<response>
+			<body>
+<![CDATA[
+<writeResponse rowsAffected="4" />
+]]>
+				</body>
+		</response>
+	</step>
+	<step name="verify">
+		<request method="GET" uri="res/FlatOneToOneMulti?year=2012" />
+		<response>
+			<body>
+<![CDATA[
+<readResponse>
+	<film film_id="5001" title="BLOOD PURPLE" year="2012" language_id="1" comment="loved it" genre="HORROR" city="Hollywood" country="USA" />
+	<film film_id="5002" title="THE DARKENING" year="2012" language_id="1" comment="I laughed, I cried" genre="HORROR" city="Hollywood" country="USA" />
+</readResponse>
+]]>
+			</body>
+		</response>
+	</step>
+	<teardown>
+		<sql>DELETE FROM film_comment</sql>
+		<sql>DELETE FROM film_genre</sql>
+		<sql>DELETE FROM film_origin</sql>
+		<sql>DELETE FROM film WHERE film_id between 5000 and 5500</sql>
+	</teardown>
+</tc:testcase>
