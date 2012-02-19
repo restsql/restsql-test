@@ -7,11 +7,11 @@
 
 	<target name="test-all" depends="test-api,test-api-report,test-service-http" />
 
-	<target name="clean">
+	<target name="clean" description="deletes output dir">
 		<delete dir="obj" failonerror="false" includeEmptyDirs="true" quiet="true" />
 	</target>
 
-	<target name="compile-schema">
+	<target name="compile-schema" description="compiles test case definition schema">
 		<!-- Create output dir -->
 		<mkdir dir="obj/bin" />
 
@@ -22,7 +22,7 @@
 		</xjc>
 	</target>
 
-	<target name="compile-tests">
+	<target name="compile-tests" description="compiles JUnit tests">
 		<ant antfile="../restsql/build.xml" target="compile" inheritall="no" />
 
 		<!-- Create output dir -->
@@ -41,7 +41,11 @@
 		<javac srcdir="src" destdir="obj/bin" classpath="${test-compile.classpath}" debug="true" />
 	</target>
 
-	<target name="test-api" depends="compile-tests">
+	<target name="exec-examples" description="executes sample programs">
+		<ant antfile="../restsql-sdk/build.xml" target="exec-examples" />
+	</target>
+
+	<target name="test-api" depends="compile-tests" description="exercises junit tests for java api">
 		<!-- Create output dir -->
 		<delete dir="${api-test.dir}" />
 		<mkdir dir="${api-test.dir}" />
@@ -58,7 +62,7 @@
 	</target>
 
 	<!-- Creates report for API test -->
-	<target name="test-api-report">
+	<target name="test-api-report" description="generates junit report for api tests">
 		<!-- Create output dir -->
 		<delete dir="${api-test.dir}/report" />
 		<mkdir dir="${api-test.dir}/report" />
@@ -72,28 +76,28 @@
 		</junitreport>
 	</target>
 
-	<target name="test-service-http">
+	<target name="test-service-http" description="executes all test cases for the http interface">
 		<antcall target="-test-service">
 			<param name="testStyle" value="http" />
 			<param name="testList" value="%" />
 		</antcall>
 	</target>
 
-	<target name="test-service-http-subset">
+	<target name="test-service-http-subset" description="executes some of test cases for the http interface">
 		<antcall target="-test-service">
 			<param name="testStyle" value="http" />
 			<param name="testList" value="${test.list}" />
 		</antcall>
 	</target>
 
-	<target name="test-service-java">
+	<target name="test-service-java" description="executes all test cases for the service's java interface">
 		<antcall target="-test-service">
 			<param name="testStyle" value="java" />
 			<param name="testList" value="%" />
 		</antcall>
 	</target>
 
-	<target name="test-service-java-subset">
+	<target name="test-service-java-subset" description="executes some test cases for the service's java interface">
 		<antcall target="-test-service">
 			<param name="testStyle" value="java" />
 			<param name="testList" value="${test.list}" />

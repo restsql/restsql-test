@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RequestFactoryHelper {
+	private static RequestLogger requestLogger;
+	
 	public static Request getRequest(final Request.Type type, final String sqlResource, final String[] resourceIds,
 			final String[] params) throws InvalidRequestException {
 		return getRequest(type, sqlResource, resourceIds, params, null);
@@ -19,9 +21,18 @@ public class RequestFactoryHelper {
 				childrenParams.add(getNameValuePairs(childrenParam));
 			}
 		}
-		RequestLogger requestLogger = Factory.getRequestLogger("localhost", type.toString(), "?");
+		requestLogger = Factory.getRequestLogger();
+		requestLogger.setRequestAttributes("localhost", type.toString(), "?");
 		return Factory.getRequest(type, sqlResource, getNameValuePairs(resourceIds), getNameValuePairs(params),
 				childrenParams, requestLogger);
+	}
+	
+	public static RequestLogger getRequestLogger() {
+		return requestLogger;
+	}
+	
+	public static void logRequest() {
+		requestLogger.log("OK");
 	}
 
 	// Private utils

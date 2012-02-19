@@ -8,7 +8,7 @@ import org.restsql.core.impl.SqlResourceMetaDataPostgreSql;
 public class BaseTestCase {
 	static {
 		if (System.getProperty(Config.KEY_RESTSQL_PROPERTIES) == null) {
-			System.setProperty(Config.KEY_RESTSQL_PROPERTIES, "/resources/properties/restsql-postgresql.properties");
+			System.setProperty(Config.KEY_RESTSQL_PROPERTIES, "/resources/properties/restsql-mysql.properties");
 		}
 	}
 
