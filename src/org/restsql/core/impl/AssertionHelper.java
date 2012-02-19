@@ -5,6 +5,8 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.fail;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -105,10 +107,15 @@ public class AssertionHelper {
 		assertEquals(language, row.get("langName"));
 	}
 
-	static void assertTestTimestamp(final Map<String, Object> row, final int id, final Date time) {
-		assertEquals(2, row.size());
+	static void assertDateTime(final Map<String, Object> row, final int id, final Date dateTime) throws ParseException {
+		assertEquals(5, row.size());
 		assertEquals(new Integer(id), row.get("id"));
-		assertEquals(time, row.get("time"));
+		assertEquals(new SimpleDateFormat("HH:mm:ss")
+				.parse(new SimpleDateFormat("HH:mm:ss").format(dateTime)), row.get("time"));
+		assertEquals(dateTime, row.get("timestamp"));
+		assertEquals(new SimpleDateFormat("yyyy-MM-dd").parse(new SimpleDateFormat("yyyy-MM-dd")
+				.format(dateTime)), row.get("date"));
+		assertEquals(dateTime, row.get("datetime"));
 	}
 
 }

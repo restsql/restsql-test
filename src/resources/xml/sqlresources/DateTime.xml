@@ -2,11 +2,11 @@
 <rs:sqlResource xmlns:rs="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://restsql.org/schema ../../../../../restsql/src/resources/xml/SqlResource.xsd">
 	<query>
-		select id, time
-		from test_timestamp
+		select id, time, timestamp, date, datetime
+		from datetime
 	</query>
 	<metadata>
 		<database default="sakila" />
-		<table name="test_timestamp" role="Parent" />
+		<table name="datetime" role="Parent" />
 	</metadata>
 </rs:sqlResource>

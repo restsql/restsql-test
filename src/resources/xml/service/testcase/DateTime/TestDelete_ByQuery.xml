@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://restsql.org/schema ServiceTestCaseDefinition.xsd ">
+	<setup>
+		<sql>INSERT INTO datetime (id, time, timestamp, date, datetime) VALUES (1000, '16:54:00', '2011-07-23 16:54:00', '2011-07-23', '2011-07-23 16:54:00')</sql>
+		<sql>INSERT INTO datetime (id, time, timestamp, date, datetime) VALUES (1001, '10:54:00', '2011-07-22 10:54:00', '2011-07-22', '2011-07-22 10:54:00')</sql>
+	</setup>
+	<step name="execute">
+		<request method="DELETE" uri="res/DateTime?time=16:54:00" />
+		<response>
+			<body>
+<![CDATA[
+<writeResponse rowsAffected="1" />
+]]>
+				</body>
+		</response>
+	</step>
+	<step name="verify">
+		<request method="GET" uri="res/DateTime" />
+		<response>
+			<body>
+<![CDATA[
+<readResponse>
+	<datetime id="1001" time="10:54:00" timestamp="2011-07-22 10:54:00.0" date="2011-07-22" datetime="2011-07-22 10:54:00.0" />
+</readResponse>
+]]>
+			</body>
+		</response>
+	</step>
+	<teardown>
+		<sql>DELETE FROM datetime</sql>
+	</teardown>
+</tc:testcase>
