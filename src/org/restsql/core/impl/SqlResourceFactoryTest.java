@@ -1,14 +1,19 @@
 /* Copyright (c) restSQL Project Contributors. Licensed under MIT. */
-package org.restsql.core;
+package org.restsql.core.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
 import org.junit.Test;
+import org.restsql.core.BaseTestCase;
+import org.restsql.core.Factory;
+import org.restsql.core.SqlResource;
+import org.restsql.core.SqlResourceException;
 import org.restsql.core.Factory.SqlResourceFactoryException;
 import org.restsql.core.impl.SqlResourceFactoryImpl;
 
@@ -45,7 +50,7 @@ public class SqlResourceFactoryTest extends BaseTestCase {
 	}
 
 	@Test
-	public void testGetSqlResourceNames() {
+	public void testGetSqlResourceNames() throws SqlResourceFactoryException {
 		List<String> resNames = Factory.getSqlResourceNames();
 		assertTrue(resNames.contains("FlatManyToOne"));
 		assertTrue(resNames.contains("FlatOneToOne"));
@@ -66,6 +71,21 @@ public class SqlResourceFactoryTest extends BaseTestCase {
 		assertTrue(resNames.contains("sub.sub.SingleTable"));
 	}
 
+	@Test(expected = SqlResourceFactoryException.class)
+	public void testGetSqlResourceNames_WithInvalidDirectory() throws SqlResourceFactoryException {
+		new SqlResourceFactoryImpl().getSqlResourceNames("/doesnotexist");
+	}
+	
+	@Test
+	public void testGetSqlResourceNames_WithEmptyDirectory() throws SqlResourceFactoryException {
+		String dirName = SqlResourceFactoryTest.class.getName();
+		File dir = new File(dirName);
+		dir.mkdir();
+		List<String> resNames = new SqlResourceFactoryImpl().getSqlResourceNames(dirName);
+		dir.delete();
+		assertEquals(0, resNames.size());
+	}
+	
 	@Test
 	public void testGetSqlResourceDefinition() throws SqlResourceFactoryException, IOException {
 		InputStream inputStream = Factory.getSqlResourceDefinition("HierManyToMany");

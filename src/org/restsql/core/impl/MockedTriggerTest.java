@@ -6,6 +6,7 @@ import org.jmock.Mockery;
 import org.junit.Test;
 import org.restsql.core.BaseTestCase;
 import org.restsql.core.Factory;
+import org.restsql.core.HttpRequestAttributes;
 import org.restsql.core.InvalidRequestException;
 import org.restsql.core.Request;
 import org.restsql.core.RequestFactoryHelper;
@@ -50,7 +51,7 @@ public class MockedTriggerTest extends BaseTestCase {
 		});
 
 		sqlResource.write(insertRequest);
-		sqlResource.readAsXml(selectRequest);
+		sqlResource.read(selectRequest, HttpRequestAttributes.DEFAULT_MEDIA_TYPE);
 		sqlResource.write(updateRequest);
 		sqlResource.write(deleteRequest);
 	}

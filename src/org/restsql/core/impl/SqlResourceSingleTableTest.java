@@ -51,7 +51,7 @@ public class SqlResourceSingleTableTest extends SqlResourceTestBase {
 		// Verify deletes
 		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), null, new String[] { "surname",
 				"Black" });
-		final List<Map<String, Object>> results = sqlResource.readAsCollection(request);
+		final List<Map<String, Object>> results = sqlResource.read(request);
 		assertEquals(0, results.size());
 	}
 
@@ -66,7 +66,7 @@ public class SqlResourceSingleTableTest extends SqlResourceTestBase {
 		// Verify updates
 		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), new String[] { "id", "1000" },
 				null);
-		final List<Map<String, Object>> results = sqlResource.readAsCollection(request);
+		final List<Map<String, Object>> results = sqlResource.read(request);
 		assertEquals(0, results.size());
 	}
 
@@ -87,7 +87,7 @@ public class SqlResourceSingleTableTest extends SqlResourceTestBase {
 		// Now select it
 		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), new String[] { "id", "1003" },
 				null);
-		final List<Map<String, Object>> results = sqlResource.readAsCollection(request);
+		final List<Map<String, Object>> results = sqlResource.read(request);
 		assertEquals(1, results.size());
 		AssertionHelper.assertActor(false, results.get(0), 1003, "Patty", "White");
 	}
@@ -103,7 +103,7 @@ public class SqlResourceSingleTableTest extends SqlResourceTestBase {
 		// Verify updates
 		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), null, new String[] { "surname",
 				"Black" });
-		final List<Map<String, Object>> results = sqlResource.readAsCollection(request);
+		final List<Map<String, Object>> results = sqlResource.read(request);
 		assertEquals(2, results.size());
 		AssertionHelper.assertActor(false, results.get(0), 1001, "Robert", "Black");
 		AssertionHelper.assertActor(false, results.get(1), 1002, "Robert", "Black");
@@ -120,7 +120,7 @@ public class SqlResourceSingleTableTest extends SqlResourceTestBase {
 		// Verify updates
 		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), new String[] { "id", "1000" },
 				null);
-		final List<Map<String, Object>> results = sqlResource.readAsCollection(request);
+		final List<Map<String, Object>> results = sqlResource.read(request);
 		assertEquals(1, results.size());
 		AssertionHelper.assertActor(false, results.get(0), 1000, "Marcus", "Aurelius");
 	}
@@ -139,7 +139,7 @@ public class SqlResourceSingleTableTest extends SqlResourceTestBase {
 	public void testExecSelect_SingleRow_ResId() throws SqlResourceException {
 		Request request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), new String[] { "id",
 				"1000" }, null);
-		final List<Map<String, Object>> results = sqlResource.readAsCollection(request);
+		final List<Map<String, Object>> results = sqlResource.read(request);
 		assertEquals(1, results.size());
 		AssertionHelper.assertActor(false, results.get(0), 1000, "John", "Smith");
 	}
@@ -148,7 +148,7 @@ public class SqlResourceSingleTableTest extends SqlResourceTestBase {
 	public void testExecSelect_MultiRow_Param() throws SqlResourceException{
 		Request request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), null, new String[] {
 				"surname", "Black" });
-		final List<Map<String, Object>> results = sqlResource.readAsCollection(request);
+		final List<Map<String, Object>> results = sqlResource.read(request);
 		assertEquals(2, results.size());
 		AssertionHelper.assertActor(false, results.get(0), 1001, "Bob", "Black");
 		AssertionHelper.assertActor(false, results.get(1), 1002, "Manuel", "Black");
@@ -158,13 +158,13 @@ public class SqlResourceSingleTableTest extends SqlResourceTestBase {
 	public void testExecSelect_SingleRow_Param() throws SqlResourceException {
 		Request request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), null, new String[] {
 				"first_name", "Manuel" });
-		List<Map<String, Object>> results = sqlResource.readAsCollection(request);
+		List<Map<String, Object>> results = sqlResource.read(request);
 		assertEquals(1, results.size());
 		AssertionHelper.assertActor(false, results.get(0), 1002, "Manuel", "Black");
 
 		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), null, new String[] { "id",
 				"1002" });
-		results = sqlResource.readAsCollection(request);
+		results = sqlResource.read(request);
 		assertEquals(1, results.size());
 		AssertionHelper.assertActor(false, results.get(0), 1002, "Manuel", "Black");
 	}
@@ -173,13 +173,13 @@ public class SqlResourceSingleTableTest extends SqlResourceTestBase {
 	public void testExecSelect_SingleRow_TwoParams() throws SqlResourceException {
 		Request request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), null, new String[] {
 				"first_name", "Manuel", "surname", "Black" });
-		List<Map<String, Object>> results = sqlResource.readAsCollection(request);
+		List<Map<String, Object>> results = sqlResource.read(request);
 		assertEquals(1, results.size());
 		AssertionHelper.assertActor(false, results.get(0), 1002, "Manuel", "Black");
 
 		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), null, new String[] { "id",
 				"1002" });
-		results = sqlResource.readAsCollection(request);
+		results = sqlResource.read(request);
 		assertEquals(1, results.size());
 		AssertionHelper.assertActor(false, results.get(0), 1002, "Manuel", "Black");
 	}

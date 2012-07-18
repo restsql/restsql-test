@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.restsql.core.AbstractTrigger;
 import org.restsql.core.BaseTestCase;
 import org.restsql.core.Factory;
+import org.restsql.core.HttpRequestAttributes;
 import org.restsql.core.Request;
 import org.restsql.core.RequestFactoryHelper;
 import org.restsql.core.SqlResource;
@@ -33,7 +34,7 @@ public class TriggerManagerTest extends BaseTestCase {
 		SqlResource sqlResource = Factory.getSqlResource("SingleTable");
 		Request request = RequestFactoryHelper.getRequest(Type.SELECT, sqlResource.getName(), new String[] { "id",
 				"1" }, null);
-		sqlResource.readAsXml(request);
+		sqlResource.read(request, HttpRequestAttributes.DEFAULT_MEDIA_TYPE);
 		assertEquals("size all", 1, allRequests.size());
 		assertEquals("size singleTable", 1, singleTableRequests.size());
 		assertEquals("size multi", 1, multiRequests.size());
@@ -41,7 +42,7 @@ public class TriggerManagerTest extends BaseTestCase {
 		sqlResource = Factory.getSqlResource("SingleTable_MultiPK");
 		request = RequestFactoryHelper.getRequest(Type.SELECT, sqlResource.getName(), new String[] { "actorId", "1" },
 				null);
-		sqlResource.readAsXml(request);
+		sqlResource.read(request, HttpRequestAttributes.DEFAULT_MEDIA_TYPE);
 		assertEquals("size all", 2, allRequests.size());
 		assertEquals("size singleTable", 1, singleTableRequests.size());
 		assertEquals("size multi", 2, multiRequests.size());
@@ -49,7 +50,7 @@ public class TriggerManagerTest extends BaseTestCase {
 		sqlResource = Factory.getSqlResource("FlatManyToOne");
 		request = RequestFactoryHelper.getRequest(Type.SELECT, sqlResource.getName(), new String[] { "film_id", "1" },
 				null);
-		sqlResource.readAsXml(request);
+		sqlResource.read(request, HttpRequestAttributes.DEFAULT_MEDIA_TYPE);
 		assertEquals("size all", 3, allRequests.size());
 		assertEquals("size singleTable", 1, singleTableRequests.size());
 		assertEquals("size multi", 2, multiRequests.size());

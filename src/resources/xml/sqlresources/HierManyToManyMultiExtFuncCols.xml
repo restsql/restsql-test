@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rs:sqlResource xmlns:rs="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://restsql.org/schema ../../../../../restsql/src/resources/xml/SqlResource.xsd">
+	<query>
+		select actor.actor_id, first_name, last_name, length(last_name) "surname_length",
+		actor_genre_id, actor_genre.name,
+		film.film_id, title, release_year "year", comment, genre, city, country
+		from actor
+		left outer join
+		actor_genre on actor.actor_id = actor_genre.actor_id
+		left outer join film_actor on
+		film_actor.actor_id = actor.actor_id
+		left outer join film on film_actor.film_id = film.film_id
+		left outer join film_comment on film_actor.film_id = film_comment.film_id
+		left outer join film_genre on film_actor.film_id = film_genre.film_id
+		left outer join film_origin on film_actor.film_id = film_origin.film_id
+	</query>
+	<metadata>
+		<database default="sakila" />
+		<table name="actor" role="Parent" />
+		<table name="actor_genre" role="ParentExtension" />
+		<table name="film" role="Child" />
+		<table name="film_comment" role="ChildExtension" />
+		<table name="film_genre" role="ChildExtension" />
+		<table name="film_origin" role="ChildExtension" />
+		<table name="film_actor" role="Join" />
+	</metadata>
+</rs:sqlResource>

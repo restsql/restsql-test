@@ -22,8 +22,8 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 	public void testGetTables_HierManyToMany() throws SqlResourceException {
 		final SqlResource sqlResource = Factory.getSqlResource("HierManyToMany");
 
-		assertEquals(3, sqlResource.getTables().size());
-		TableMetaData table = sqlResource.getTables().get(getQualifiedTableName("actor"));
+		assertEquals(3, sqlResource.getMetaData().getTables().size());
+		TableMetaData table = sqlResource.getMetaData().getTableMap().get(getQualifiedTableName("actor"));
 		assertNotNull(table);
 		assertEquals("sakila", table.getDatabaseName());
 		assertEquals("actor", table.getTableName());
@@ -42,7 +42,7 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 				"last_name", Types.VARCHAR);
 
 		// Child table
-		table = sqlResource.getTables().get(getQualifiedTableName("film"));
+		table = sqlResource.getMetaData().getTableMap().get(getQualifiedTableName("film"));
 		assertNotNull(table);
 		assertEquals("sakila", table.getDatabaseName());
 		assertEquals("film", table.getTableName());
@@ -61,7 +61,7 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 				"year", (getDatabaseType() == DatabaseType.PostgreSql) ? Types.INTEGER : Types.DATE);
 
 		// // Join table
-		// table = sqlResource.getTables().get(getQualifiedTableName("film_actor"));
+		// table = sqlResource.getMetaData().getTableMap().get(getQualifiedTableName("film_actor"));
 		// assertNotNull(table);
 		// assertEquals("sakila", table.getDatabaseName());
 		// assertEquals("film_actor", table.getTableName());
@@ -84,8 +84,8 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 	public void testGetTables_MultiPK() throws SqlResourceException {
 		final SqlResource sqlResource = Factory.getSqlResource("SingleTable_MultiPK");
 
-		assertEquals(1, sqlResource.getTables().size());
-		final TableMetaData table = sqlResource.getTables().get(getQualifiedTableName("film_actor"));
+		assertEquals(1, sqlResource.getMetaData().getTables().size());
+		final TableMetaData table = sqlResource.getMetaData().getTableMap().get(getQualifiedTableName("film_actor"));
 		assertNotNull(table);
 		assertEquals("sakila", table.getDatabaseName());
 		assertEquals("film_actor", table.getTableName());
@@ -108,8 +108,8 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 		final SqlResource sqlResource = Factory.getSqlResource("FlatManyToOne");
 
 		// Parent table
-		assertEquals(2, sqlResource.getTables().size());
-		TableMetaData table = sqlResource.getTables().get(getQualifiedTableName("film"));
+		assertEquals(2, sqlResource.getMetaData().getTables().size());
+		TableMetaData table = sqlResource.getMetaData().getTableMap().get(getQualifiedTableName("film"));
 		assertNotNull(table);
 		assertEquals("sakila", table.getDatabaseName());
 		assertEquals("film", table.getTableName());
@@ -129,7 +129,7 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 				"year", (getDatabaseType() == DatabaseType.PostgreSql) ? Types.INTEGER : Types.DATE);
 
 		// Child table
-		table = sqlResource.getTables().get(getQualifiedTableName("language"));
+		table = sqlResource.getMetaData().getTableMap().get(getQualifiedTableName("language"));
 		assertNotNull(table);
 		assertEquals("sakila", table.getDatabaseName());
 		assertEquals("language", table.getTableName());
@@ -151,8 +151,8 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 	public void testGetTables_SingleTable() throws SqlResourceException {
 		final SqlResource sqlResource = Factory.getSqlResource("SingleTable");
 
-		assertEquals(1, sqlResource.getTables().size());
-		final TableMetaData table = sqlResource.getTables().get(getQualifiedTableName("actor"));
+		assertEquals(1, sqlResource.getMetaData().getTables().size());
+		final TableMetaData table = sqlResource.getMetaData().getTableMap().get(getQualifiedTableName("actor"));
 		assertNotNull(table);
 		assertEquals("sakila", table.getDatabaseName());
 		assertEquals("actor", table.getTableName());
@@ -177,13 +177,13 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 		final SqlResource sqlResource = Factory.getSqlResource("HierManyToManyExt");
 		SqlResourceMetaData metaData = ((SqlResourceImpl) sqlResource).getMetaData();
 
-		assertTrue(sqlResource.isHierarchical());
-		assertEquals(5, sqlResource.getTables().size());
+		assertTrue(sqlResource.getMetaData().isHierarchical());
+		assertEquals(5, sqlResource.getMetaData().getTables().size());
 
 		// Parent table
-		TableMetaData table = sqlResource.getParentTable();
+		TableMetaData table = sqlResource.getMetaData().getParent();
 		assertNotNull(table);
-		assertNotNull(sqlResource.getTables().get(getQualifiedTableName("actor")));
+		assertNotNull(sqlResource.getMetaData().getTableMap().get(getQualifiedTableName("actor")));
 		assertEquals(getQualifiedTableName("actor"), table.getQualifiedTableName());
 		assertEquals(TableRole.Parent, table.getTableRole());
 
@@ -202,7 +202,7 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 				"last_name", Types.VARCHAR);
 
 		// Parent extension
-		table = sqlResource.getTables().get(getQualifiedTableName("actor_genre"));
+		table = sqlResource.getMetaData().getTableMap().get(getQualifiedTableName("actor_genre"));
 		assertNotNull(table);
 		assertEquals(TableRole.ParentExtension, table.getTableRole());
 
@@ -219,9 +219,9 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 				"name", Types.VARCHAR);
 
 		// Child table
-		table = sqlResource.getChildTable();
+		table = sqlResource.getMetaData().getChild();
 		assertNotNull(table);
-		assertNotNull(sqlResource.getTables().get(getQualifiedTableName("film")));
+		assertNotNull(sqlResource.getMetaData().getTableMap().get(getQualifiedTableName("film")));
 		assertEquals(getQualifiedTableName("film"), table.getQualifiedTableName());
 		assertEquals(TableRole.Child, table.getTableRole());
 
@@ -239,7 +239,7 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 				"year", (getDatabaseType() == DatabaseType.PostgreSql) ? Types.INTEGER : Types.DATE);
 
 		// Child extension
-		table = sqlResource.getTables().get(getQualifiedTableName("film_rating"));
+		table = sqlResource.getMetaData().getTableMap().get(getQualifiedTableName("film_rating"));
 		assertNotNull(table);
 		assertEquals(TableRole.ChildExtension, table.getTableRole());
 
@@ -260,7 +260,7 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 		// Join table
 		table = metaData.getJoin();
 		assertNotNull(table);
-		assertNotNull(sqlResource.getTables().get(getQualifiedTableName("film_actor")));
+		assertNotNull(sqlResource.getMetaData().getTableMap().get(getQualifiedTableName("film_actor")));
 		assertEquals(getQualifiedTableName("film_actor"), table.getQualifiedTableName());
 		assertEquals(TableRole.Join, table.getTableRole());
 		assertEquals(3, table.getColumns().size());
@@ -304,8 +304,8 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 	public void testGetTables_SingleTableAliased() throws SqlResourceException {
 		final SqlResource sqlResource = Factory.getSqlResource("SingleTableAliased");
 
-		assertEquals(1, sqlResource.getTables().size());
-		final TableMetaData table = sqlResource.getTables().get(getQualifiedTableName("film"));
+		assertEquals(1, sqlResource.getMetaData().getTables().size());
+		final TableMetaData table = sqlResource.getMetaData().getTableMap().get(getQualifiedTableName("film"));
 		assertNotNull(table);
 		assertEquals("sakila", table.getDatabaseName());
 		assertEquals("film", table.getTableName());
@@ -329,8 +329,8 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 	public void testGetTables_SingleTableSub() throws SqlResourceException {
 		SqlResource sqlResource = Factory.getSqlResource("sub.SingleTable");
 		
-		assertEquals(1, sqlResource.getTables().size());
-		TableMetaData table = sqlResource.getTables().get(getQualifiedTableName("film"));
+		assertEquals(1, sqlResource.getMetaData().getTables().size());
+		TableMetaData table = sqlResource.getMetaData().getTableMap().get(getQualifiedTableName("film"));
 		assertNotNull(table);
 		assertEquals("sakila", table.getDatabaseName());
 		assertEquals("film", table.getTableName());
@@ -338,8 +338,8 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 
 		sqlResource = Factory.getSqlResource("sub.sub.SingleTable");
 		
-		assertEquals(1, sqlResource.getTables().size());
-		table = sqlResource.getTables().get(getQualifiedTableName("language"));
+		assertEquals(1, sqlResource.getMetaData().getTables().size());
+		table = sqlResource.getMetaData().getTableMap().get(getQualifiedTableName("language"));
 		assertNotNull(table);
 		assertEquals("sakila", table.getDatabaseName());
 		assertEquals("language", table.getTableName());

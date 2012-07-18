@@ -7,6 +7,6 @@
 	</query>
 	<metadata>
 		<database default="sakila" />
-		<table name="actor" role="Parent" />
+		<table name="ACTOR" role="Parent" />
 	</metadata>
 </rs:sqlResource>

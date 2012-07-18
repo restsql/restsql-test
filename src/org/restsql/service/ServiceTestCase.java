@@ -9,13 +9,19 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import junit.framework.TestCase;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.restsql.core.Factory;
-import org.restsql.core.Factory.SqlResourceFactoryException;
+import org.restsql.core.HttpRequestAttributes;
 import org.restsql.core.InvalidRequestException;
 import org.restsql.core.Request;
-import org.restsql.core.Request.Type;
+import org.restsql.core.RequestUtil;
 import org.restsql.core.SqlResource;
 import org.restsql.core.SqlResourceException;
+import org.restsql.core.Factory.SqlResourceFactoryException;
+import org.restsql.core.Request.Type;
+import org.restsql.security.SecurityFactory;
 import org.restsql.service.testcase.Header;
 import org.restsql.service.testcase.ServiceTestCaseDefinition;
 import org.restsql.service.testcase.Step;
@@ -103,7 +109,7 @@ public class ServiceTestCase extends TestCase {
 	}
 
 	public void testJavaInterface() throws SqlResourceException, ParserConfigurationException, SAXException,
-			IOException, JAXBException, InvalidRequestException {
+			IOException, JAXBException, InvalidRequestException, ParseException {
 		for (final Step step : definition.getStep()) {
 			ServiceTestCaseHelper.printRunningStep(step);
 			testJavaStep(step);
@@ -118,9 +124,11 @@ public class ServiceTestCase extends TestCase {
 		String requestBody = null;
 		Builder builder = null;
 
-		// Add authentication credentials
-		resource.addFilter(new HTTPBasicAuthFilter(step.getRequest().getUser(), step.getRequest()
-				.getPassword()));
+		// Add authentication credentials if authorization enabled
+		if (SecurityFactory.getAuthorizer().isAuthorizationEnabled()) {
+			resource.addFilter(new HTTPBasicAuthFilter(step.getRequest().getUser(), step.getRequest()
+					.getPassword()));
+		}
 
 		// Get the body and if method = delete, use override header -- jersey client doesn't allow bodies with delete
 		if (step.getRequest().getBody() != null) {
@@ -157,7 +165,7 @@ public class ServiceTestCase extends TestCase {
 				ServiceTestCase.assertEquals(step, "body", step.getResponse().getBody(), actualResponseBody);
 			}
 		}
-		
+
 		// Assert headers
 		for (final Header header : step.getResponse().getHeader()) {
 			ServiceTestCase.assertTrue(step, "expected header " + header.getName(), response.getHeaders()
@@ -175,14 +183,16 @@ public class ServiceTestCase extends TestCase {
 	}
 
 	private void testJavaStep(final Step step) throws SqlResourceException, ParserConfigurationException,
-			SAXException, JAXBException, IOException {
+			SAXException, JAXBException, IOException, ParseException {
 		if (step.getRequest().getUri().startsWith("res")) {
-			final Request request = Factory.getRequest("localhost", step.getRequest().getMethod(), step
-					.getRequest().getUri());
+			final HttpRequestAttributes httpAttributes = Factory.getHttpRequestAttributes("localhost", step
+					.getRequest().getMethod(), step.getRequest().getUri(), step.getRequest().getBody(), step
+					.getRequest().getContentType(), step.getRequest().getAccept());
+			final Request request = Factory.getRequest(httpAttributes);
 			if (request.getType() == Type.SELECT) {
 				try {
 					final SqlResource sqlResource = Factory.getSqlResource(request.getSqlResource());
-					String actualBody = sqlResource.readAsXml(request); 
+					String actualBody = sqlResource.read(request, httpAttributes.getResponseMediaType());
 					String expectedBody = null;
 					if (step.getResponse().getBody() != null) {
 						expectedBody = step.getResponse().getBody();
@@ -190,11 +200,10 @@ public class ServiceTestCase extends TestCase {
 						actualBody = null;
 					}
 					helper.writeResponseTrace(step, ServiceTestCaseHelper.STATUS_NOT_APPLICABLE,
-							ServiceTestCaseHelper.STATUS_NOT_APPLICABLE, expectedBody,
-							actualBody);
+							ServiceTestCaseHelper.STATUS_NOT_APPLICABLE, expectedBody, actualBody);
 					ServiceTestCase.assertEquals(step, "body", expectedBody, actualBody);
 					request.getLogger().log(200);
-				} catch (SqlResourceException exception) {
+				} catch (Exception exception) {
 					handleException(request, step, exception);
 				}
 			} else {
@@ -202,16 +211,27 @@ public class ServiceTestCase extends TestCase {
 					final SqlResource sqlResource = Factory.getSqlResource(request.getSqlResource());
 					int rowsAffected = 0;
 					if (step.getRequest().getBody() != null) {
-						rowsAffected = XmlRequestProcessor.execWrite(request.getType(),
-								request.getResourceIdentifiers(), sqlResource, step.getRequest().getBody(),
-								request.getLogger());
+						rowsAffected = Factory.getRequestDeserializer(httpAttributes.getRequestMediaType())
+								.execWrite(httpAttributes, request.getType(),
+										request.getResourceIdentifiers(), sqlResource,
+										step.getRequest().getBody(), request.getLogger());
 					} else {
 						rowsAffected = sqlResource.write(request);
 					}
 					request.getLogger().log(200);
 					if (step.getResponse().getStatus() == 200) {
-						final int expectedRowsAffected = XmlHelper.unmarshallWriteResponse(step.getResponse()
-								.getBody());
+						String responseMediaType = RequestUtil.getResponseMediaType(null,
+								httpAttributes.getRequestMediaType(), httpAttributes.getResponseMediaType());
+						int expectedRowsAffected = -1;
+						if (responseMediaType.equals("application/xml")) {
+							expectedRowsAffected = XmlHelper.unmarshallWriteResponse(step.getResponse()
+									.getBody());
+						} else { // application/json
+							JSONParser parser = new JSONParser();
+							JSONObject object = (JSONObject) parser.parse(step.getResponse().getBody());
+							expectedRowsAffected = new Integer(object.get("rowsAffected").toString())
+									.intValue();
+						}
 						helper.writeResponseTrace(step, 200, 200, "rowsAffected=" + expectedRowsAffected,
 								"rowsAffected=" + rowsAffected);
 						ServiceTestCase
@@ -227,13 +247,16 @@ public class ServiceTestCase extends TestCase {
 		}
 	}
 
-	private void handleException(Request request, Step step, SqlResourceException exception) {
+	private void handleException(Request request, Step step, Exception exception) {
 		int actualStatus;
 		if (exception instanceof InvalidRequestException) {
 			actualStatus = 400;
 		} else if (exception instanceof SqlResourceFactoryException) {
 			actualStatus = 404;
-		} else { // exception instanceof SqlResourceException
+		} else if (exception instanceof SqlResourceException) {
+			actualStatus = 500;
+		} else {
+			exception.printStackTrace();
 			actualStatus = 500;
 		}
 		String expectedBody = null, actualBody = null;
@@ -241,7 +264,8 @@ public class ServiceTestCase extends TestCase {
 			expectedBody = step.getResponse().getBody();
 			actualBody = exception.getMessage();
 		}
-		helper.writeResponseTrace(step, step.getResponse().getStatus(), actualStatus, expectedBody, actualBody);
+		helper.writeResponseTrace(step, step.getResponse().getStatus(), actualStatus, expectedBody,
+				actualBody);
 		request.getLogger().log(actualStatus, exception);
 		assertEquals(step.getResponse().getStatus(), actualStatus);
 		assertEquals("response body", expectedBody, actualBody);

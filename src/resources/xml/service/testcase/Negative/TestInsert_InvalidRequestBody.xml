@@ -14,7 +14,7 @@
 		<response status="400">
 			<body>
 <![CDATA[
-Error parsing request body: org.xml.sax.SAXParseException: The element type "actor" must be terminated by the matching end-tag "</actor>".
+Error parsing request body: org.xml.sax.SAXParseException; lineNumber: 3; columnNumber: 3; The element type "actor" must be terminated by the matching end-tag "</actor>".
 ]]>
 			</body>
 		</response>

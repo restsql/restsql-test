@@ -25,7 +25,9 @@ import org.restsql.service.ServiceTestCase.InterfaceStyle;
 import org.restsql.service.testcase.ServiceTestCaseDefinition;
 
 public class ServiceTestRunner {
-	public final static String SCOPE_ALL = "%";
+	public final static String EXCLUDE_NONE = "none";
+	public final static String FILE_TEST_LIST_ENDS_WITH = "_tests.txt";
+	public final static String SCOPE_ALL = "all";
 	public final static String TEST_CASE_DIR = "obj/bin/resources/xml/service/testcase";
 	public final static String TEST_RESULTS_BASE_DIR = "obj/test";
 	public final static String TEST_RESULTS_DIR = TEST_RESULTS_BASE_DIR + "/service";
@@ -40,13 +42,13 @@ public class ServiceTestRunner {
 	}
 
 	public static void main(final String[] args) throws SQLException, IOException {
-		if (args.length < 2) {
+		if (args.length < 3) {
 			System.out
-					.println("Usage: ServiceTestRunner style scope\n\tstyle=[java|http]\n\tscope=[%|path/to/test/list]");
+					.println("Usage: ServiceTestRunner style scope exclude\n\tstyle=[java|http]\n\tscope=[all|path/to/test/list|category-name]\n\texclude=[none|category-name]");
 			System.exit(4);
 		}
 		final InterfaceStyle interfaceStyle = InterfaceStyle.fromString(args[0]);
-		final List<File> files = getDefinitionFiles(args[1]);
+		final List<File> files = getDefinitionFiles(args[1], args[2]);
 
 		cleanResultsDir();
 
@@ -85,8 +87,7 @@ public class ServiceTestRunner {
 				final String testCaseName = file.getName();
 				final String categoryName = file.getParentFile().getName();
 				if (interfaceStyle == InterfaceStyle.Java
-						&& (testCaseName.contains("ResourceNotFound") || testCaseName.contains("FormParam") || categoryName
-								.equals("Security"))) {
+						&& (testCaseName.contains("ResourceNotFound") || testCaseName.contains("FormParam"))) {
 					// exclude
 					System.out.println("Skipping " + categoryName + "/" + testCaseName);
 				} else {
@@ -112,7 +113,7 @@ public class ServiceTestRunner {
 		if (!dir.exists()) {
 			dir.mkdir();
 		}
-		
+
 		// Create or clean results dir
 		dir = new File(TEST_RESULTS_DIR);
 		if (dir.exists()) {
@@ -133,21 +134,34 @@ public class ServiceTestRunner {
 		}
 	}
 
-	private static List<File> getDefinitionFiles(final String arg) throws FileNotFoundException, IOException {
+	private static List<File> getDefinitionFiles(final String scope, final String exclude)
+			throws FileNotFoundException, IOException {
 		final List<File> files = new ArrayList<File>(50);
-		if (arg.equals(SCOPE_ALL)) {
+		if (!scope.endsWith(FILE_TEST_LIST_ENDS_WITH)) {
 			File dir = new File(TEST_CASE_DIR);
 			for (final String subDir : dir.list()) {
 				if (!subDir.endsWith(".txt") && !subDir.endsWith("*.xsd")) {
-					dir = new File(TEST_CASE_DIR + "/" + subDir);
-					final File[] subDirFiles = dir.listFiles();
-					if (subDirFiles != null) {
-						files.addAll(Arrays.asList(subDirFiles));
+					boolean includeSubDir = true;
+
+					if (!scope.equals(SCOPE_ALL) && !subDir.equals(scope)) {
+						includeSubDir = false;
+					}
+					if (!exclude.equals(EXCLUDE_NONE) && subDir.equals(exclude)) {
+						System.out.println("Excluding category " + subDir);
+						includeSubDir = false;
+					}
+					
+					if (includeSubDir) {
+						dir = new File(TEST_CASE_DIR + "/" + subDir);
+						final File[] subDirFiles = dir.listFiles();
+						if (subDirFiles != null) {
+							files.addAll(Arrays.asList(subDirFiles));
+						}
 					}
 				}
 			}
-		} else {
-			final File listFile = new File(arg);
+		} else {	// scope = file list
+			final File listFile = new File(scope);
 			if (listFile.exists()) {
 				final BufferedReader reader = new BufferedReader(new FileReader(listFile));
 				String fileName;
@@ -175,7 +189,7 @@ public class ServiceTestRunner {
 					}
 				}
 			} else {
-				System.out.println("Cannot find test list " + arg);
+				System.out.println("Cannot find test list " + scope);
 				System.exit(3);
 			}
 		}

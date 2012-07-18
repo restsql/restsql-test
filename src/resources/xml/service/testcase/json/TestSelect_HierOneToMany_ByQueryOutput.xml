@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://restsql.org/schema ../ServiceTestCaseDefinition.xsd ">
+	<setup>
+		<sql>INSERT INTO language (language_id,name) VALUES (100,'New Esperanto')</sql>
+		<sql>INSERT INTO language (language_id,name) VALUES (101,'New Greek')</sql>
+		<sql>INSERT INTO film (film_id,title,release_year,language_id,rental_duration,rental_rate,replacement_cost) VALUES (5000,'ESCAPE FROM TOMORROW',2011,100,0,0,0)</sql>
+		<sql>INSERT INTO film (film_id,title,release_year,language_id,rental_duration,rental_rate,replacement_cost) VALUES (5001,'BLOOD PURPLE',2012,100,0,0,0)</sql>
+		<sql>INSERT INTO film (film_id,title,release_year,language_id,rental_duration,rental_rate,replacement_cost) VALUES (5002,'THE DARKENING',2012,101,0,0,0)</sql>
+		<sql>INSERT INTO film (film_id,title,release_year,language_id,rental_duration,rental_rate,replacement_cost) VALUES (5003,'THE LIGHTENING',2012,101,0,0,0)</sql>
+	</setup>
+	<step name="execute">
+		<request method="GET" uri="res/HierOneToMany?langName=New%25&amp;_output=application/json" />
+		<response>
+			<body>
+<![CDATA[
+{ "langs": [
+		{ "language_id": "100", "langName": "New Esperanto",
+			"movies": [
+				{ "year": "2011", "title": "ESCAPE FROM TOMORROW", "film_id": "5000" },
+				{ "year": "2012", "title": "BLOOD PURPLE", "film_id": "5001" }
+			]
+		},
+		{ "language_id": "101", "langName": "New Greek",
+			"movies": [
+				{ "year": "2012", "title": "THE DARKENING", "film_id": "5002" },
+				{ "year": "2012", "title": "THE LIGHTENING", "film_id": "5003" }
+			]
+		}
+	]
+}
+]]>
+			</body>
+		</response>
+	</step>
+	<teardown>
+		<sql>DELETE FROM film WHERE film_id between 5000 and 5500</sql>
+		<sql>DELETE FROM language WHERE language_id between 100 and 150</sql>
+	</teardown>
+</tc:testcase>

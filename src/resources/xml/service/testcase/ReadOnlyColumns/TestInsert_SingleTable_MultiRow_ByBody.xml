@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://restsql.org/schema ServiceTestCaseDefinition.xsd ">
+	<step name="execute">
+		<request method="POST" uri="res/SingleTableFuncCols">
+			<body>
+<![CDATA[
+<request>
+	<actor id="1000" first_name="_Jack" surname="Daniels" timestamp_updated="2012-02-15 04:34:33.0" />
+	<actor id="1001" first_name="_Jack" surname="Smith" timestamp_updated="2012-02-15 04:34:33.0" />
+</request>
+]]>
+		</body>
+		</request>
+		<response>
+			<body>
+<![CDATA[
+<writeResponse rowsAffected="2" />
+]]>
+			</body>
+		</response>
+	</step>
+
+	<step name="verify">
+		<request method="GET" uri="res/SingleTableFuncCols?first_name=_Jack" />
+		<response>
+			<body>
+<![CDATA[
+<readResponse>
+	<actor id="1000" first_name="_Jack" surname="Daniels" surname_length="7" surname_initial="D" timestamp_updated="2012-02-15 04:34:33.0" />
+	<actor id="1001" first_name="_Jack" surname="Smith" surname_length="5" surname_initial="S" timestamp_updated="2012-02-15 04:34:33.0" />
+</readResponse>
+]]>
+			</body>
+		</response>
+	</step>
+
+	<teardown>
+		<sql>DELETE FROM actor where actor_id between 1000 and 1100</sql>
+	</teardown>
+</tc:testcase>

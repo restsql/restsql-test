@@ -1,4 +1,4 @@
-README.txt (15-Jan-2011)
+README.txt (17-Jul-2012)
 
 restSQL Test Deployment Guide
 
@@ -45,6 +45,10 @@ By default, the tests will use the restsql properties file src/resources/propert
 	ant -Dorg.restsql.properties=/resources/properties/restsql-postgresql.properties 
 
 Test results will appear on the console. Test detail is available in restsql-test/obj/test.
+
+Note: The tests in the ReadOnlyColumns category are expected to fail for PostgreSQL. 
+
+Security tests are separately run in the api and http interface styles since the default profile of restsql is no security. (The java service interface does not support security tests). Before running the test-api-security or test-service-http-security, uncomment the security declarations in restsql/WebContent/WEB-INF/web.xml, uncomment the security.privileges property in restsql-test/src/resources/properties/restsql-xxx.properties and redeploy the web app.
 
 -------------------------------------------------------------------------------
 License

@@ -6,14 +6,15 @@ import java.util.List;
 
 public class RequestFactoryHelper {
 	private static RequestLogger requestLogger;
-	
-	public static Request getRequest(final Request.Type type, final String sqlResource, final String[] resourceIds,
-			final String[] params) throws InvalidRequestException {
+
+	public static Request getRequest(final Request.Type type, final String sqlResource,
+			final String[] resourceIds, final String[] params) throws InvalidRequestException {
 		return getRequest(type, sqlResource, resourceIds, params, null);
 	}
 
-	public static Request getRequest(final Request.Type type, final String sqlResource, final String[] resourceIds,
-			final String[] params, final String[][] childrenParamsArray) throws InvalidRequestException {
+	public static Request getRequest(final Request.Type type, final String sqlResource,
+			final String[] resourceIds, final String[] params, final String[][] childrenParamsArray)
+			throws InvalidRequestException {
 		List<List<NameValuePair>> childrenParams = null;
 		if (childrenParamsArray != null) {
 			childrenParams = new ArrayList<List<NameValuePair>>(childrenParamsArray.length);
@@ -22,15 +23,17 @@ public class RequestFactoryHelper {
 			}
 		}
 		requestLogger = Factory.getRequestLogger();
-		requestLogger.setRequestAttributes("localhost", type.toString(), "?");
-		return Factory.getRequest(type, sqlResource, getNameValuePairs(resourceIds), getNameValuePairs(params),
-				childrenParams, requestLogger);
+		HttpRequestAttributes httpAttributes = Factory.getHttpRequestAttributes("localhost", type.toString(),
+				"?", null, HttpRequestAttributes.DEFAULT_MEDIA_TYPE, HttpRequestAttributes.DEFAULT_MEDIA_TYPE);
+		Request request = Factory.getRequest(httpAttributes, type, sqlResource,
+				getNameValuePairs(resourceIds), getNameValuePairs(params), childrenParams, requestLogger);
+		return request;
 	}
-	
+
 	public static RequestLogger getRequestLogger() {
 		return requestLogger;
 	}
-	
+
 	public static void logRequest() {
 		requestLogger.log("OK");
 	}

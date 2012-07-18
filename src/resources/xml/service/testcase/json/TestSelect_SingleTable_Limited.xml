@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://restsql.org/schema ServiceTestCaseDefinition.xsd ">
+	<step name="execute">
+		<request method="GET" uri="res/SingleTable?_limit=10&amp;_offset=0" accept="application/json" />
+		<response>
+			<body>
+<![CDATA[
+{ "actors": [
+		{ "id": "1", "first_name": "PENELOPE", "surname": "GUINESS" },
+		{ "id": "2", "first_name": "NICK", "surname": "WAHLBERG" },
+		{ "id": "3", "first_name": "ED", "surname": "CHASE" },
+		{ "id": "4", "first_name": "JENNIFER", "surname": "DAVIS" },
+		{ "id": "5", "first_name": "JOHNNY", "surname": "LOLLOBRIGIDA" },
+		{ "id": "6", "first_name": "BETTE", "surname": "NICHOLSON" },
+		{ "id": "7", "first_name": "GRACE", "surname": "MOSTEL" },
+		{ "id": "8", "first_name": "MATTHEW", "surname": "JOHANSSON" },
+		{ "id": "9", "first_name": "JOE", "surname": "SWANK" },
+		{ "id": "10", "first_name": "CHRISTIAN", "surname": "GABLE" }
+	]
+}
+]]>
+			</body>
+		</response>
+	</step>
+</tc:testcase>

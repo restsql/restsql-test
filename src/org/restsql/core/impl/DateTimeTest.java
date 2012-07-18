@@ -73,7 +73,7 @@ public class DateTimeTest extends SqlResourceTestBase {
 
 		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), new String[] {
 				"id", "1003" }, null);
-		final List<Map<String, Object>> results = sqlResource.readAsCollection(request);
+		final List<Map<String, Object>> results = sqlResource.read(request);
 		assertTrue(results.size() == 1);
 		AssertionHelper.assertDateTime(results.get(0), 1003, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 				.parse(SOME_TIMESTAMP));
@@ -83,7 +83,7 @@ public class DateTimeTest extends SqlResourceTestBase {
 	public void testSelect() throws SqlResourceException, ParseException {
 		final Request request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(),
 				null, null);
-		final List<Map<String, Object>> results = sqlResource.readAsCollection(request);
+		final List<Map<String, Object>> results = sqlResource.read(request);
 		assertTrue(results.size() > 0);
 		AssertionHelper.assertDateTime(results.get(0), 1000, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 				.parse(SOME_TIMESTAMP));
@@ -99,7 +99,7 @@ public class DateTimeTest extends SqlResourceTestBase {
 		}
 		final Request request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(),
 				null, null);
-		final List<Map<String, Object>> results = sqlResource.readAsCollection(request);
+		final List<Map<String, Object>> results = sqlResource.read(request);
 		assertTrue(results.size() > 0);
 
 		// Assert the null row
@@ -136,7 +136,7 @@ public class DateTimeTest extends SqlResourceTestBase {
 		assertEquals(1, rowsAffected);
 		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), new String[] {
 				"id", "1000" }, null);
-		final List<Map<String, Object>> results = sqlResource.readAsCollection(request);
+		final List<Map<String, Object>> results = sqlResource.read(request);
 		RequestFactoryHelper.logRequest();
 		assertEquals(1, results.size());
 		AssertionHelper.assertDateTime(results.get(0), 1000, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")

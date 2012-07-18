@@ -23,7 +23,7 @@ public class SqlResourceHierManyToManySelectTest extends BaseTestCase {
 		Request request = RequestFactoryHelper.getRequest(Request.Type.SELECT, "HierManyToMany", null, new String[] {
 				Request.PARAM_NAME_LIMIT, "100", Request.PARAM_NAME_OFFSET,
 				"0" });
-		List<Map<String, Object>> results = sqlResource.readAsCollection(request);
+		List<Map<String, Object>> results = sqlResource.read(request);
 		assertEquals(5, results.size());
 		AssertionHelper.assertActor(true, results.get(0), 1, "PENELOPE", "GUINESS");
 		AssertionHelper.assertActor(true, results.get(1), 2, "NICK", "WAHLBERG");

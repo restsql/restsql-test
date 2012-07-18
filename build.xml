@@ -42,7 +42,7 @@
 	</target>
 
 	<target name="exec-examples" description="executes sample programs">
-		<ant antfile="../restsql-sdk/build.xml" target="exec-examples" />
+		<ant antfile="../restsql-sdk/build.xml" target="exec-examples" inheritall="false" />
 	</target>
 
 	<target name="test-api" depends="compile-tests" description="exercises junit tests for java api">
@@ -56,7 +56,23 @@
 			<classpath path="${test-exec.classpath}" />
 			<formatter type="xml" />
 			<batchtest todir="${api-test.dir}">
-				<fileset dir="src" includes="**/*Test.*" excludes="**/Base*.*" />
+				<fileset dir="src" includes="**/*Test.*" excludes="**/Base*.*,org/restsql/security/**" />
+			</batchtest>
+		</junit>
+	</target>
+
+	<target name="test-api-security" depends="compile-tests" description="exercises security junit tests for java api">
+		<!-- Create output dir -->
+		<delete dir="${api-test.dir}" />
+		<mkdir dir="${api-test.dir}" />
+
+		<!-- Execute tests -->
+		<junit fork="true" showoutput="true" printsummary="true" tempdir="${api-test.dir}" dir="${basedir}">
+			<sysproperty key="org.restsql.properties" value="${org.restsql.properties}" />
+			<classpath path="${test-exec.classpath}" />
+			<formatter type="xml" />
+			<batchtest todir="${api-test.dir}">
+				<fileset dir="src" includes="org/restsql/security/*Test.*,org/restsql/security/impl/*Test.*" excludes="**/Base*.*" />
 			</batchtest>
 		</junit>
 	</target>
@@ -78,36 +94,49 @@
 
 	<target name="test-service-http" description="executes all test cases for the http interface">
 		<antcall target="-test-service">
-			<param name="testStyle" value="http" />
-			<param name="testList" value="%" />
+			<param name="style" value="http" />
+			<param name="scope" value="all" />
+			<param name="exclude" value="Security" />
+		</antcall>
+	</target>
+
+	<target name="test-service-http-security" description="executes security test cases for the http interface">
+		<antcall target="-test-service">
+			<param name="style" value="http" />
+			<param name="scope" value="Security" />
+			<param name="exclude" value="none" />
 		</antcall>
 	</target>
 
 	<target name="test-service-http-subset" description="executes some of test cases for the http interface">
 		<antcall target="-test-service">
-			<param name="testStyle" value="http" />
-			<param name="testList" value="${test.list}" />
+			<param name="style" value="http" />
+			<param name="scope" value="${test.list}" />
+			<param name="exclude" value="none" />
 		</antcall>
 	</target>
 
-	<target name="test-service-java" description="executes all test cases for the service's java interface">
+	<target name="test-service-java" description="executes all test cases for the service's java interface, excluding security">
 		<antcall target="-test-service">
-			<param name="testStyle" value="java" />
-			<param name="testList" value="%" />
+			<param name="style" value="java" />
+			<param name="scope" value="all" />
+			<param name="exclude" value="Security" />
 		</antcall>
 	</target>
 
 	<target name="test-service-java-subset" description="executes some test cases for the service's java interface">
 		<antcall target="-test-service">
-			<param name="testStyle" value="java" />
-			<param name="testList" value="${test.list}" />
+			<param name="style" value="java" />
+			<param name="scope" value="${test.list}" />
+			<param name="exclude" value="none" />
 		</antcall>
 	</target>
 
 	<target name="-test-service" depends="compile-tests">
 		<java fork="true" classpath="${test-exec.classpath}" classname="org.restsql.service.ServiceTestRunner" dir="${basedir}">
-			<arg value="${testStyle}" />
-			<arg value="${testList}" />
+			<arg value="${style}" />
+			<arg value="${scope}" />
+			<arg value="${exclude}" />
 			<jvmarg value="-Dorg.restsql.baseUri=${org.restsql.baseUri}" />
 			<jvmarg value="-Dorg.restsql.properties=${org.restsql.properties}" />
 		</java>
