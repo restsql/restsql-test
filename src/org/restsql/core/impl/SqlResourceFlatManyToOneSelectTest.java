@@ -83,5 +83,8 @@ public class SqlResourceFlatManyToOneSelectTest extends SqlResourceTestBase {
 		String expectedRow1 = "\n\t<film film_id=\"7\" title=\"AIRPLANE SIERRA\" year=\"2006\" language_id=\"1\" name=\"English\" />";
 		String expectedRow2 = "\n\t<film film_id=\"8\" title=\"AIRPORT POLLOCK\" year=\"2006\" language_id=\"1\" name=\"English\" />";
 		assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<readResponse xmlns=\"http://restsql.org/schema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://restsql.org/schema Response.xsd \">" + expectedRow1 + expectedRow2 + "\n</readResponse>", results);
+		// Reset these to the default of false for when multiple tests are run sequentially
+		XmlResponseSerializer.setUseXmlDirective(false);
+		XmlResponseSerializer.setUseXmlSchema(false);
 	}
 }
