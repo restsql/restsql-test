@@ -45,7 +45,7 @@
 	<lang language_id="100" langName="New Esperanto">
 	</lang>
 	<lang language_id="101" langName="New Greek">
-		<movie genre="HORROR" title="THE DARKENING" year="2012" film_id="5002" comment="I laughed, I cried" city="Hollywood" country="USA" />
+		<movie genre="HORROR" title="THE DARKENING" year="2012" film_id="5002" comment="I laughed, I cried" country="USA" city="Hollywood" />
 	</lang>
 </readResponse>
 ]]>

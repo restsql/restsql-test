@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://restsql.org/schema ServiceTestCaseDefinition.xsd ">
+	<step name="execute">
+		<request method="GET" uri="res/SingleTableWildcard?title=ACADEMY%20DINOSAUR" />
+		<response>
+			<body>
+<![CDATA[
+<readResponse>
+	<film_text film_id="1" title="ACADEMY DINOSAUR" description="A Epic Drama of a Feminist And a Mad Scientist who must Battle a Teacher in The Canadian Rockies" />
+</readResponse>
+]]>
+			</body>
+		</response>
+	</step>
+</tc:testcase>

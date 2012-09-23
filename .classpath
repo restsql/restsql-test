@@ -11,11 +11,11 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/restsql-test/lib/jmock-2.5.1-javadoc.zip!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/restsql/lib/jersey-core-1.5.jar"/>
-	<classpathentry kind="lib" path="/restsql/lib/mysql-connector-java-5.1.14-bin.jar"/>
-	<classpathentry kind="lib" path="/restsql/lib/commons-logging-1.1.1.jar"/>
-	<classpathentry kind="lib" path="/restsql/lib/servlet-api.jar"/>
-	<classpathentry kind="lib" path="/restsql/lib/json_simple-1.1.jar" sourcepath="/restsql/lib/json_simple-1.1-src.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/restsql/WebContent/WEB-INF/lib/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="/restsql/WebContent/WEB-INF/lib/jersey-core-1.5.jar"/>
+	<classpathentry kind="lib" path="/restsql/WebContent/WEB-INF/lib/json_simple-1.1.jar"/>
+	<classpathentry kind="lib" path="/restsql/WebContent/WEB-INF/lib/mysql-connector-java-5.1.14-bin.jar"/>
+	<classpathentry kind="lib" path="/restsql/WebContent/WEB-INF/lib/servlet-api.jar"/>
 	<classpathentry kind="output" path="obj/bin"/>
 </classpath>

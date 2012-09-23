@@ -53,12 +53,12 @@
 <![CDATA[
 <readResponse>
 	<actor last_name="Daniels" first_name="_Jack" actor_id="1000" actor_genre_id="1" name="COMEDY">
-		<film genre="SCIENCE FICTION" title="ESCAPE FROM TOMORROW2" year="2011" film_id="5000" comment="We like it" city="New York" country="USA" />
-		<film genre="HORROR" title="THE DARKENING" year="2012" film_id="5002" comment="I laughed, I cried" city="Hollywood" country="USA" />
+		<film genre="SCIENCE FICTION" title="ESCAPE FROM TOMORROW2" year="2011" film_id="5000" comment="We like it" country="USA" city="New York" />
+		<film genre="HORROR" title="THE DARKENING" year="2012" film_id="5002" comment="I laughed, I cried" country="USA" city="Hollywood" />
 	</actor>
 	<actor last_name="Smith" first_name="_Jack" actor_id="1001">
-		<film genre="HORROR" title="BLOOD PURPLE" year="2012" film_id="5001" comment="loved it" city="Hollywood" country="USA" />
-		<film genre="HORROR" title="THE DARKENING" year="2012" film_id="5002" comment="I laughed, I cried" city="Hollywood" country="USA" />
+		<film genre="HORROR" title="BLOOD PURPLE" year="2012" film_id="5001" comment="loved it" country="USA" city="Hollywood" />
+		<film genre="HORROR" title="THE DARKENING" year="2012" film_id="5002" comment="I laughed, I cried" country="USA" city="Hollywood" />
 	</actor>
 </readResponse>
 ]]>

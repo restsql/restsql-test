@@ -47,11 +47,11 @@
 <![CDATA[
 <readResponse>
 	<lang language_id="100" langName="New Spanish">
-		<movie genre="SCIENCE FICTION" title="ESCAPE FROM TOMORROW2" year="2011" film_id="5000" comment="We like it" city="New York" country="USA" />
-		<movie genre="HORROR" title="BLOOD PURPLE" year="2012" film_id="5001" comment="loved it" city="Hollywood" country="USA" />
+		<movie genre="SCIENCE FICTION" title="ESCAPE FROM TOMORROW2" year="2011" film_id="5000" comment="We like it" country="USA" city="New York" />
+		<movie genre="HORROR" title="BLOOD PURPLE" year="2012" film_id="5001" comment="loved it" country="USA" city="Hollywood" />
 	</lang>
 	<lang language_id="101" langName="New Latin">
-		<movie genre="HORROR" title="THE DARKENING" year="2012" film_id="5002" comment="I laughed, I cried" city="Hollywood" country="USA" />
+		<movie genre="HORROR" title="THE DARKENING" year="2012" film_id="5002" comment="I laughed, I cried" country="USA" city="Hollywood" />
 	</lang>
 	<lang language_id="102" langName="New Grupo">
 	</lang>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rs:sqlResource xmlns:rs="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://restsql.org/schema ../../../../../restsql/src/resources/xml/SqlResource.xsd ">
+	<query>
+		select * from film_text
+	</query>
+	<metadata>
+		<database default="sakila" />
+		<table name="film_text" role="Parent" />
+	</metadata>
+</rs:sqlResource>

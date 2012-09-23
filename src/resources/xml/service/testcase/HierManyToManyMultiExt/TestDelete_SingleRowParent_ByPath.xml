@@ -42,8 +42,8 @@
 <![CDATA[
 <readResponse>
 	<actor last_name="_Black" first_name="Bob" actor_id="1001" actor_genre_id="2" name="HORROR">
-		<film genre="HORROR" title="BLOOD PURPLE" year="2012" film_id="5001" comment="loved it" city="Hollywood" country="USA" />
-		<film genre="HORROR" title="THE DARKENING" year="2012" film_id="5002" comment="I laughed, I cried" city="Hollywood" country="USA" />
+		<film genre="HORROR" title="BLOOD PURPLE" year="2012" film_id="5001" comment="loved it" country="USA" city="Hollywood" />
+		<film genre="HORROR" title="THE DARKENING" year="2012" film_id="5002" comment="I laughed, I cried" country="USA" city="Hollywood" />
 	</actor>
 	<actor last_name="_Black" first_name="Manuel" actor_id="1002" actor_genre_id="3" name="DRAMA">
 	</actor>
