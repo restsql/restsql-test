@@ -5,4 +5,4 @@
 # 	e.g. HierManyToMany/*
 # Use # to comment out a line
 
-HierManyToManyMultiExt/*
+json/TestUpdate_SingleTable_MultiRow_ByBody.xml

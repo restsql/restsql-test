@@ -13,14 +13,15 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.restsql.core.Factory;
+import org.restsql.core.Factory.SqlResourceFactoryException;
 import org.restsql.core.HttpRequestAttributes;
 import org.restsql.core.InvalidRequestException;
 import org.restsql.core.Request;
+import org.restsql.core.Request.Type;
+import org.restsql.core.RequestLogger;
 import org.restsql.core.RequestUtil;
 import org.restsql.core.SqlResource;
 import org.restsql.core.SqlResourceException;
-import org.restsql.core.Factory.SqlResourceFactoryException;
-import org.restsql.core.Request.Type;
 import org.restsql.security.SecurityFactory;
 import org.restsql.service.testcase.Header;
 import org.restsql.service.testcase.ServiceTestCaseDefinition;
@@ -188,66 +189,71 @@ public class ServiceTestCase extends TestCase {
 			final HttpRequestAttributes httpAttributes = Factory.getHttpRequestAttributes("localhost", step
 					.getRequest().getMethod(), step.getRequest().getUri(), step.getRequest().getBody(), step
 					.getRequest().getContentType(), step.getRequest().getAccept());
-			final Request request = Factory.getRequest(httpAttributes);
-			if (request.getType() == Type.SELECT) {
-				try {
-					final SqlResource sqlResource = Factory.getSqlResource(request.getSqlResource());
-					String actualBody = sqlResource.read(request, httpAttributes.getResponseMediaType());
-					String expectedBody = null;
-					if (step.getResponse().getBody() != null) {
-						expectedBody = step.getResponse().getBody();
-					} else {
-						actualBody = null;
-					}
-					helper.writeResponseTrace(step, ServiceTestCaseHelper.STATUS_NOT_APPLICABLE,
-							ServiceTestCaseHelper.STATUS_NOT_APPLICABLE, expectedBody, actualBody);
-					ServiceTestCase.assertEquals(step, "body", expectedBody, actualBody);
-					request.getLogger().log(200);
-				} catch (Exception exception) {
-					handleException(request, step, exception);
-				}
-			} else {
-				try {
-					final SqlResource sqlResource = Factory.getSqlResource(request.getSqlResource());
-					int rowsAffected = 0;
-					if (step.getRequest().getBody() != null) {
-						rowsAffected = Factory.getRequestDeserializer(httpAttributes.getRequestMediaType())
-								.execWrite(httpAttributes, request.getType(),
-										request.getResourceIdentifiers(), sqlResource,
-										step.getRequest().getBody(), request.getLogger());
-					} else {
-						rowsAffected = sqlResource.write(request);
-					}
-					request.getLogger().log(200);
-					if (step.getResponse().getStatus() == 200) {
-						String responseMediaType = RequestUtil.getResponseMediaType(null,
-								httpAttributes.getRequestMediaType(), httpAttributes.getResponseMediaType());
-						int expectedRowsAffected = -1;
-						if (responseMediaType.equals("application/xml")) {
-							expectedRowsAffected = XmlHelper.unmarshallWriteResponse(step.getResponse()
-									.getBody());
-						} else { // application/json
-							JSONParser parser = new JSONParser();
-							JSONObject object = (JSONObject) parser.parse(step.getResponse().getBody());
-							expectedRowsAffected = new Integer(object.get("rowsAffected").toString())
-									.intValue();
+			try {
+				final Request request = Factory.getRequest(httpAttributes);
+				if (request.getType() == Type.SELECT) {
+					try {
+						final SqlResource sqlResource = Factory.getSqlResource(request.getSqlResource());
+						String actualBody = sqlResource.read(request, httpAttributes.getResponseMediaType());
+						String expectedBody = null;
+						if (step.getResponse().getBody() != null) {
+							expectedBody = step.getResponse().getBody();
+						} else {
+							actualBody = null;
 						}
-						helper.writeResponseTrace(step, 200, 200, "rowsAffected=" + expectedRowsAffected,
-								"rowsAffected=" + rowsAffected);
-						ServiceTestCase
-								.assertEquals(step, "rowsAffected", expectedRowsAffected, rowsAffected);
-					} else {
-						helper.writeResponseTrace(step, 200, 200, "", "");
-						assertEquals("status", step.getResponse().getStatus(), 200);
+						helper.writeResponseTrace(step, ServiceTestCaseHelper.STATUS_NOT_APPLICABLE,
+								ServiceTestCaseHelper.STATUS_NOT_APPLICABLE, expectedBody, actualBody);
+						request.getLogger().log(200);
+						ServiceTestCase.assertEquals(step, "body", expectedBody, actualBody);
+					} catch (Exception exception) {
+						handleJavaStepException(request.getLogger(), step, exception);
 					}
-				} catch (SqlResourceException exception) {
-					handleException(request, step, exception);
+				} else {
+					try {
+						final SqlResource sqlResource = Factory.getSqlResource(request.getSqlResource());
+						int rowsAffected = 0;
+						if (step.getRequest().getBody() != null) {
+							rowsAffected = Factory.getRequestDeserializer(
+									httpAttributes.getRequestMediaType()).execWrite(httpAttributes,
+									request.getType(), request.getResourceIdentifiers(), sqlResource,
+									step.getRequest().getBody(), request.getLogger());
+						} else {
+							rowsAffected = sqlResource.write(request);
+						}
+						request.getLogger().log(200);
+						if (step.getResponse().getStatus() == 200) {
+							String responseMediaType = RequestUtil.getResponseMediaType(null,
+									httpAttributes.getRequestMediaType(),
+									httpAttributes.getResponseMediaType());
+							int expectedRowsAffected = -1;
+							if (responseMediaType.equals("application/xml")) {
+								expectedRowsAffected = XmlHelper.unmarshallWriteResponse(step.getResponse()
+										.getBody());
+							} else { // application/json
+								JSONParser parser = new JSONParser();
+								JSONObject object = (JSONObject) parser.parse(step.getResponse().getBody());
+								expectedRowsAffected = new Integer(object.get("rowsAffected").toString())
+										.intValue();
+							}
+							helper.writeResponseTrace(step, 200, 200, "rowsAffected=" + expectedRowsAffected,
+									"rowsAffected=" + rowsAffected);
+							ServiceTestCase.assertEquals(step, "rowsAffected", expectedRowsAffected,
+									rowsAffected);
+						} else {
+							helper.writeResponseTrace(step, 200, 200, "", "");
+							assertEquals("status", step.getResponse().getStatus(), 200);
+						}
+					} catch (SqlResourceException exception) {
+						handleJavaStepException(request.getLogger(), step, exception);
+					}
 				}
+			} catch (SqlResourceException exception) {
+				handleJavaStepException(Factory.getRequestLogger(), step, exception);
 			}
 		}
 	}
 
-	private void handleException(Request request, Step step, Exception exception) {
+	private void handleJavaStepException(RequestLogger requestLogger, Step step, Exception exception) {
 		int actualStatus;
 		if (exception instanceof InvalidRequestException) {
 			actualStatus = 400;
@@ -266,7 +272,7 @@ public class ServiceTestCase extends TestCase {
 		}
 		helper.writeResponseTrace(step, step.getResponse().getStatus(), actualStatus, expectedBody,
 				actualBody);
-		request.getLogger().log(actualStatus, exception);
+		requestLogger.log(actualStatus, exception);
 		assertEquals(step.getResponse().getStatus(), actualStatus);
 		assertEquals("response body", expectedBody, actualBody);
 	}

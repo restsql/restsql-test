@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://restsql.org/schema ../ServiceTestCaseDefinition.xsd ">
+	<step name="execute">
+		<!-- find records with surname > 'WILLIAMS' -->
+		<request method="GET" uri="res/SingleTable?surname=%3EWILLIAMS" />
+		<response>
+			<body>
+<![CDATA[
+<readResponse>
+	<actor id="13" first_name="UMA" surname="WOOD" />
+	<actor id="63" first_name="CAMERON" surname="WRAY" />
+	<actor id="68" first_name="RIP" surname="WINSLET" />
+	<actor id="83" first_name="BEN" surname="WILLIS" />
+	<actor id="85" first_name="MINNIE" surname="ZELLWEGER" />
+	<actor id="96" first_name="GENE" surname="WILLIS" />
+	<actor id="111" first_name="CAMERON" surname="ZELLWEGER" />
+	<actor id="144" first_name="ANGELA" surname="WITHERSPOON" />
+	<actor id="147" first_name="FAY" surname="WINSLET" />
+	<actor id="156" first_name="FAY" surname="WOOD" />
+	<actor id="164" first_name="HUMPHREY" surname="WILLIS" />
+	<actor id="168" first_name="WILL" surname="WILSON" />
+	<actor id="186" first_name="JULIA" surname="ZELLWEGER" />
+</readResponse>
+]]>
+			</body>
+		</response>
+	</step>
+</tc:testcase>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://restsql.org/schema ../ServiceTestCaseDefinition.xsd ">
+	<step name="verify1compoper2">
+		<!-- find records with surname = '<WILLIAMS' and 'WOOD' -->
+		<request method="GET" uri="res/SingleTable?surname=%3CWILLIAMS&amp;surname=WOOD" />
+		<response status="400">
+			<body>Parameter surname found twice</body>
+		</response>
+	</step>
+	<step name="verify1compoper3">
+		<!-- find records with surname = 'WILLIAMS' and 'WOOD' and '>WILL' -->
+		<request method="GET" uri="res/SingleTable?surname=WILLIAMS&amp;surname=WOOD&amp;surname=%3EWILL" />
+		<response status="400">
+			<body>Parameter surname found 3 times</body>
+		</response>
+	</step>
+	<step name="verify3compoper3">
+		<!-- find records with surname = '>WILLIAMS' and '<WOOD' and '>WILL' -->
+		<request method="GET" uri="res/SingleTable?surname=%3EWILLIAMS&amp;surname=%3CWOOD&amp;surname=%3EWILL" />
+		<response status="400">
+			<body>Parameter surname found 3 times</body>
+		</response>
+	</step>
+	<step name="verify2compoper3">
+		<!-- find records with surname = 'WILLIAMS' and '<WOOD' and '>WILL' -->
+		<request method="GET" uri="res/SingleTable?surname=WILLIAMS&amp;surname=%3CWOOD&amp;surname=%3EWILL" />
+		<response status="400">
+			<body>Parameter surname found 3 times</body>
+		</response>
+	</step>
+	<step name="verify2compoperGreater">
+		<!-- find records with surname = '>WILLIAMS' and '>WOOD' -->
+		<request method="GET" uri="res/SingleTable?surname=%3EWILLIAMS&amp;surname=%3E%3DWOOD" />
+		<response status="400">
+			<body>Parameter surname found twice with GreaterThan and GreaterThanOrEqualTo operators</body>
+		</response>
+	</step>
+	<step name="verify2compoperLess">
+		<!-- find records with surname = '<WILLIAMS' and '<WOOD' -->
+		<request method="GET" uri="res/SingleTable?surname=%3CWILLIAMS&amp;surname=%3CWOOD" />
+		<response status="400">
+			<body>Parameter surname found twice with LessThan and LessThan operators</body>
+		</response>
+	</step>
+</tc:testcase>
