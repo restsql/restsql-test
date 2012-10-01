@@ -83,8 +83,8 @@ public class SqlResourceFlatManyToOneSelectTest extends SqlResourceTestBase {
 		Request request = RequestFactoryHelper.getRequest(Request.Type.SELECT, "FlatManyToOne", null, new String[] {
 				"title", "AIR%" });
 		String results = sqlResource.read(request, HttpRequestAttributes.JSON_MEDIA_TYPE);
-		String expectedRow1 =  "\n\t\t{ \"film_id\": \"7\", \"title\": \"AIRPLANE SIERRA\", \"year\": \"2006\", \"language_id\": \"1\", \"name\": \"English\" },";
-		String expectedRow2 =  "\n\t\t{ \"film_id\": \"8\", \"title\": \"AIRPORT POLLOCK\", \"year\": \"2006\", \"language_id\": \"1\", \"name\": \"English\" }";
+		String expectedRow1 =  "\n\t\t{ \"film_id\": 7, \"title\": \"AIRPLANE SIERRA\", \"year\": 2006, \"language_id\": 1, \"name\": \"English\" },";
+		String expectedRow2 =  "\n\t\t{ \"film_id\": 8, \"title\": \"AIRPORT POLLOCK\", \"year\": 2006, \"language_id\": 1, \"name\": \"English\" }";
 		assertEquals("{ \"films\": [" + expectedRow1 + expectedRow2 + "\n\t]\n}", results); 
 	}
 
