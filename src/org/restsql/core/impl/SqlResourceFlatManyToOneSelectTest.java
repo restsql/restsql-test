@@ -62,17 +62,6 @@ public class SqlResourceFlatManyToOneSelectTest extends SqlResourceTestBase {
 	}
 
 	@Test
-	public void testExecSelectXml_Flat_WithLikeParameter() throws SqlResourceException, SqlResourceFactoryException,
-			InvalidRequestException {
-		Request request = RequestFactoryHelper.getRequest(Request.Type.SELECT, "FlatManyToOne", null, new String[] {
-				"title", "AIR%" });
-		String results = sqlResource.read(request, HttpRequestAttributes.DEFAULT_MEDIA_TYPE);
-		String expectedRow1 = "\n\t<film film_id=\"7\" title=\"AIRPLANE SIERRA\" year=\"2006\" language_id=\"1\" name=\"English\" />";
-		String expectedRow2 = "\n\t<film film_id=\"8\" title=\"AIRPORT POLLOCK\" year=\"2006\" language_id=\"1\" name=\"English\" />";
-		assertEquals("<readResponse>" + expectedRow1 + expectedRow2 + "\n</readResponse>", results);
-	}
-
-	@Test
 	public void testExecSelectXml_Flat_WithLikeParameter_Schema() throws SqlResourceException, SqlResourceFactoryException,
 			InvalidRequestException {
 		XmlResponseSerializer.setUseXmlDirective(true);
@@ -87,4 +76,16 @@ public class SqlResourceFlatManyToOneSelectTest extends SqlResourceTestBase {
 		XmlResponseSerializer.setUseXmlDirective(false);
 		XmlResponseSerializer.setUseXmlSchema(false);
 	}
+
+	@Test
+	public void testExecSelectJson_Flat_WithLikeParameter() throws SqlResourceException, SqlResourceFactoryException,
+			InvalidRequestException {
+		Request request = RequestFactoryHelper.getRequest(Request.Type.SELECT, "FlatManyToOne", null, new String[] {
+				"title", "AIR%" });
+		String results = sqlResource.read(request, HttpRequestAttributes.JSON_MEDIA_TYPE);
+		String expectedRow1 =  "\n\t\t{ \"film_id\": \"7\", \"title\": \"AIRPLANE SIERRA\", \"year\": \"2006\", \"language_id\": \"1\", \"name\": \"English\" },";
+		String expectedRow2 =  "\n\t\t{ \"film_id\": \"8\", \"title\": \"AIRPORT POLLOCK\", \"year\": \"2006\", \"language_id\": \"1\", \"name\": \"English\" }";
+		assertEquals("{ \"films\": [" + expectedRow1 + expectedRow2 + "\n\t]\n}", results);
+	}
+
 }
