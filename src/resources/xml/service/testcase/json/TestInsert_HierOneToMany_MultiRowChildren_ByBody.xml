@@ -30,7 +30,7 @@
 		<response>
 			<body>
 <![CDATA[
-{ "rowsAffected": "4" }
+{ "rowsAffected": 4 }
 ]]>
 				</body>
 		</response>
@@ -41,16 +41,16 @@
 			<body>
 <![CDATA[
 { "langs": [
-		{ "language_id": "100", "langName": "New Esperanto",
+		{ "language_id": 100, "langName": "New Esperanto",
 			"movies": [
-				{ "year": "2011", "title": "BLESSED SUN", "film_id": "5003" },
-				{ "year": "2012", "title": "WICKED SUN", "film_id": "5004" }
+				{ "year": 2011, "title": "BLESSED SUN", "film_id": 5003 },
+				{ "year": 2012, "title": "WICKED SUN", "film_id": 5004 }
 			]
 		},
-		{ "language_id": "101", "langName": "New Greek",
+		{ "language_id": 101, "langName": "New Greek",
 			"movies": [
-				{ "year": "2011", "title": "BLESSED MOON", "film_id": "5005" },
-				{ "year": "2011", "title": "WICKED MOON", "film_id": "5006" }
+				{ "year": 2011, "title": "BLESSED MOON", "film_id": 5005 },
+				{ "year": 2011, "title": "WICKED MOON", "film_id": 5006 }
 			]
 		}
 	]

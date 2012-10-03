@@ -10,8 +10,8 @@
 			<body>
 <![CDATA[
 { "actors": [
-		{ "id": "1000" },
-		{ "id": "1001" }
+		{ "id": 1000 },
+		{ "id": 1001 }
 	]
 }
 ]]>
@@ -20,7 +20,7 @@
 		<response>
 			<body>
 <![CDATA[
-{ "rowsAffected": "2" }
+{ "rowsAffected": 2 }
 ]]>
 				</body>
 		</response>

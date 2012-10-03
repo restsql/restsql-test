@@ -7,7 +7,7 @@
 			<body>
 <![CDATA[
 { "actors": [
-		{ "id": "99", "first_name": "JIM", "surname": "MOSTEL" }
+		{ "id": 99, "first_name": "JIM", "surname": "MOSTEL" }
 	]
 }
 ]]>

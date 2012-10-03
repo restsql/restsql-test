@@ -15,10 +15,10 @@
 			<body>
 <![CDATA[
 { "langs": [
-		{ "language_id": "100", "langName": "New Esperanto",
+		{ "language_id": 100, "langName": "New Esperanto",
 			"movies": [
-				{ "year": "2011", "title": "ESCAPE FROM TOMORROW", "film_id": "5000" },
-				{ "year": "2012", "title": "BLOOD PURPLE", "film_id": "5001" }
+				{ "year": 2011, "title": "ESCAPE FROM TOMORROW", "film_id": 5000 },
+				{ "year": 2012, "title": "BLOOD PURPLE", "film_id": 5001 }
 			]
 		}
 	]

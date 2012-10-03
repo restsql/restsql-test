@@ -32,8 +32,8 @@
 			<body>
 <![CDATA[
 { "actors": [
-		{ "id": "1000", "first_name": "_Jack", "surname": "Daniels" },
-		{ "id": "1001", "first_name": "_Jack", "surname": "Smith" }
+		{ "id": 1000, "first_name": "_Jack", "surname": "Daniels" },
+		{ "id": 1001, "first_name": "_Jack", "surname": "Smith" }
 	]
 }
 ]]>

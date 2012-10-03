@@ -11,11 +11,10 @@
 			<body>
 <![CDATA[
 { "actors": [
-		{ "id": "1000", "first_name": "_Jack", "surname": "Smith\t" },
-		{ "id": "1001", "first_name": "_Jack", "surname": "\"Johnson\"" }
+		{ "id": 1000, "first_name": "_Jack", "surname": "Smith\t" },
+		{ "id": 1001, "first_name": "_Jack", "surname": "\"Johnson\"" }
 	]
-}
-]]>
+}]]>
 			</body>
 		</response>
 	</step>

@@ -14,15 +14,15 @@
 			<body>
 <![CDATA[
 { "langs": [
-		{ "language_id": "100", "langName": "New Esperanto",
+		{ "language_id": 100, "langName": "New Esperanto",
 			"movies": [
-				{ "year": "2012", "title": "BLOOD PURPLE", "film_id": "5001" }
+				{ "year": 2012, "title": "BLOOD PURPLE", "film_id": 5001 }
 			]
 		},
-		{ "language_id": "101", "langName": "New Greek",
+		{ "language_id": 101, "langName": "New Greek",
 			"movies": [
-				{ "year": "2012", "title": "THE DARKENING", "film_id": "5002" },
-				{ "year": "2012", "title": "THE LIGHTENING", "film_id": "5003" }
+				{ "year": 2012, "title": "THE DARKENING", "film_id": 5002 },
+				{ "year": 2012, "title": "THE LIGHTENING", "film_id": 5003 }
 			]
 		}
 	]
@@ -33,7 +33,7 @@
 		<response>
 			<body>
 <![CDATA[
-{ "rowsAffected": "3" }
+{ "rowsAffected": 3 }
 ]]>
 				</body>
 		</response>
@@ -44,12 +44,12 @@
 			<body>
 <![CDATA[
 { "langs": [
-		{ "language_id": "100", "langName": "New Esperanto",
+		{ "language_id": 100, "langName": "New Esperanto",
 			"movies": [
-				{ "year": "2011", "title": "ESCAPE FROM TOMORROW", "film_id": "5000" }
+				{ "year": 2011, "title": "ESCAPE FROM TOMORROW", "film_id": 5000 }
 			]
 		},
-		{ "language_id": "101", "langName": "New Greek" }
+		{ "language_id": 101, "langName": "New Greek" }
 	]
 }
 ]]>
