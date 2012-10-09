@@ -13,4 +13,7 @@
 		<table name="film" role="Parent" />
 		<table name="film_rating" role="ParentExtension" />
 	</metadata>
+	<http>
+		<response cacheControl="max-age=60, no-transform" />
+	</http>
 </rs:sqlResource>

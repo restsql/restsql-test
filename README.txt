@@ -1,4 +1,4 @@
-README.txt (22-Sep-2012)
+README.txt (09-Oct-2012)
 
 restSQL Test Deployment Guide
 
@@ -39,6 +39,8 @@ Database: If you have not deployed the SDK yet, you will need to deploy the exte
 Execution: The tests are executed using the Ant build file (restsql-test/build.xml). Executing the default target, all, will run everything, but you can also run test-api (Java API) or test-service (HTTP API) to run one or either half. If the service is not running in the default location, http://localhost:8080/restsql/, then the System Property, org.restsql.baseUri, must be set. For example:
 
     ant -Dorg.restsql.baseUri=http://somehost:8080/restsql-0.7/ test-service-http
+
+The trailing forward slash in the base URI is required.
 
 By default, the tests will use the restsql properties file src/resources/properties/restsql-mysql.properties. If you are using PostgreSQL, you must explicitly instruct the test harness to use the postgresql properties. Set the System property org.restsql.properties as follows at ant execution:
 	
