@@ -39,7 +39,7 @@ public class AssertionHelper {
 			final boolean primaryKey, final String catalogName, final String tableName,
 			final String columnName, final String columnLabel, final int columnType) {
 		final ColumnMetaData actual = columns.get(columnLabel);
-		assertNotNull("actual column found", actual);
+		assertNotNull("column found in column list by label", actual);
 		assertColumnMetaData(actual, columnNumber, primaryKey, catalogName, tableName, columnName,
 				columnLabel, columnType);
 	}
@@ -103,7 +103,7 @@ public class AssertionHelper {
 	static void assertLanguageHierarchical(final Map<String, Object> row, final int language_id,
 			final String language) {
 		assertEquals(3, row.size());
-		assertEquals(new Integer(language_id), row.get("language_id"));
+		assertEquals(new Integer(language_id), row.get("langId"));
 		assertEquals(language, row.get("langName"));
 	}
 

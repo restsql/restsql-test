@@ -85,7 +85,8 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 		final SqlResource sqlResource = Factory.getSqlResource("SingleTable_MultiPK");
 
 		assertEquals(1, sqlResource.getMetaData().getTables().size());
-		final TableMetaData table = sqlResource.getMetaData().getTableMap().get(getQualifiedTableName("film_actor"));
+		final TableMetaData table = sqlResource.getMetaData().getTableMap()
+				.get(getQualifiedTableName("film_actor"));
 		assertNotNull(table);
 		assertEquals("sakila", table.getDatabaseName());
 		assertEquals("film_actor", table.getTableName());
@@ -152,7 +153,8 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 		final SqlResource sqlResource = Factory.getSqlResource("SingleTable");
 
 		assertEquals(1, sqlResource.getMetaData().getTables().size());
-		final TableMetaData table = sqlResource.getMetaData().getTableMap().get(getQualifiedTableName("actor"));
+		final TableMetaData table = sqlResource.getMetaData().getTableMap()
+				.get(getQualifiedTableName("actor"));
 		assertNotNull(table);
 		assertEquals("sakila", table.getDatabaseName());
 		assertEquals("actor", table.getTableName());
@@ -305,7 +307,8 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 		final SqlResource sqlResource = Factory.getSqlResource("SingleTableAliased");
 
 		assertEquals(1, sqlResource.getMetaData().getTables().size());
-		final TableMetaData table = sqlResource.getMetaData().getTableMap().get(getQualifiedTableName("film"));
+		final TableMetaData table = sqlResource.getMetaData().getTableMap()
+				.get(getQualifiedTableName("film"));
 		assertNotNull(table);
 		assertEquals("sakila", table.getDatabaseName());
 		assertEquals("film", table.getTableName());
@@ -317,8 +320,8 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 
 		// Columns
 		assertEquals(3, table.getColumns().size());
-		AssertionHelper.assertColumnMetaData(table.getColumns(), 1, true, "sakila", "film", "film_id",
-				"id", Types.SMALLINT);
+		AssertionHelper.assertColumnMetaData(table.getColumns(), 1, true, "sakila", "film", "film_id", "id",
+				Types.SMALLINT);
 		AssertionHelper.assertColumnMetaData(table.getColumns(), 2, false, "sakila", "film", "title",
 				"title", Types.VARCHAR);
 		AssertionHelper.assertColumnMetaData(table.getColumns(), 3, false, "sakila", "film", "release_year",
@@ -328,7 +331,7 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 	@Test
 	public void testGetTables_SingleTableSub() throws SqlResourceException {
 		SqlResource sqlResource = Factory.getSqlResource("sub.SingleTable");
-		
+
 		assertEquals(1, sqlResource.getMetaData().getTables().size());
 		TableMetaData table = sqlResource.getMetaData().getTableMap().get(getQualifiedTableName("film"));
 		assertNotNull(table);
@@ -337,12 +340,61 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 		assertEquals("pelicula", table.getTableAlias());
 
 		sqlResource = Factory.getSqlResource("sub.sub.SingleTable");
-		
+
 		assertEquals(1, sqlResource.getMetaData().getTables().size());
 		table = sqlResource.getMetaData().getTableMap().get(getQualifiedTableName("language"));
 		assertNotNull(table);
 		assertEquals("sakila", table.getDatabaseName());
 		assertEquals("language", table.getTableName());
 		assertEquals("language", table.getTableAlias());
+	}
+
+	@Test
+	public void testGetTables_HierOneToMany() throws SqlResourceException {
+		SqlResource sqlResource = Factory.getSqlResource("HierOneToMany");
+		assertTrue(sqlResource.getMetaData().isHierarchical());
+		assertEquals(2, sqlResource.getMetaData().getTables().size());
+
+		// Check out the parent
+		TableMetaData table = sqlResource.getMetaData().getTableMap().get(getQualifiedTableName("language"));
+		assertNotNull(table);
+		assertEquals(TableRole.Parent, table.getTableRole());
+
+		// Parent primary keys
+		assertEquals(1, table.getPrimaryKeys().size());
+		AssertionHelper.assertColumnMetaData(table.getPrimaryKeys().get(0), 1, true, "sakila", "language",
+				"language_id", "langId", Types.SMALLINT);
+
+		// Parent columns
+		assertEquals(2, table.getColumns().size());
+		AssertionHelper.assertColumnMetaData(table.getColumns(), 1, true, "sakila", "language",
+				"language_id", "langId", Types.SMALLINT);
+		assertEquals("language.language_id", table.getColumns().get("langId").getQualifiedColumnName());
+		AssertionHelper.assertColumnMetaData(table.getColumns(), 2, false, "sakila", "language", "name",
+				"langName", Types.VARCHAR);
+
+		// Check out the child
+		table = sqlResource.getMetaData().getTableMap().get(getQualifiedTableName("film"));
+		assertNotNull(table);
+		assertEquals(TableRole.Child, table.getTableRole());
+
+		// Child primary keys
+		assertEquals(1, table.getPrimaryKeys().size());
+		assertEquals("movie", table.getTableAlias());
+		AssertionHelper.assertColumnMetaData(table.getPrimaryKeys().get(0), 3, true, "sakila", "film",
+				"film_id", "film_id", Types.SMALLINT);
+
+		// Child columns
+		assertEquals(4, table.getColumns().size());
+		AssertionHelper.assertColumnMetaData(table.getColumns(), 3, true, "sakila", "film", "film_id",
+				"film_id", Types.SMALLINT);
+		assertEquals("film.film_id", table.getColumns().get("film_id").getQualifiedColumnName());
+		AssertionHelper.assertColumnMetaData(table.getColumns(), 4, false, "sakila", "film", "title",
+				"title", Types.VARCHAR);
+		AssertionHelper.assertColumnMetaData(table.getColumns(), 5, false, "sakila", "film", "release_year",
+				"year", (getDatabaseType() == DatabaseType.PostgreSql) ? Types.INTEGER : Types.DATE);
+		AssertionHelper.assertColumnMetaData(table.getColumns(), 0, false, "sakila", "film", "language_id",
+				"langId", Types.SMALLINT);
+		assertTrue("is nonqueried foreign key", table.getColumns().get("langId").isNonqueriedForeignKey());
 	}
 }

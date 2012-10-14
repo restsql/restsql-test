@@ -14,12 +14,12 @@
 			<body>
 <![CDATA[
 <request>
-	<lang language_id="100">
+	<lang langId="100">
 		<movie film_id="5001" />
 		<movie film_id="5000" />
 	</lang>
-	<lang language_id="100" />
-	<lang language_id="101" />
+	<lang langId="100" />
+	<lang langId="101" />
 </request>
 ]]>
 			</body>

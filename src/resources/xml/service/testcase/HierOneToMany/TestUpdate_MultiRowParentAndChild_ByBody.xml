@@ -14,11 +14,11 @@
 			<body>
 <![CDATA[
 <request>
-	<lang language_id="100">
+	<lang langId="100">
 		<movie year="2011" title="ESCAPE FROM TOMORROW2" film_id="5000" />
 	</lang>
-	<lang language_id="100" langName="New Spanish" />
-	<lang language_id="101" langName="New Latin"/>
+	<lang langId="100" langName="New Spanish" />
+	<lang langId="101" langName="New Latin"/>
 </request>
 ]]>
 			</body>
@@ -37,11 +37,11 @@
 			<body>
 <![CDATA[
 <readResponse>
-	<lang language_id="100" langName="New Spanish">
+	<lang langId="100" langName="New Spanish">
 		<movie year="2011" title="ESCAPE FROM TOMORROW2" film_id="5000" />
 		<movie year="2012" title="BLOOD PURPLE" film_id="5001" />
 	</lang>
-	<lang language_id="101" langName="New Latin">
+	<lang langId="101" langName="New Latin">
 		<movie year="2012" title="THE DARKENING" film_id="5002" />
 		<movie year="2012" title="THE LIGHTENING" film_id="5003" />
 	</lang>

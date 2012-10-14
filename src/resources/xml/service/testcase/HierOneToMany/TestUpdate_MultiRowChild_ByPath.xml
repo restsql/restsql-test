@@ -34,11 +34,11 @@
 			<body>
 <![CDATA[
 <readResponse>
-	<lang language_id="100" langName="New Esperanto">
+	<lang langId="100" langName="New Esperanto">
 		<movie year="2011" title="ESCAPE FROM TOMORROW2" film_id="5000" />
 		<movie year="2012" title="BLOOD PURPLE2" film_id="5001" />
 	</lang>
-	<lang language_id="101" langName="New Greek">
+	<lang langId="101" langName="New Greek">
 		<movie year="2012" title="THE DARKENING" film_id="5002" />
 		<movie year="2012" title="THE LIGHTENING" film_id="5003" />
 	</lang>

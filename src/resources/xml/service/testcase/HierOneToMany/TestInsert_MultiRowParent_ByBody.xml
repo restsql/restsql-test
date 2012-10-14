@@ -6,8 +6,8 @@
 			<body>
 <![CDATA[
 <request>
-	<lang language_id="100" langName="New Esperanto"/>
-	<lang language_id="101" langName="New Greek"/>
+	<lang langId="100" langName="New Esperanto"/>
+	<lang langId="101" langName="New Greek"/>
 </request>
 ]]>
 			</body>
@@ -26,9 +26,9 @@
 			<body>
 <![CDATA[
 <readResponse>
-	<lang language_id="100" langName="New Esperanto">
+	<lang langId="100" langName="New Esperanto">
 	</lang>
-	<lang language_id="101" langName="New Greek">
+	<lang langId="101" langName="New Greek">
 	</lang>
 </readResponse>
 ]]>
