@@ -5,5 +5,4 @@
 # 	e.g. HierManyToMany/*
 # Use # to comment out a line
 
-HierOneToMany/TestSelect_ByQuery.xml
-#SingleTable/*
+json/*
