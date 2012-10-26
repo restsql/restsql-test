@@ -9,8 +9,8 @@
 		<sql>INSERT INTO film_rating (film_rating_id,film_id,stars) VALUES (2,5001,2)</sql>
 		<sql>INSERT INTO film_rating (film_rating_id,film_id,stars) VALUES (3,5002,1)</sql>
 	</setup>
-	<step name="execute">
-		<!-- find records with title matching '<THE DARKENING' -->
+	<step name="verify">
+		<!-- find records with title matching '<THE DARKENING' (encode as '\<THE DARKENING')-->
 		<request method="GET" uri="res/FlatOneToOne?title=%5C%3CTHE%20DARKENING" />
 		<response>
 			<body>

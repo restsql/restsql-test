@@ -12,8 +12,8 @@
 			<body>
 <![CDATA[
 { "movies": [
-		{ "id": 5000, "title": "ESCAPE FROM TOMORROW", "year": 2011, "description": null },
-		{ "id": 5001, "title": "BLOOD PURPLE", "year": null, "description": "A real blast" }
+		{ "id": 5000, "title": "ESCAPE FROM TOMORROW", "year": 2011, "description": null, "rating": "G" },
+		{ "id": 5001, "title": "BLOOD PURPLE", "year": null, "description": "A real blast", "rating": "G" }
 	]
 }
 ]]>

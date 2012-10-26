@@ -7,16 +7,16 @@
 			<body>
 <![CDATA[
 <readResponse>
-	<movie id="1" title="ACADEMY DINOSAUR" year="2006" description="A Epic Drama of a Feminist And a Mad Scientist who must Battle a Teacher in The Canadian Rockies" />
-	<movie id="2" title="ACE GOLDFINGER" year="2006" description="A Astounding Epistle of a Database Administrator And a Explorer who must Find a Car in Ancient China" />
-	<movie id="3" title="ADAPTATION HOLES" year="2006" description="A Astounding Reflection of a Lumberjack And a Car who must Sink a Lumberjack in A Baloon Factory" />
-	<movie id="4" title="AFFAIR PREJUDICE" year="2006" description="A Fanciful Documentary of a Frisbee And a Lumberjack who must Chase a Monkey in A Shark Tank" />
-	<movie id="5" title="AFRICAN EGG" year="2006" description="A Fast-Paced Documentary of a Pastry Chef And a Dentist who must Pursue a Forensic Psychologist in The Gulf of Mexico" />
-	<movie id="6" title="AGENT TRUMAN" year="2006" description="A Intrepid Panorama of a Robot And a Boy who must Escape a Sumo Wrestler in Ancient China" />
-	<movie id="7" title="AIRPLANE SIERRA" year="2006" description="A Touching Saga of a Hunter And a Butler who must Discover a Butler in A Jet Boat" />
-	<movie id="8" title="AIRPORT POLLOCK" year="2006" description="A Epic Tale of a Moose And a Girl who must Confront a Monkey in Ancient India" />
-	<movie id="9" title="ALABAMA DEVIL" year="2006" description="A Thoughtful Panorama of a Database Administrator And a Mad Scientist who must Outgun a Mad Scientist in A Jet Boat" />
-	<movie id="10" title="ALADDIN CALENDAR" year="2006" description="A Action-Packed Tale of a Man And a Lumberjack who must Reach a Feminist in Ancient China" />
+	<movie id="1" title="ACADEMY DINOSAUR" year="2006" description="A Epic Drama of a Feminist And a Mad Scientist who must Battle a Teacher in The Canadian Rockies" rating="PG" />
+	<movie id="2" title="ACE GOLDFINGER" year="2006" description="A Astounding Epistle of a Database Administrator And a Explorer who must Find a Car in Ancient China" rating="G" />
+	<movie id="3" title="ADAPTATION HOLES" year="2006" description="A Astounding Reflection of a Lumberjack And a Car who must Sink a Lumberjack in A Baloon Factory" rating="NC-17" />
+	<movie id="4" title="AFFAIR PREJUDICE" year="2006" description="A Fanciful Documentary of a Frisbee And a Lumberjack who must Chase a Monkey in A Shark Tank" rating="G" />
+	<movie id="5" title="AFRICAN EGG" year="2006" description="A Fast-Paced Documentary of a Pastry Chef And a Dentist who must Pursue a Forensic Psychologist in The Gulf of Mexico" rating="G" />
+	<movie id="6" title="AGENT TRUMAN" year="2006" description="A Intrepid Panorama of a Robot And a Boy who must Escape a Sumo Wrestler in Ancient China" rating="PG" />
+	<movie id="7" title="AIRPLANE SIERRA" year="2006" description="A Touching Saga of a Hunter And a Butler who must Discover a Butler in A Jet Boat" rating="PG-13" />
+	<movie id="8" title="AIRPORT POLLOCK" year="2006" description="A Epic Tale of a Moose And a Girl who must Confront a Monkey in Ancient India" rating="R" />
+	<movie id="9" title="ALABAMA DEVIL" year="2006" description="A Thoughtful Panorama of a Database Administrator And a Mad Scientist who must Outgun a Mad Scientist in A Jet Boat" rating="PG-13" />
+	<movie id="10" title="ALADDIN CALENDAR" year="2006" description="A Action-Packed Tale of a Man And a Lumberjack who must Reach a Feminist in Ancient China" rating="NC-17" />
 </readResponse>
 ]]>
 			</body>

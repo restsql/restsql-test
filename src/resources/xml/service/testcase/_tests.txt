@@ -5,4 +5,6 @@
 # 	e.g. HierManyToMany/*
 # Use # to comment out a line
 
-json/*
+#InOper/TestSelect_SingleTableAliased_InOper.xml
+#InOper/TestSelect_SingleTableAliased_EscapedInOper.xml
+SingleTable/TestSelect_EscapeChars.xml

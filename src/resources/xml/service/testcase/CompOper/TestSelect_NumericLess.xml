@@ -9,7 +9,7 @@
 		<sql>INSERT INTO film_rating (film_rating_id,film_id,stars) VALUES (2,5001,2)</sql>
 		<sql>INSERT INTO film_rating (film_rating_id,film_id,stars) VALUES (3,5002,1)</sql>
 	</setup>
-	<step name="execute">
+	<step name="verify">
 		<!-- find records with stars less than 5 -->
 		<request method="GET" uri="res/FlatOneToOne?stars=%3C5" />
 		<response>

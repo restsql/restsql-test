@@ -319,13 +319,17 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 		assertEquals("film_id", table.getPrimaryKeys().get(0).getColumnName());
 
 		// Columns
-		assertEquals(3, table.getColumns().size());
+		assertEquals(5, table.getColumns().size());
 		AssertionHelper.assertColumnMetaData(table.getColumns(), 1, true, "sakila", "film", "film_id", "id",
 				Types.SMALLINT);
 		AssertionHelper.assertColumnMetaData(table.getColumns(), 2, false, "sakila", "film", "title",
 				"title", Types.VARCHAR);
 		AssertionHelper.assertColumnMetaData(table.getColumns(), 3, false, "sakila", "film", "release_year",
 				"year", (getDatabaseType() == DatabaseType.PostgreSql) ? Types.INTEGER : Types.DATE);
+		AssertionHelper.assertColumnMetaData(table.getColumns(), 4, false, "sakila", "film", "description",
+				"description", (getDatabaseType() == DatabaseType.PostgreSql) ? Types.VARCHAR : Types.LONGVARCHAR);
+		AssertionHelper.assertColumnMetaData(table.getColumns(), 5, false, "sakila", "film", "rating",
+				"rating", (getDatabaseType() == DatabaseType.PostgreSql) ? Types.OTHER : Types.CHAR);
 	}
 
 	@Test
