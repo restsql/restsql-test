@@ -19,6 +19,22 @@ public class RequestUtilTest {
 	}
 
 	@Test
+	public void testGetRequestMediaType() {
+		assertEquals(null, RequestUtil.getRequestMediaType(null));
+		assertEquals(null, RequestUtil.getRequestMediaType(""));
+		assertEquals("unknown", RequestUtil.getRequestMediaType("unknown"));
+		assertEquals("application/unknown", RequestUtil.getRequestMediaType("application/unknown"));
+		assertEquals("application/json", RequestUtil.getRequestMediaType("application/json"));
+		assertEquals("application/json", RequestUtil.getRequestMediaType("application/json; charset=UTF-8"));
+		assertEquals("application/xml", RequestUtil.getRequestMediaType("application/xml"));
+		assertEquals("application/xml", RequestUtil.getRequestMediaType("application/xml; charset=UTF-8"));
+		assertEquals("application/x-www-form-urlencoded", RequestUtil.getRequestMediaType("application/x-www-form-urlencoded"));
+		assertEquals("application/x-www-form-urlencoded", RequestUtil.getRequestMediaType("application/x-www-form-urlencoded; charset=UTF-8"));
+		assertEquals("application/json", RequestUtil.getRequestMediaType("application/json;q=0.9,application/xml;q=0.8"));
+		assertEquals("application/xml", RequestUtil.getRequestMediaType("application/json;q=0.9,application/xml"));
+	}
+
+	@Test
 	public void testGetResponseMediaType_WithParamsAndRequestMediaType() {
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		String mediaType = RequestUtil.getResponseMediaType(params, null, null);
@@ -112,7 +128,13 @@ public class RequestUtilTest {
 		String acceptMediaType = "application/xml";
 		assertEquals("application/xml", RequestUtil.getResponseMediaType(params, null, acceptMediaType));
 		
+		acceptMediaType = "application/xml; charset=UTF-8";
+		assertEquals("application/xml", RequestUtil.getResponseMediaType(params, null, acceptMediaType));
+
 		acceptMediaType = "application/json";
+		assertEquals("application/json", RequestUtil.getResponseMediaType(params, null, acceptMediaType));
+		
+		acceptMediaType = "application/json; charset=UTF-8";
 		assertEquals("application/json", RequestUtil.getResponseMediaType(params, null, acceptMediaType));
 		
 		acceptMediaType = "*/*";
@@ -139,4 +161,21 @@ public class RequestUtilTest {
 		acceptMediaType = "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, application/x-shockwave-flash, */*";
 		assertEquals("application/xml", RequestUtil.getResponseMediaType(params, null, acceptMediaType));
 	}
+	
+	@Test
+	public void testGetResponseMediaType_WithInvalidAcceptHeader() {
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		NameValuePair param1 = new NameValuePair("test", "123");
+		params.add(param1);
+
+		String acceptMediaType = null;
+		assertEquals("application/xml", RequestUtil.getResponseMediaType(params, null, acceptMediaType));
+
+		acceptMediaType = "";
+		assertEquals("application/xml", RequestUtil.getResponseMediaType(params, null, acceptMediaType));
+
+		acceptMediaType = "application/unknown";
+		assertEquals("application/unknown", RequestUtil.getResponseMediaType(params, null, acceptMediaType));
+	}
+	
 }

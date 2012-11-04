@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://restsql.org/schema ../ServiceTestCaseDefinition.xsd ">
+	<step name="execute-invalid-content-type">
+		<request method="POST" uri="res/SingleTable" contentType="application/unknown">
+			<body>
+<![CDATA[
+<request>
+	<actor id="1000" first_name="_Jack" surname="Daniels" />
+	<actor id="1001" first_name="_Jack" surname="Smith" />
+</request>
+]]>
+			</body>
+		</request>
+		<response status="500">
+			<body>No deserializer found for media type application/unknown</body>
+		</response>
+	</step>
+
+	<step name="execute-invalid-accept">
+		<request method="GET" uri="res/SingleTable" accept="application/unknown" />
+		<response status="500">
+			<body>No serializer found for media type application/unknown</body>
+		</response>
+	</step>
+
+	<step name="execute-invalid-accept">
+		<request method="GET" uri="res/SingleTable/1" accept="" />
+		<response>
+			<body>
+<![CDATA[
+<readResponse>
+	<actor id="1" first_name="PENELOPE" surname="GUINESS" />
+</readResponse>
+]]>
+			</body>
+		</response>
+	</step>
+
+</tc:testcase>

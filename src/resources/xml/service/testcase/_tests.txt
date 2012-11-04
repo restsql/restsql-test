@@ -5,6 +5,4 @@
 # 	e.g. HierManyToMany/*
 # Use # to comment out a line
 
-#InOper/TestSelect_SingleTableAliased_InOper.xml
-#InOper/TestSelect_SingleTableAliased_EscapedInOper.xml
-SingleTable/TestSelect_EscapeChars.xml
+Negative/TestSelect_InvalidMediaTypes.xml
