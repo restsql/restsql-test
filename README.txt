@@ -53,6 +53,7 @@ Security tests are separately run in the api and http interface styles since the
 Note: The following tests are expected to fail for PostgreSQL:
 	- ReadOnlyColumns/* because the restSQL doesn't support read-only columns for PostgreSQL (yet)
 	- SingleTable/TestSelect_SingleTableWildcard_MultiRow_ByQuery.xml because the film_text table isn't part of the database schema/data scripts
+	- */TestConf_*.xml because of schema and data type naming differences with MySQL
 
 -------------------------------------------------------------------------------
 License

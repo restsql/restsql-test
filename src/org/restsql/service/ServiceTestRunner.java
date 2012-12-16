@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import junit.framework.AssertionFailedError;
 import junit.framework.Test;
@@ -48,7 +49,7 @@ public class ServiceTestRunner {
 			System.exit(4);
 		}
 		final InterfaceStyle interfaceStyle = InterfaceStyle.fromString(args[0]);
-		final List<File> files = getDefinitionFiles(args[1], args[2]);
+		final List<File> files = getDefinitionFiles(args[1], parseListFromString(args[2], ","));
 
 		cleanResultsDir();
 
@@ -134,7 +135,7 @@ public class ServiceTestRunner {
 		}
 	}
 
-	private static List<File> getDefinitionFiles(final String scope, final String exclude)
+	private static List<File> getDefinitionFiles(final String scope, final List<String> excludedDirs)
 			throws FileNotFoundException, IOException {
 		final List<File> files = new ArrayList<File>(50);
 		if (!scope.endsWith(FILE_TEST_LIST_ENDS_WITH)) {
@@ -146,11 +147,15 @@ public class ServiceTestRunner {
 					if (!scope.equals(SCOPE_ALL) && !subDir.equals(scope)) {
 						includeSubDir = false;
 					}
-					if (!exclude.equals(EXCLUDE_NONE) && subDir.equals(exclude)) {
-						System.out.println("Excluding category " + subDir);
-						includeSubDir = false;
+
+					for (final String excludedDir : excludedDirs) {
+						if (!excludedDir.equals(EXCLUDE_NONE) && excludedDir.equals(subDir)) {
+							System.out.println("Excluding category " + subDir);
+							includeSubDir = false;
+							break;
+						}
 					}
-					
+
 					if (includeSubDir) {
 						dir = new File(TEST_CASE_DIR + "/" + subDir);
 						final File[] subDirFiles = dir.listFiles();
@@ -160,7 +165,7 @@ public class ServiceTestRunner {
 					}
 				}
 			}
-		} else {	// scope = file list
+		} else { // scope = file list
 			final File listFile = new File(scope);
 			if (listFile.exists()) {
 				final BufferedReader reader = new BufferedReader(new FileReader(listFile));
@@ -194,6 +199,15 @@ public class ServiceTestRunner {
 			}
 		}
 		return files;
+	}
+
+	private static List<String> parseListFromString(final String string, final String delimiter) {
+		final List<String> list = new ArrayList<String>(5);
+		final StringTokenizer tokenizer = new StringTokenizer(string, delimiter);
+		while (tokenizer.hasMoreTokens()) {
+			list.add(tokenizer.nextToken());
+		}
+		return list;
 	}
 
 	static class ServiceTestListener implements TestListener {
@@ -244,19 +258,19 @@ public class ServiceTestRunner {
 
 		public void printNonPassingTests() {
 			if (nonPassingTests.size() > 0) {
-				File file = new File(FAILURES_AND_ERRORS_LOG);
+				final File file = new File(FAILURES_AND_ERRORS_LOG);
 				FileOutputStream outputStream;
 				try {
 					outputStream = new FileOutputStream(file);
 					System.out.println("\nFailures and Errors:");
-					for (ServiceTestCase testCase : nonPassingTests) {
-						String name = testCase.getTestCaseCategory() + "/" + testCase.getTestCaseName()
+					for (final ServiceTestCase testCase : nonPassingTests) {
+						final String name = testCase.getTestCaseCategory() + "/" + testCase.getTestCaseName()
 								+ "\n";
 						System.out.print("   " + name);
 						outputStream.write(name.getBytes());
 					}
 					outputStream.close();
-				} catch (IOException exception) {
+				} catch (final IOException exception) {
 					exception.printStackTrace();
 				}
 			}

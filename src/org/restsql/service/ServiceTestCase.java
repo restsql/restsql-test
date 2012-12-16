@@ -151,7 +151,7 @@ public class ServiceTestCase extends TestCase {
 		// Send the request, get the response body, and log results
 		final ClientResponse response = builder.accept(accept).type(contentType)
 				.method(step.getRequest().getMethod(), ClientResponse.class, requestBody);
-		final String actualResponseBody = response.getEntity(String.class);
+		String actualResponseBody = response.getEntity(String.class);
 		helper.writeResponseTrace(step, step.getResponse().getStatus(), response.getStatus(), step
 				.getResponse().getBody(), actualResponseBody);
 
@@ -163,6 +163,9 @@ public class ServiceTestCase extends TestCase {
 			if (step.getResponse().getBody().length() == 0) {
 				ServiceTestCase.assertEquals(step, "body", null, actualResponseBody);
 			} else {
+				if (actualResponseBody.endsWith("\n")) {
+					actualResponseBody = actualResponseBody.substring(0, actualResponseBody.length() - 1);
+				}
 				ServiceTestCase.assertEquals(step, "body", step.getResponse().getBody(), actualResponseBody);
 			}
 		}
