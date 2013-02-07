@@ -5,4 +5,4 @@
 # 	e.g. HierManyToMany/*
 # Use # to comment out a line
 
-HierManyToManyExt/TestSelect_ByQuery.xml
+HierManyToManyMultiExt/TestConf_HierManyToManyMultiExt.xml

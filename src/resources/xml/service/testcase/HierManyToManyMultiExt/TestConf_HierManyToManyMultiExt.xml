@@ -61,9 +61,11 @@
             <columns>
                 <column columnLabel="actor_id" columnName="actor_id" columnNumber="0" columnType="5" columnTypeName="smallint" databaseName="sakila" nonqueriedForeignKey="true" primaryKey="false" qualifiedColumnName="actor_genre.actor_id" qualifiedTableName="sakila.actor_genre" readOnly="false" tableName="actor_genre"/>
                 <column columnLabel="name" columnName="name" columnNumber="5" columnType="12" columnTypeName="VARCHAR" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="false" qualifiedColumnName="actor_genre.name" qualifiedTableName="sakila.actor_genre" readOnly="false" tableName="actor_genre"/>
-                <column columnLabel="actor_genre_id" columnName="actor_genre_id" columnNumber="4" columnType="5" columnTypeName="SMALLINT UNSIGNED" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="false" qualifiedColumnName="actor_genre.actor_genre_id" qualifiedTableName="sakila.actor_genre" readOnly="false" tableName="actor_genre"/>
+                <column columnLabel="actor_genre_id" columnName="actor_genre_id" columnNumber="4" columnType="5" columnTypeName="SMALLINT UNSIGNED" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="true" qualifiedColumnName="actor_genre.actor_genre_id" qualifiedTableName="sakila.actor_genre" readOnly="false" tableName="actor_genre"/>
             </columns>
-            <primaryKeys/>
+            <primaryKeys>
+                <column>actor_genre.actor_genre_id</column>
+            </primaryKeys>
         </table>
         <table databaseName="sakila" tableName="film" tableAlias="film" qualifiedTableName="sakila.film" tableRole="Child">
             <columns>
