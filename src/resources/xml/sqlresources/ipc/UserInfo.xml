@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rs:sqlResource xmlns:rs="http://restsql.org/schema"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://restsql.org/schema SqlResource.xsd ">
+   <query>
+	select User.id as UserId, User.accountActivationTime, User.accountLockedReason, User.accountLockedTime, User.accountPolicyId, User.accountStatus, 
+	User.accountType, User.authDomainId, User.authType, User.contactId, User.custom1, User.custom2, User.custom3, User.custom4, 
+	User.dateDisplayFormat, User.homeLocationId, User.isTemporary, User.lastPasswordUpdateTime, User.lastSuccessfulLoginTime, User.loginName, 
+	User.passwdExpiredGraceLogin, User.password, User.passwordChangeMode, User.schemaDifference_blob_reserved, User.schemaDifference_reserved, 
+	User.timeDisplayFormat, User.unSuccessfulloginCount, User.userCDIId, User.userCLIId, User.userLyncPrefId, User.userPulseId, User.userTurretId, 
+	User.userUDAId, User.lastModified, User.parentEnterpriseId,
+	
+	DunkinLocation.name,
+	
+	Contact.id, Contact.businessAddressId, Contact.businessGroup, Contact.company, Contact.customTag, Contact.displayContactInDirectory, 
+	Contact.firstName, Contact.homeAddressId, Contact.internalCompanyId, Contact.internalContactId, Contact.lastName, Contact.locale, 
+	Contact.mailingAddress, Contact.otherAddressId, Contact.preferredPOCId, Contact.presenceURI, Contact.schemaDifference_blob_reserved, 
+	Contact.schemaDifference_reserved, Contact.title, Contact.type, Contact.updatedInDirTree, Contact.lastModified, Contact.parentDirectoryId,
+
+	businessAddress.address1, businessAddress.address2, businessAddress.addressType, businessAddress.city, businessAddress.country,
+	businessAddress.postalcode, businessAddress.schemaDifference_blob_reserved, businessAddress.schemaDifference_reserved, businessAddress.state, 
+	businessAddress.lastModified,
+
+	homeAddress.address1, homeAddress.address2, homeAddress.addressType, homeAddress.city, homeAddress.country, homeAddress.postalcode, 
+	homeAddress.schemaDifference_blob_reserved, homeAddress.schemaDifference_reserved, homeAddress.state, homeAddress.lastModified,
+
+	otherAddress.address1, otherAddress.address2, otherAddress.addressType, otherAddress.city, otherAddress.country, otherAddress.postalcode, 
+	otherAddress.schemaDifference_blob_reserved, otherAddress.schemaDifference_reserved, otherAddress.state, otherAddress.lastModified,
+	
+	DelegatedAuthDomain.allowBackroomLogon, DelegatedAuthDomain.authServerType, DelegatedAuthDomain.domain, 
+	DelegatedAuthDomain.maxBackroomLoginSessionGracePeriod, DelegatedAuthDomain.maxValidationFailureGracePeriod, 
+	DelegatedAuthDomain.reauthTimeInMinutes, DelegatedAuthDomain.schemaDifference_blob_reserved, DelegatedAuthDomain.schemaDifference_reserved, 
+	DelegatedAuthDomain.lastModified,
+	
+	UserCDI.CLIonFloat, UserCDI.assignLine, UserCDI.attrButton, UserCDI.autoHold, UserCDI.autoHuntEnable, UserCDI.billingGroupId, 
+	UserCDI.blockingTone, UserCDI.cLIPreference, UserCDI.callDiversion, UserCDI.characterSet, UserCDI.codecProfileId, UserCDI.defaultPrivacyToEnabled,
+	UserCDI.deskLocation, UserCDI.fixedBtnRows, UserCDI.floatAllIncoming, UserCDI.floatBtnRows, UserCDI.forcedTalkbackMute, UserCDI.groupTB1Latch,
+	UserCDI.groupTB2Latch, UserCDI.handsetBtn, UserCDI.handsetMuteOption, UserCDI.handsetSelectMode, UserCDI.handsetSelectTimeout, UserCDI.holdQueue,
+	UserCDI.homeZoneId, UserCDI.huntGroupId, UserCDI.iCMDivertCondition, UserCDI.iCMDivertExt, UserCDI.iCMDivertRNATime, UserCDI.iCMDivertSpecial,
+	UserCDI.iCMDivertSurvive, UserCDI.infiniteRing, UserCDI.intercomExtension, UserCDI.intercomSplash, UserCDI.lHsetPressed, UserCDI.lHsetReleased,
+	UserCDI.language, UserCDI.loginPriority, UserCDI.maxDivertDigits, UserCDI.micMuteOption, UserCDI.moduleFctnButton, UserCDI.musicOnHoldSourceId,
+	UserCDI.muteOtherDown, UserCDI.muteOtherUp, UserCDI.oldestCallWaiting, UserCDI.personalDirectoryId, UserCDI.personalExtensionId,
+	UserCDI.presetBroadcast, UserCDI.rHsetPressed, UserCDI.rHsetReleased, UserCDI.rcvVol, UserCDI.recordProtocol, UserCDI.recordWarningTone,
+	UserCDI.recordonDemand, UserCDI.schemaDifference_blob_reserved, UserCDI.schemaDifference_reserved, UserCDI.speakerRetryTime, UserCDI.speakers,
+	UserCDI.speedDial, UserCDI.statusFloatPriorityId, UserCDI.swap, UserCDI.togglePrivacyAllowed, UserCDI.traderGroupId, UserCDI.undoAction,
+	UserCDI.lastModified,
+
+	ResourceAOR.resourceAOR,
+
+	HuntGroup.huntGroupName,
+	
+	Role.description, Role.hQERoleId, Role.isExclusive, Role.isLicensed,
+	Role.remoteAccessGroupId, Role.roleName, Role.roleType, Role.roleValue, Role.schemaDifference_blob_reserved,
+	Role.schemaDifference_reserved, Role.scope, Role.lastModified, Role.parentEnterpriseId
+
+	from User
+
+	left join DunkinLocation on DunkinLocation.id = User.homeLocationId
+        
+	left join Contact on Contact.id = User.contactId
+	left join Address businessAddress on businessAddress.id = Contact.businessAddressId
+	left join Address homeAddress on homeAddress.id = Contact.homeAddressId
+	left join Address otherAddress on otherAddress.id = Contact.otherAddressId
+	left join DelegatedAuthDomain on DelegatedAuthDomain.id = User.authDomainId
+	
+	left join UserRoleRolesMap on UserRoleRolesMap.userId = User.id
+	left join Role on Role.id = UserRoleRolesMap.rolesId
+	
+	left join UserCDI on User.userCDIId = UserCDI.id
+	left join ResourceAOR on ResourceAOR.id = UserCDI.personalExtensionId
+	left join HuntGroup on HuntGroup.id = UserCDI.huntGroupId
+   </query>
+   <metadata>
+      <database default="dunkin" />
+      <table name="User" role="Parent" />
+      <table name="DunkinLocation" role="ParentExtension" />
+      <table name="Contact" role="ParentExtension" />
+      <table name="DelegatedAuthDomain" role="ParentExtension" />
+      <table name="Address" role="ParentExtension" />
+      <table name="UserCDI" role="ParentExtension" />
+      <table name="ResourceAOR" role="ParentExtension" />
+      <table name="HuntGroup" role="ParentExtension" />
+      <table name="Role" role="Child" />
+      <table name="UserRoleRolesMap" role="Join" />
+   </metadata>
+</rs:sqlResource>

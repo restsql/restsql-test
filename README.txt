@@ -1,4 +1,4 @@
-README.txt (09-Oct-2012)
+README.txt (07-Feb-2013)
 
 restSQL Test Deployment Guide
 
@@ -36,7 +36,9 @@ The test project contains component test code, artifacts and a harness that exer
 
 Database: If you have not deployed the SDK yet, you will need to deploy the extended sakila database. Bash and Windows batch scripts are provided to create the base and extended database for MySQL and PostgreSQL. The bash script is restsql-test/database/<database>/create-sakila.sh and the Windows batch script is restsql-test/database/<database>/create-sakila.bat, where database is mysql or postgresql. You will need to change the user and password variables in the beginning of the script to an account that has database and table creation privileges.
 
-Execution: The tests are executed using the Ant build file (restsql-test/build.xml). Executing the default target, all, will run everything, but you can also run test-api (Java API) or test-service (HTTP API) to run one or either half. If the service is not running in the default location, http://localhost:8080/restsql/, then the System Property, org.restsql.baseUri, must be set. For example:
+Execution: The tests are executed using the Ant build file (restsql-test/build.xml). Executing the default target, all, will run everything, but you can also run test-api (Java API) or test-service (HTTP API) to run one or either half. 
+
+If the service is not running in the default location, http://localhost:8080/restsql/, then the System Property, org.restsql.baseUri, must be set. For example:
 
     ant -Dorg.restsql.baseUri=http://somehost:8080/restsql-0.7/ test-service-http
 
@@ -44,16 +46,20 @@ The trailing forward slash in the base URI is required.
 
 By default, the tests will use the restsql properties file src/resources/properties/restsql-mysql.properties. If you are using PostgreSQL, you must explicitly instruct the test harness to use the postgresql properties. Set the System property org.restsql.properties as follows at ant execution:
 	
-	ant -Dorg.restsql.properties=/resources/properties/restsql-postgresql.properties 
+	ant -Dorg.restsql.properties=/resources/properties/restsql-postgresql.properties test-service-http 
 
 Test results will appear on the console. Test detail is available in restsql-test/obj/test.
 
 Security tests are separately run in the api and http interface styles since the default profile of restsql is no security. (The java service interface does not support security tests). Before running the test-api-security or test-service-http-security, uncomment the security declarations in restsql/WebContent/WEB-INF/web.xml, uncomment the security.privileges property in restsql-test/src/resources/properties/restsql-xxx.properties and redeploy the web app.
 
 Note: The following tests are expected to fail for PostgreSQL:
-	- ReadOnlyColumns/* because the restSQL doesn't support read-only columns for PostgreSQL (yet)
+	- ReadOnlyColumns/* because restSQL doesn't support read-only columns for PostgreSQL (yet)
 	- SingleTable/TestSelect_SingleTableWildcard_MultiRow_ByQuery.xml because the film_text table isn't part of the database schema/data scripts
 	- */TestConf_*.xml because of schema and data type naming differences with MySQL
+
+If you are using a custom database, set the system property org.restsql.testDatabase, for example:
+
+	ant -Dorg.restsql.testDatabase=mydbname test-service-http
 
 -------------------------------------------------------------------------------
 License

@@ -139,6 +139,7 @@
 			<arg value="${exclude}" />
 			<jvmarg value="-Dorg.restsql.baseUri=${org.restsql.baseUri}" />
 			<jvmarg value="-Dorg.restsql.properties=${org.restsql.properties}" />
+			<jvmarg value="-Dorg.restsql.testDatabase=${org.restsql.testDatabase}" />
 		</java>
 	</target>
 

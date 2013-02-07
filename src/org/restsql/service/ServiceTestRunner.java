@@ -26,8 +26,10 @@ import org.restsql.service.ServiceTestCase.InterfaceStyle;
 import org.restsql.service.testcase.ServiceTestCaseDefinition;
 
 public class ServiceTestRunner {
+	public final static String DEFAULT_TEST_DATABASE = "sakila";
 	public final static String EXCLUDE_NONE = "none";
 	public final static String FILE_TEST_LIST_ENDS_WITH = "_tests.txt";
+	public final static String KEY_TEST_DATABASE = "org.restsql.testDatabase";
 	public final static String SCOPE_ALL = "all";
 	public final static String TEST_CASE_DIR = "obj/bin/resources/xml/service/testcase";
 	public final static String TEST_RESULTS_BASE_DIR = "obj/test";
@@ -58,7 +60,11 @@ public class ServiceTestRunner {
 		final ServiceTestListener listener = new ServiceTestListener();
 		result.addListener(listener);
 
-		final Connection connection = Factory.getConnection("sakila");
+		String testDatabase = System.getProperty(KEY_TEST_DATABASE, DEFAULT_TEST_DATABASE);
+		if (!testDatabase.equals(DEFAULT_TEST_DATABASE)) {
+			System.out.println("Using non-default test database " + testDatabase);
+		}
+		final Connection connection = Factory.getConnection(testDatabase);
 
 		if (buildSuite(connection, suite, interfaceStyle, files)) {
 			suite.run(result);
