@@ -5,6 +5,7 @@
 		<sql> <![CDATA[ INSERT INTO actor (actor_id,first_name,last_name) VALUES (1000,'_Jack&','<Smith>') ]]> </sql>
 		<sql>INSERT INTO actor (actor_id,first_name,last_name) VALUES (1001,'_Jack''','"Johnson"')</sql>
 		<sql>INSERT INTO actor (actor_id,first_name,last_name) VALUES (1002,'John%','Heigher')</sql>
+		<sql>INSERT INTO actor (actor_id,first_name,last_name) VALUES (1003,'Johnson','Haywood')</sql>
 	</setup>
 	<step name="verify-xmlchars-escaped">
 		<request method="GET" uri="res/SingleTable?first_name=_Jack%25" />
@@ -20,9 +21,6 @@
 		</response>
 	</step>
 
-<!-- 
-Note: Wildcard escaping does not work yet
-
 	<step name="verify-wildcard-escaped">
 		<request method="GET" uri="res/SingleTable?first_name=John%5C%25" />
 		<response>
@@ -35,7 +33,6 @@ Note: Wildcard escaping does not work yet
 			</body>
 		</response>
 	</step>
- -->
  
 	<teardown>
 		<sql>DELETE FROM actor where actor_id between 1000 and 1100</sql>
