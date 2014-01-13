@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://restsql.org/schema ServiceTestCaseDefinition.xsd ">
+	xsi:schemaLocation="http://restsql.org/schema ../ServiceTestCaseDefinition.xsd ">
+	<setup>
+		<resetSequence table="actor" name="actor_actor_id_seq" nextval="1000"/>
+	</setup>
 	<step name="execute">
 		<request method="POST" uri="res/SingleTable">
 			<body>
 <![CDATA[
 <request>
-	<actor id="1000" first_name="_Jack" surname="Daniels" />
-	<actor id="1001" first_name="_Jack" surname="Smith" />
+	<actor first_name="_Jack" surname="Daniels" />
+	<actor first_name="_Jack" surname="Smith" />
 </request>
 ]]>
 		</body>
@@ -15,7 +18,10 @@
 		<response>
 			<body>
 <![CDATA[
-<writeResponse rowsAffected="2" />
+<writeResponse rowsAffected="2">
+	<actor id="1000" first_name="_Jack" surname="Daniels" />
+	<actor id="1001" first_name="_Jack" surname="Smith" />
+</writeResponse>
 ]]>
 			</body>
 		</response>

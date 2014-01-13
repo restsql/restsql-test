@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://restsql.org/schema ServiceTestCaseDefinition.xsd ">
+	xsi:schemaLocation="http://restsql.org/schema ../ServiceTestCaseDefinition.xsd ">
 	<step name="execute">
 		<request method="POST" uri="res/HierOneToMany">
 			<body>
@@ -15,7 +15,10 @@
 		<response>
 			<body>
 <![CDATA[
-<writeResponse rowsAffected="2" />
+<writeResponse rowsAffected="2">
+	<lang langId="100" langName="New Esperanto" />
+	<lang langId="101" langName="New Greek" />
+</writeResponse>
 ]]>
 				</body>
 		</response>
@@ -26,10 +29,8 @@
 			<body>
 <![CDATA[
 <readResponse>
-	<lang langId="100" langName="New Esperanto">
-	</lang>
-	<lang langId="101" langName="New Greek">
-	</lang>
+	<lang langId="100" langName="New Esperanto" />
+	<lang langId="101" langName="New Greek" />
 </readResponse>
 ]]>
 		</body>

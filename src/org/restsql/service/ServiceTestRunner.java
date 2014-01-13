@@ -91,17 +91,17 @@ public class ServiceTestRunner {
 		boolean success = true;
 		for (final File file : files) {
 			if (file != null && file.getPath().endsWith(".xml")) {
-				final String testCaseName = file.getName();
+				final String testCaseFileName = file.getName();
 				final String categoryName = file.getParentFile().getName();
 				if (interfaceStyle == InterfaceStyle.Java
-						&& (testCaseName.contains("ResourceNotFound") || testCaseName.contains("FormParam"))) {
+						&& (testCaseFileName.contains("ResourceNotFound") || testCaseFileName.contains("FormParam"))) {
 					// exclude
-					System.out.println("Skipping " + categoryName + "/" + testCaseName);
+					System.out.println("Skipping " + categoryName + "/" + testCaseFileName);
 				} else {
 					try {
 						final ServiceTestCaseDefinition definition = XmlHelper.unmarshallDefinition(file);
 						final ServiceTestCase testCase = new ServiceTestCase(interfaceStyle, categoryName,
-								testCaseName, connection, definition);
+								testCaseFileName, connection, definition);
 						suite.addTest(testCase);
 					} catch (final Exception exception) {
 						System.out.println("Error loading " + file);
@@ -199,6 +199,7 @@ public class ServiceTestRunner {
 						}
 					}
 				}
+				reader.close();
 			} else {
 				System.out.println("Cannot find test list " + scope);
 				System.exit(3);

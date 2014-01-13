@@ -13,28 +13,17 @@ import java.util.Scanner;
 
 import junit.framework.Test;
 
+import org.restsql.core.Factory;
+import org.restsql.core.SqlResourceException;
+import org.restsql.service.testcase.ResetSequence;
 import org.restsql.service.testcase.Step;
 
 public class ServiceTestCaseHelper {
 	static final int STATUS_NOT_APPLICABLE = -1;
 
-	static void executeSetupOrTeardownSql(final Connection connection, final String action,
-			final List<String> sqls) {
-		if (sqls != null && sqls.size() > 0) {
-			String trace = null;
-			try {
-				final Statement statement = connection.createStatement();
-				for (final String sql : sqls) {
-					trace = "\t[" + action + "] " + sql;
-					final int rowsAffected = statement.executeUpdate(sql);
-					System.out.println(trace + " (rows=" + rowsAffected + ")");
-				}
-				statement.close();
-			} catch (final SQLException exception) {
-				System.out.println("SQLException on " + action + ": " + exception.getMessage() + " \n"
-						+ trace);
-			}
-		}
+	private static String getFileNameFromTestCaseName(final String testCaseName) {
+		final String fileName = testCaseName.substring(0, testCaseName.lastIndexOf(".")) + ".log";
+		return fileName;
 	}
 
 	static void printRunningStep(final Step step) {
@@ -60,32 +49,65 @@ public class ServiceTestCaseHelper {
 			outputStream.close();
 			oldFile.delete();
 		} catch (final FileNotFoundException exception) {
-			System.out.println("Couldn't find log file: " + exception.toString());
+			// System.out.println("Couldn't find log file: " + exception.toString());
 		} catch (final IOException exception) {
 			System.out.println("Couldn't read log file: " + exception.toString());
 		}
 	}
 
-	private static String getFileNameFromTestCaseName(final String testCaseName) {
-		final String fileName = testCaseName.substring(0, testCaseName.lastIndexOf(".")) + ".log";
-		return fileName;
-	}
-
 	private final File traceFile;
+	private final String fullTestCaseFileName;
 
-	ServiceTestCaseHelper(final String testCaseName, final String testCaseCategory) {
+	public ServiceTestCaseHelper(final String testCaseCategory, final String testCaseFileName) {
 		final File dir = new File(ServiceTestRunner.TEST_RESULTS_DIR + "/" + testCaseCategory);
 		dir.mkdir();
-		final String fileName = getFileNameFromTestCaseName(testCaseName);
+		final String fileName = getFileNameFromTestCaseName(testCaseFileName);
 		traceFile = new File(dir.getPath() + "/" + fileName);
 		traceFile.delete();
+		fullTestCaseFileName = testCaseCategory + "/" + testCaseFileName;
+	}
+
+	void executeSetupOrTeardownSql(final Connection connection, final String action, final List<String> sqls) {
+		if (sqls != null && sqls.size() > 0) {
+			String trace = null;
+			try {
+				final Statement statement = connection.createStatement();
+				for (final String sql : sqls) {
+					trace = "\t[" + action + "] " + sql;
+					final int rowsAffected = statement.executeUpdate(sql);
+					System.out.println(trace + " (rows=" + rowsAffected + ")");
+				}
+				statement.close();
+			} catch (final SQLException exception) {
+				System.out.println("SQLException on " + action + ": " + exception.getMessage() + " \n"
+						+ trace);
+			}
+		}
+	}
+
+	void resetSequence(final Connection connection, final List<ResetSequence> resetSequences,
+			boolean printAction) {
+		if (resetSequences != null && resetSequences.size() > 0) {
+			try {
+				for (final ResetSequence resetSequence : resetSequences) {
+					Factory.getSequenceManager().setNextValue(connection, resetSequence.getTable(),
+							resetSequence.getName(), resetSequence.getNextval(), printAction);
+				}
+			} catch (final SqlResourceException exception) {
+				System.out.println("SQLException on reset sequence: " + exception.getMessage());
+			}
+		}
 	}
 
 	void writeResponseTrace(final Step step, final int expectedStatus, final int actualStatus,
 			final String expectedBody, final String actualBody) {
 		try {
+			boolean newFile = !traceFile.exists();
 			final FileOutputStream outputStream = new FileOutputStream(traceFile, true);
-			outputStream.write("\nstep ".getBytes());
+			if (newFile) {
+				outputStream.write(fullTestCaseFileName.getBytes());
+			}
+			outputStream.write("\n\nstep ".getBytes());
 			outputStream.write(step.getName().getBytes());
 			if (expectedStatus != STATUS_NOT_APPLICABLE) {
 				outputStream.write(" expected status: ".getBytes());

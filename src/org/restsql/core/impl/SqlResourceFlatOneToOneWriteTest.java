@@ -54,7 +54,7 @@ public class SqlResourceFlatOneToOneWriteTest extends SqlResourceTestBase {
 		// Delete test fixture
 		Request request = RequestFactoryHelper.getRequest(Request.Type.DELETE, sqlResource.getName(), null, new String[] { "year",
 				"2012" });
-		final int rowsAffected = sqlResource.write(request);
+		final int rowsAffected = sqlResource.write(request).getRowsAffected();
 		assertEquals(2, rowsAffected);
 
 		// Verify one preserved
@@ -69,7 +69,7 @@ public class SqlResourceFlatOneToOneWriteTest extends SqlResourceTestBase {
 		// Update test fixture
 		Request request = RequestFactoryHelper.getRequest(Request.Type.DELETE, sqlResource.getName(), new String[] { "film_id",
 				"5000" }, null);
-		final int rowsAffected = sqlResource.write(request);
+		final int rowsAffected = sqlResource.write(request).getRowsAffected();
 		assertEquals(2, rowsAffected);
 
 		// Verify updates
@@ -85,7 +85,7 @@ public class SqlResourceFlatOneToOneWriteTest extends SqlResourceTestBase {
 		Request request = RequestFactoryHelper.getRequest(Request.Type.INSERT, sqlResource.getName(), null, new String[] {
 				"film_id", "5003", "title", "BLESSED SUN", "year", "2011", "language_id", "1", "rental_duration", "0",
 				"rental_rate", "0", "replacement_cost", "0", "film_rating_id", "4", "stars", "5" });
-		final int rowsAffected = sqlResource.write(request);
+		final int rowsAffected = sqlResource.write(request).getRowsAffected();
 		assertEquals(2, rowsAffected);
 
 		// Verify updates
@@ -101,7 +101,7 @@ public class SqlResourceFlatOneToOneWriteTest extends SqlResourceTestBase {
 		// Update test fixture
 		Request request = RequestFactoryHelper.getRequest(Request.Type.UPDATE, sqlResource.getName(), new String[] { "year", "2012",
 				"stars", "1" }, new String[] { "year", "2013", "stars", "5" });
-		final int rowsAffected = sqlResource.write(request);
+		final int rowsAffected = sqlResource.write(request).getRowsAffected();
 		assertEquals(4, rowsAffected);
 
 		// Verify updates
@@ -118,7 +118,7 @@ public class SqlResourceFlatOneToOneWriteTest extends SqlResourceTestBase {
 		// Update test fixture
 		Request request = RequestFactoryHelper.getRequest(Request.Type.UPDATE, sqlResource.getName(), new String[] { "film_id",
 				"5000" }, new String[] { "year", "2010", "title", "ESCAPE FROM YESTERDAY", "stars", "2" });
-		final int rowsAffected = sqlResource.write(request);
+		final int rowsAffected = sqlResource.write(request).getRowsAffected();
 		assertEquals(2, rowsAffected);
 
 		// Verify updates

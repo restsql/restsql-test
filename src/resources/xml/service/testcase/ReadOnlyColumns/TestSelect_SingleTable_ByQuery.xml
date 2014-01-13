@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://restsql.org/schema ServiceTestCaseDefinition.xsd ">
+	xsi:schemaLocation="http://restsql.org/schema ../ServiceTestCaseDefinition.xsd ">
 	<step name="execute">
 		<request method="GET" uri="res/SingleTableFuncCols?surname=S%25" />
 		<response>
 			<body>
 <![CDATA[
 <readResponse>
-	<actor id="9" first_name="JOE" surname="SWANK" surname_length="5" surname_initial="S" timestamp_updated="2006-02-15 04:34:33.0" />
-	<actor id="24" first_name="CAMERON" surname="STREEP" surname_length="6" surname_initial="S" timestamp_updated="2006-02-15 04:34:33.0" />
-	<actor id="31" first_name="SISSY" surname="SOBIESKI" surname_length="8" surname_initial="S" timestamp_updated="2006-02-15 04:34:33.0" />
-	<actor id="44" first_name="NICK" surname="STALLONE" surname_length="8" surname_initial="S" timestamp_updated="2006-02-15 04:34:33.0" />
-	<actor id="78" first_name="GROUCHO" surname="SINATRA" surname_length="7" surname_initial="S" timestamp_updated="2006-02-15 04:34:33.0" />
-	<actor id="116" first_name="DAN" surname="STREEP" surname_length="6" surname_initial="S" timestamp_updated="2006-02-15 04:34:33.0" />
-	<actor id="180" first_name="JEFF" surname="SILVERSTONE" surname_length="11" surname_initial="S" timestamp_updated="2006-02-15 04:34:33.0" />
-	<actor id="192" first_name="JOHN" surname="SUVARI" surname_length="6" surname_initial="S" timestamp_updated="2006-02-15 04:34:33.0" />
-	<actor id="195" first_name="JAYNE" surname="SILVERSTONE" surname_length="11" surname_initial="S" timestamp_updated="2006-02-15 04:34:33.0" />
+	<actor id="9" first_name="JOE" surname="SWANK" surname_length="5" surname_initial="S" />
+	<actor id="24" first_name="CAMERON" surname="STREEP" surname_length="6" surname_initial="S" />
+	<actor id="31" first_name="SISSY" surname="SOBIESKI" surname_length="8" surname_initial="S" />
+	<actor id="44" first_name="NICK" surname="STALLONE" surname_length="8" surname_initial="S" />
+	<actor id="78" first_name="GROUCHO" surname="SINATRA" surname_length="7" surname_initial="S" />
+	<actor id="116" first_name="DAN" surname="STREEP" surname_length="6" surname_initial="S" />
+	<actor id="180" first_name="JEFF" surname="SILVERSTONE" surname_length="11" surname_initial="S" />
+	<actor id="192" first_name="JOHN" surname="SUVARI" surname_length="6" surname_initial="S" />
+	<actor id="195" first_name="JAYNE" surname="SILVERSTONE" surname_length="11" surname_initial="S" />
 </readResponse>
 ]]>
 			</body>

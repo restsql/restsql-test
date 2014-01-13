@@ -15,9 +15,9 @@ public class RequestFactoryHelper {
 	public static Request getRequest(final Request.Type type, final String sqlResource,
 			final String[] resourceIds, final String[] params, final String[][] childrenParamsArray)
 			throws InvalidRequestException {
-		List<List<NameValuePair>> childrenParams = null;
+		List<List<RequestValue>> childrenParams = null;
 		if (childrenParamsArray != null) {
-			childrenParams = new ArrayList<List<NameValuePair>>(childrenParamsArray.length);
+			childrenParams = new ArrayList<List<RequestValue>>(childrenParamsArray.length);
 			for (final String[] childrenParam : childrenParamsArray) {
 				childrenParams.add(getNameValuePairs(childrenParam));
 			}
@@ -40,11 +40,11 @@ public class RequestFactoryHelper {
 
 	// Private utils
 
-	private static List<NameValuePair> getNameValuePairs(final String[] array) throws InvalidRequestException {
+	private static List<RequestValue> getNameValuePairs(final String[] array) throws InvalidRequestException {
 		if (array != null) {
-			final List<NameValuePair> pairs = new ArrayList<NameValuePair>(array.length / 2);
+			final List<RequestValue> pairs = new ArrayList<RequestValue>(array.length / 2);
 			for (int i = 0; i < array.length - 1; i = i + 2) {
-				final NameValuePair pair = new NameValuePair(array[i], array[i + 1]);
+				final RequestValue pair = new RequestValue(array[i], array[i + 1]);
 				pairs.add(pair);
 			}
 			return pairs;

@@ -6,8 +6,8 @@
 			<body>
 <![CDATA[
 { "langs": [
-		{ "langId": "100", "langName": "New Esperanto" },
-		{ "langId": "101", "langName": "New Greek" }
+		{ "langId": 100, "langName": "New Esperanto" },
+		{ "langId": 101, "langName": "New Greek" }
 	]
 }
 ]]>
@@ -16,7 +16,12 @@
 		<response>
 			<body>
 <![CDATA[
-{ "rowsAffected": 2 }
+{ "rowsAffected": 2,
+	"langs": [
+		{ "langId": 100, "langName": "New Esperanto" },
+		{ "langId": 101, "langName": "New Greek" }
+	]
+}
 ]]>
 				</body>
 		</response>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://restsql.org/schema ServiceTestCaseDefinition.xsd ">
+	xsi:schemaLocation="http://restsql.org/schema ../ServiceTestCaseDefinition.xsd ">
 	<step name="execute">
 		<request method="GET" uri="res/NeverGonnaFindThisOne" />
 		<response status="404">
-			<body>SQL Resource NeverGonnaFindThisOne not found - expected /restsql/eclipse-workspace/restsql-test/src/resources/xml/sqlresources/NeverGonnaFindThisOne.xml</body>
+			<body>SQL Resource NeverGonnaFindThisOne not found - expected /opt/restsql/code/restsql-test/src/resources/xml/sqlresources/NeverGonnaFindThisOne.xml</body>
 		</response>
 	</step>
 </tc:testcase>

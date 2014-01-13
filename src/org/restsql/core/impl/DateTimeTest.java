@@ -59,7 +59,7 @@ public class DateTimeTest extends SqlResourceTestBase {
 		final Request request = RequestFactoryHelper.getRequest(Request.Type.DELETE, sqlResource.getName(),
 				new String[] { "timestamp", SOME_TIMESTAMP }, null);
 
-		int rowsAffected = sqlResource.write(request);
+		int rowsAffected = sqlResource.write(request).getRowsAffected();
 		assertEquals(1, rowsAffected);
 	}
 
@@ -68,7 +68,7 @@ public class DateTimeTest extends SqlResourceTestBase {
 		Request request = RequestFactoryHelper.getRequest(Request.Type.INSERT, sqlResource.getName(), null,
 				new String[] { "id", "1003", "time", SOME_TIME, "timestamp", SOME_TIMESTAMP, "date",
 						SOME_DATE, "datetime", SOME_TIMESTAMP });
-		int rowsAffected = sqlResource.write(request);
+		int rowsAffected = sqlResource.write(request).getRowsAffected();
 		assertEquals(1, rowsAffected);
 
 		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), new String[] {
@@ -131,7 +131,7 @@ public class DateTimeTest extends SqlResourceTestBase {
 		Request request = RequestFactoryHelper.getRequest(Request.Type.UPDATE, sqlResource.getName(),
 				new String[] { "timestamp", SOME_TIMESTAMP }, new String[] { "time", SOME_OTHER_TIME,
 						"timestamp", SOME_OTHER_TIMESTAMP, "date", SOME_OTHER_DATE, "datetime", SOME_OTHER_TIMESTAMP });
-		int rowsAffected = sqlResource.write(request);
+		int rowsAffected = sqlResource.write(request).getRowsAffected();
 		RequestFactoryHelper.logRequest();
 		assertEquals(1, rowsAffected);
 		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), new String[] {

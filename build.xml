@@ -38,7 +38,7 @@
 		</copy>
 
 		<!-- Compile tests -->
-		<javac srcdir="src" destdir="obj/bin" classpath="${test-compile.classpath}" debug="true" />
+		<javac srcdir="src" destdir="obj/bin" classpath="${test-compile.classpath}" includeantruntime="false" debug="true" />
 	</target>
 
 	<target name="exec-examples" description="executes sample programs">

@@ -24,7 +24,7 @@ public class AuthorizerImplTest extends BaseAuthorizerTest {
 		Authorizer authorizer = SecurityFactory.getAuthorizer();
 		String dump = authorizer.dumpConfig();
 		assertTrue("enabled", authorizer.isAuthorizationEnabled());
-		String expected = "Authorization enabled -- Loaded privileges from /restsql/eclipse-workspace/restsql-test/src/resources/properties/privileges.properties\n"
+		String expected = "Authorization enabled -- Loaded privileges from /opt/restsql/code/restsql-test/src/resources/properties/privileges.properties\n"
 				+ "\n"
 				+ "[SqlResource,*].[requestType,*]=role\n"
 				+ "---------------------------------------------------------------------------\n"

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://restsql.org/schema ServiceTestCaseDefinition.xsd ">
+	xsi:schemaLocation="http://restsql.org/schema ../ServiceTestCaseDefinition.xsd ">
 	<setup>
 		<sql>INSERT INTO datetime (id, time, timestamp, date, datetime) VALUES (1000, '16:54:00', '2011-07-23 16:54:00', '2011-07-23', '2011-07-23 16:54:00')</sql>
 		<sql>INSERT INTO datetime (id, time, timestamp, date, datetime) VALUES (1001, '10:54:00', '2011-07-22 10:54:00', '2011-07-22', '2011-07-22 10:54:00')</sql>

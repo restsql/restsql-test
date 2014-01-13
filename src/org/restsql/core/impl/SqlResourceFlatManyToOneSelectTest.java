@@ -17,6 +17,7 @@ import org.restsql.core.Request;
 import org.restsql.core.RequestFactoryHelper;
 import org.restsql.core.SqlResourceException;
 import org.restsql.core.Factory.SqlResourceFactoryException;
+import org.restsql.core.impl.serial.XmlResponseSerializer;
 
 public class SqlResourceFlatManyToOneSelectTest extends SqlResourceTestBase {
 

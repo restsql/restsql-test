@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://restsql.org/schema ServiceTestCaseDefinition.xsd ">
+	xsi:schemaLocation="http://restsql.org/schema ../ServiceTestCaseDefinition.xsd ">
 	<setup>
+		<resetSequence table="film" name="film_film_id_seq" nextval="5003"/>
 		<sql>INSERT INTO language (language_id,name) VALUES (100,'New Esperanto')</sql>
 		<sql>INSERT INTO language (language_id,name) VALUES (101,'New Greek')</sql>
 	</setup>
@@ -10,16 +11,16 @@
 			<body>
 <![CDATA[
 { "langs": [
-		{ "langId": "100", "langName": "New Esperanto",
+		{ "langId": 100, "langName": "New Esperanto",
 			"movies": [
-				{ "year": "2011", "title": "BLESSED SUN", "film_id": "5003" },
-				{ "year": "2012", "title": "WICKED SUN", "film_id": "5004" }
+				{ "title": "BLESSED SUN", "year": 2011 },
+				{ "year": 2012, "title": "WICKED SUN" }
 			]
 		},
-		{ "langId": "101", "langName": "New Greek",
+		{ "langId": 101,
 			"movies": [
-				{ "year": "2011", "title": "BLESSED MOON", "film_id": "5005" },
-				{ "year": "2011", "title": "WICKED MOON", "film_id": "5006" }
+				{ "year": 2011, "title": "BLESSED MOON" },
+				{ "year": 2013, "title": "WICKED MOON" }
 			]
 		}
 	]
@@ -30,7 +31,22 @@
 		<response>
 			<body>
 <![CDATA[
-{ "rowsAffected": 4 }
+{ "rowsAffected": 4,
+	"langs": [
+		{ "langId": 100,
+			"movies": [
+				{ "film_id": 5003, "title": "BLESSED SUN", "year": 2011 },
+				{ "film_id": 5004, "title": "WICKED SUN", "year": 2012 }
+			]
+		},
+		{ "langId": 101,
+			"movies": [
+				{ "film_id": 5005, "title": "BLESSED MOON", "year": 2011 },
+				{ "film_id": 5006, "title": "WICKED MOON", "year": 2013 }
+			]
+		}
+	]
+}
 ]]>
 				</body>
 		</response>
@@ -50,7 +66,7 @@
 		{ "langId": 101, "langName": "New Greek",
 			"movies": [
 				{ "year": 2011, "title": "BLESSED MOON", "film_id": 5005 },
-				{ "year": 2011, "title": "WICKED MOON", "film_id": 5006 }
+				{ "year": 2013, "title": "WICKED MOON", "film_id": 5006 }
 			]
 		}
 	]

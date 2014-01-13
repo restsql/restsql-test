@@ -2,7 +2,7 @@
 package org.restsql.core.impl;
 
 import org.restsql.core.InvalidRequestException;
-import org.restsql.core.NameValuePair;
+import org.restsql.core.RequestValue;
 import org.restsql.core.Request;
 import org.restsql.core.SqlResourceException;
 import org.restsql.core.Trigger;
@@ -46,7 +46,7 @@ public class SingleTableTrigger implements Trigger {
 	// Private utils
 	
 	private void validateParams(final Request request) throws SqlResourceException {
-		for (final NameValuePair param : request.getParameters()) {
+		for (final RequestValue param : request.getParameters()) {
 			if (param.getName().equals("first_name")) {
 				if (param.getValue() != null && param.getValue().length() > 25) {
 					throw new InvalidRequestException("First name length must be less or equal to 25 characters");

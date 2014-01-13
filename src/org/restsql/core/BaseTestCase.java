@@ -1,8 +1,8 @@
 /* Copyright (c) restSQL Project Contributors. Licensed under MIT. */
 package org.restsql.core;
 
-import org.restsql.core.impl.SqlResourceMetaDataMySql;
-import org.restsql.core.impl.SqlResourceMetaDataPostgreSql;
+import org.restsql.core.impl.mysql.MySqlSqlResourceMetaData;
+import org.restsql.core.impl.postgresql.PostgreSqlSqlResourceMetaData;
 
 
 public class BaseTestCase {
@@ -23,12 +23,12 @@ public class BaseTestCase {
 		}
 	}
 	
-	protected DatabaseType getDatabaseType() {
+	public DatabaseType getDatabaseType() {
 		String metaDataClass = Config.properties.getProperty(Config.KEY_SQL_RESOURCE_METADATA,
 				Config.DEFAULT_SQL_RESOURCE_METADATA);
-		if (metaDataClass.equals(SqlResourceMetaDataMySql.class.getName())) {
+		if (metaDataClass.equals(MySqlSqlResourceMetaData.class.getName())) {
 			return DatabaseType.MySQL;
-		} else 	if (metaDataClass.equals(SqlResourceMetaDataPostgreSql.class.getName())) {
+		} else 	if (metaDataClass.equals(PostgreSqlSqlResourceMetaData.class.getName())) {
 			return DatabaseType.PostgreSql;
 		} else {
 			throw new RuntimeException("metaDataClass " + metaDataClass + " unrecognized");

@@ -2,6 +2,7 @@
 package org.restsql.core.impl;
 
 import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -12,16 +13,18 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.restsql.core.Factory;
+import org.restsql.core.Factory.SqlResourceFactoryException;
 import org.restsql.core.InvalidRequestException;
 import org.restsql.core.Request;
 import org.restsql.core.RequestFactoryHelper;
 import org.restsql.core.SqlResourceException;
-import org.restsql.core.Factory.SqlResourceFactoryException;
+import org.restsql.core.WriteResponse;
 
 public class SqlResourceHierOneToManyWriteTest extends SqlResourceTestBase {
 
+	@Override
 	@Before
-	public void setUp() throws SQLException, SqlResourceException{
+	public void setUp() throws SQLException, SqlResourceException {
 		super.setUp();
 		sqlResource = Factory.getSqlResource("HierOneToMany");
 		final Statement statement = connection.createStatement();
@@ -42,6 +45,7 @@ public class SqlResourceHierOneToManyWriteTest extends SqlResourceTestBase {
 		statement.close();
 	}
 
+	@Override
 	@After
 	public void tearDown() throws SQLException {
 		super.tearDown();
@@ -51,13 +55,52 @@ public class SqlResourceHierOneToManyWriteTest extends SqlResourceTestBase {
 		statement.close();
 	}
 
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testExecDelete_Children_MultiRow() throws SqlResourceFactoryException, SqlResourceException,
+			InvalidRequestException {
+		// Update test fixture
+		Request request = RequestFactoryHelper.getRequest(Request.Type.DELETE, sqlResource.getName(),
+				new String[] { "langId", "101" }, null, new String[][] { { "film_id", "5001" },
+						{ "film_id", "5002" } });
+		final int rowsAffected = sqlResource.write(request).getRowsAffected();
+		assertEquals(2, rowsAffected);
+
+		// Verify update
+		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), new String[] {
+				"langId", "101" }, null);
+		final List<Map<String, Object>> results = sqlResource.read(request);
+		assertEquals(1, results.size());
+		final List<Map<String, Object>> childRows = (List<Map<String, Object>>) results.get(0).get("movies");
+		assertEquals(0, childRows.size());
+	}
+
+	@Test
+	public void testExecDelete_Parent_MultiRow_NoChildren() throws SqlResourceFactoryException,
+			SqlResourceException, InvalidRequestException {
+		// Update test fixture
+		final Request request = RequestFactoryHelper.getRequest(Request.Type.DELETE, sqlResource.getName(),
+				null, new String[] { "langName", "%Latin" }, null);
+		final int rowsAffected = sqlResource.write(request).getRowsAffected();
+		assertEquals(2, rowsAffected);
+	}
+
+	@Test(expected = SqlResourceException.class)
+	public void testExecDelete_Parent_MultiRow_WithChildren() throws SqlResourceFactoryException,
+			SqlResourceException, InvalidRequestException {
+		// Update test fixture
+		final Request request = RequestFactoryHelper.getRequest(Request.Type.DELETE, sqlResource.getName(),
+				null, new String[] { "langName", "New%" }, null);
+		sqlResource.write(request).getRowsAffected();
+	}
+
 	@Test
 	public void testExecDelete_Parent_SingleRow_NoChildren() throws SqlResourceFactoryException,
 			SqlResourceException, InvalidRequestException {
 		// Update test fixture
-		Request request = RequestFactoryHelper.getRequest(Request.Type.DELETE, sqlResource.getName(), new String[] {
-				"langId", "102" }, null);
-		final int rowsAffected = sqlResource.write(request);
+		Request request = RequestFactoryHelper.getRequest(Request.Type.DELETE, sqlResource.getName(),
+				new String[] { "langId", "102" }, null);
+		final int rowsAffected = sqlResource.write(request).getRowsAffected();
 		assertEquals(1, rowsAffected);
 
 		// Verify update
@@ -71,9 +114,9 @@ public class SqlResourceHierOneToManyWriteTest extends SqlResourceTestBase {
 	public void testExecDelete_Parent_SingleRow_WithChildren() throws SqlResourceFactoryException,
 			SqlResourceException, InvalidRequestException {
 		// Update test fixture
-		Request request = RequestFactoryHelper.getRequest(Request.Type.DELETE, sqlResource.getName(), new String[] {
-				"langId", "101" }, null);
-		final int rowsAffected = sqlResource.write(request);
+		Request request = RequestFactoryHelper.getRequest(Request.Type.DELETE, sqlResource.getName(),
+				new String[] { "langId", "101" }, null);
+		final int rowsAffected = sqlResource.write(request).getRowsAffected();
 		assertEquals(3, rowsAffected);
 
 		// Verify update
@@ -83,91 +126,152 @@ public class SqlResourceHierOneToManyWriteTest extends SqlResourceTestBase {
 		assertEquals(0, results.size());
 	}
 
-	@Test(expected = SqlResourceException.class)
-	public void testExecDelete_Parent_MultiRow_WithChildren() throws SqlResourceFactoryException,
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testExecInsert_Children_MultiRow_WithSequence() throws SqlResourceFactoryException,
 			SqlResourceException, InvalidRequestException {
-		// Update test fixture
-		Request request = RequestFactoryHelper.getRequest(Request.Type.DELETE, sqlResource.getName(), null, new String[] {
-				"langName", "New%" }, null);
-		sqlResource.write(request);
-	}
+		// Reset sequence
+		Factory.getSequenceManager().setNextValue(connection, "film", "film_film_id_seq", 5003, false);
 
-	@Test
-	public void testExecDelete_Parent_MultiRow_NoChildren() throws SqlResourceFactoryException, SqlResourceException,
-			InvalidRequestException {
-		// Update test fixture
-		Request request = RequestFactoryHelper.getRequest(Request.Type.DELETE, sqlResource.getName(), null, new String[] {
-				"langName", "%Latin" }, null);
-		int rowsAffected = sqlResource.write(request);
-		assertEquals(2, rowsAffected);
-	}
+		// Insert test fixture
+		Request request = RequestFactoryHelper.getRequest(Request.Type.INSERT, sqlResource.getName(),
+				new String[] { "langId", "102" }, null, new String[][] {
+						{ "title", "BLESSED SUN", "year", "2011", "rental_duration", "0", "rental_rate", "0",
+								"replacement_cost", "0" },
+						{ "title", "WICKED SUN", "year", "2011", "rental_duration", "0", "rental_rate", "0",
+								"replacement_cost", "0" } });
+		final WriteResponse response = sqlResource.write(request);
+		assertEquals(2, response.getRowsAffected());
+		AssertionHelper.assertResponse(request, 2, new Object[] {
+				"langId",
+				new Integer(102),
+				"movies",
+				new Object[][] {
+						{ "film_id", new Integer(5003), "title", "BLESSED SUN", "year", "2011" },
+						{ "film_id", new Integer(5004), "title", "WICKED SUN", "year", "2011" } } },
+				response);
 
-	@SuppressWarnings("unchecked")
-	@Test
-	public void testExecDelete_Children_MultiRow() throws SqlResourceFactoryException, SqlResourceException,
-			InvalidRequestException {
-		// Update test fixture
-		Request request = RequestFactoryHelper
-				.getRequest(Request.Type.DELETE, sqlResource.getName(),
-						new String[] { "langId", "101" }, null, new String[][] { { "film_id", "5001" },
-								{ "film_id", "5002" } });
-		final int rowsAffected = sqlResource.write(request);
-		assertEquals(2, rowsAffected);
-
-		// Verify update
-		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), new String[] {
-				"langId", "101" }, null);
-		final List<Map<String, Object>> results = sqlResource.read(request);
-		assertEquals(1, results.size());
-		List<Map<String, Object>> childRows = (List<Map<String, Object>>) results.get(0).get("movies");
-		assertEquals(0, childRows.size());
-	}
-
-	@SuppressWarnings("unchecked")
-	@Test
-	public void testExecInsert_Children_MultiRow() throws SqlResourceFactoryException, SqlResourceException,
-			InvalidRequestException {
-		// Update test fixture
-		Request request = RequestFactoryHelper.getRequest(Request.Type.INSERT, sqlResource.getName(), new String[] {
-				"langId", "102" }, null, new String[][] { { "film_id", "5003", "title", "BLESSED SUN",
-				"year", "2011", "rental_duration", "0", "rental_rate", "0", "replacement_cost", "0" } });
-		int rowsAffected = sqlResource.write(request);
-		assertEquals(1, rowsAffected);
-		request = RequestFactoryHelper.getRequest(Request.Type.INSERT, sqlResource.getName(), new String[] {
-				"langId", "102" }, null, new String[][] { { "film_id", "5004", "title", "WICKED SUN",
-				"year", "2011", "rental_duration", "0", "rental_rate", "0", "replacement_cost", "0" } });
-		rowsAffected = sqlResource.write(request);
-		assertEquals(1, rowsAffected);
-
-		// Verify update
+		// Verify insert
 		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), new String[] {
 				"langId", "102" }, null);
 		final List<Map<String, Object>> results = sqlResource.read(request);
 		assertEquals(1, results.size());
-		List<Map<String, Object>> childRows = (List<Map<String, Object>>) results.get(0).get("movies");
+		final List<Map<String, Object>> childRows = (List<Map<String, Object>>) results.get(0).get("movies");
 		AssertionHelper.assertFilmBasics(childRows, 5003, "BLESSED SUN", 2011);
 		AssertionHelper.assertFilmBasics(childRows, 5004, "WICKED SUN", 2011);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void testExecUpdate_Parent_SingleRow() throws SqlResourceFactoryException, SqlResourceException,
-			InvalidRequestException {
-		// Update test fixture
-		Request request = RequestFactoryHelper.getRequest(Request.Type.UPDATE, sqlResource.getName(), new String[] {
-				"langId", "100" }, new String[] { "langName", "Greater Esperanto" });
-		final int rowsAffected = sqlResource.write(request);
-		assertEquals(1, rowsAffected);
+	public void testExecInsert_Children_MultiRow_WithoutSequence() throws SqlResourceFactoryException,
+			SqlResourceException, InvalidRequestException {
+		// Insert test fixture
+		Request request = RequestFactoryHelper.getRequest(Request.Type.INSERT, sqlResource.getName(),
+				new String[] { "langId", "102" }, null, new String[][] {
+						{ "film_id", "5003", "title", "BLESSED SUN", "year", "2011", "rental_duration", "0",
+								"rental_rate", "0", "replacement_cost", "0" },
+						{ "film_id", "5004", "title", "WICKED SUN", "year", "2011", "rental_duration", "0",
+								"rental_rate", "0", "replacement_cost", "0" } });
+		final WriteResponse response = sqlResource.write(request);
+		assertEquals(2, response.getRowsAffected());
+		AssertionHelper.assertResponse(request, 2, new Object[] {
+				"langId",
+				new Integer(102),
+				"movies",
+				new Object[][] { { "film_id", new Integer(5003), "title", "BLESSED SUN", "year", "2011" },
+						{ "film_id", new Integer(5004), "title", "WICKED SUN", "year", "2011" } } }, response);
 
-		// Verify update
+		// Verify insert
 		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), new String[] {
-				"langId", "100" }, null);
+				"langId", "102" }, null);
 		final List<Map<String, Object>> results = sqlResource.read(request);
 		assertEquals(1, results.size());
-		AssertionHelper.assertLanguageHierarchical(results.get(0), 100, "Greater Esperanto");
-		List<Map<String, Object>> childRows = (List<Map<String, Object>>) results.get(0).get("movies");
-		assertEquals(1, childRows.size());
-		AssertionHelper.assertFilmBasics(childRows.get(0), 5000, "ESCAPE FROM TOMORROW", 2011);
+		final List<Map<String, Object>> childRows = (List<Map<String, Object>>) results.get(0).get("movies");
+		AssertionHelper.assertFilmBasics(childRows, 5003, "BLESSED SUN", 2011);
+		AssertionHelper.assertFilmBasics(childRows, 5004, "WICKED SUN", 2011);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testExecInsert_Children_MultiRow_WithSeqeunce() throws SqlResourceFactoryException,
+			SqlResourceException, InvalidRequestException {
+		// Reset sequence
+		Factory.getSequenceManager().setNextValue(connection, "film", "film_film_id_seq", 5003, false);
+
+		// Insert test fixture
+		Request request = RequestFactoryHelper.getRequest(Request.Type.INSERT, sqlResource.getName(),
+				new String[] { "langId", "102" }, null, new String[][] {
+						{ "title", "BLESSED SUN", "year", "2011", "rental_duration", "0", "rental_rate", "0",
+								"replacement_cost", "0" },
+						{ "title", "WICKED SUN", "year", "2011", "rental_duration", "0", "rental_rate", "0",
+								"replacement_cost", "0" } });
+		final WriteResponse response = sqlResource.write(request);
+		assertEquals(2, response.getRowsAffected());
+		AssertionHelper.assertResponse(request, 2, new Object[] {
+				"langId",
+				new Integer(102),
+				"movies",
+				new Object[][] {
+						{ "film_id", Integer.valueOf(5003), "title", "BLESSED SUN", "year", "2011" },
+						{ "film_id", Integer.valueOf(5004), "title", "WICKED SUN", "year", "2011" } } },
+				response);
+
+		// Verify insert
+		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), new String[] {
+				"langId", "102" }, null);
+		final List<Map<String, Object>> results = sqlResource.read(request);
+		assertEquals(1, results.size());
+		final List<Map<String, Object>> childRows = (List<Map<String, Object>>) results.get(0).get("movies");
+		AssertionHelper.assertFilmBasics(childRows, 5003, "BLESSED SUN", 2011);
+		AssertionHelper.assertFilmBasics(childRows, 5004, "WICKED SUN", 2011);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testExecInsert_Parent_WithoutSequence() throws SqlResourceFactoryException,
+			SqlResourceException, InvalidRequestException {
+		// Insert test fixture
+		Request request = RequestFactoryHelper.getRequest(Request.Type.INSERT, sqlResource.getName(), null,
+				new String[] { "langId", "104", "langName", "Old Esperanto" });
+		final WriteResponse response = sqlResource.write(request);
+		assertEquals(1, response.getRowsAffected());
+		AssertionHelper.assertResponse(request, 1, new Object[] { "langId", new Integer(104), "langName",
+				"Old Esperanto" }, response);
+
+		// Verify insert
+		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), new String[] {
+				"langId", "104" }, null);
+		final List<Map<String, Object>> results = sqlResource.read(request);
+		assertEquals(1, results.size());
+		AssertionHelper.assertLanguageHierarchical(results.get(0), 104, "Old Esperanto");
+		final List<Map<String, Object>> childRows = (List<Map<String, Object>>) results.get(0).get("movies");
+		assertEquals(0, childRows.size());
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testExecInsert_Parent_WithSequence() throws SqlResourceFactoryException,
+			SqlResourceException, InvalidRequestException {
+		// Reset sequence
+		Factory.getSequenceManager().setNextValue(connection, "language", "language_language_id_seq", 104,
+				false);
+
+		// Insert test fixture
+		Request request = RequestFactoryHelper.getRequest(Request.Type.INSERT, sqlResource.getName(), null,
+				new String[] { "langName", "Old Esperanto" });
+		final WriteResponse response = sqlResource.write(request);
+		assertEquals(1, response.getRowsAffected());
+		AssertionHelper.assertResponse(request, 1, new Object[] { "langId", Integer.valueOf(104), "langName",
+				"Old Esperanto" }, response);
+
+		// Verify insert
+		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), new String[] {
+				"langId", "104" }, null);
+		final List<Map<String, Object>> results = sqlResource.read(request);
+		assertEquals(1, results.size());
+		AssertionHelper.assertLanguageHierarchical(results.get(0), 104, "Old Esperanto");
+		final List<Map<String, Object>> childRows = (List<Map<String, Object>>) results.get(0).get("movies");
+		assertEquals(0, childRows.size());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -175,11 +279,10 @@ public class SqlResourceHierOneToManyWriteTest extends SqlResourceTestBase {
 	public void testExecUpdate_Children_SingleRow() throws SqlResourceFactoryException, SqlResourceException,
 			InvalidRequestException {
 		// Update test fixture
-		Request request = RequestFactoryHelper
-				.getRequest(Request.Type.UPDATE, sqlResource.getName(),
-						new String[] { "langId", "101" }, null, new String[][] { { "film_id", "5001",
-								"title", "BLOOD BLUE" } });
-		final int rowsAffected = sqlResource.write(request);
+		Request request = RequestFactoryHelper.getRequest(Request.Type.UPDATE, sqlResource.getName(),
+				new String[] { "langId", "101" }, null, new String[][] { { "film_id", "5001", "title",
+						"BLOOD BLUE" } });
+		final int rowsAffected = sqlResource.write(request).getRowsAffected();
 		assertEquals(1, rowsAffected);
 
 		// Verify update
@@ -188,7 +291,7 @@ public class SqlResourceHierOneToManyWriteTest extends SqlResourceTestBase {
 		final List<Map<String, Object>> results = sqlResource.read(request);
 		assertEquals(1, results.size());
 		AssertionHelper.assertLanguageHierarchical(results.get(0), 101, "New Greek");
-		List<Map<String, Object>> childRows = (List<Map<String, Object>>) results.get(0).get("movies");
+		final List<Map<String, Object>> childRows = (List<Map<String, Object>>) results.get(0).get("movies");
 		assertEquals(2, childRows.size());
 		AssertionHelper.assertFilmBasics(childRows.get(0), 5001, "BLOOD BLUE", 2012);
 		AssertionHelper.assertFilmBasics(childRows.get(1), 5002, "THE DARKENING", 2012);
@@ -196,37 +299,17 @@ public class SqlResourceHierOneToManyWriteTest extends SqlResourceTestBase {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void testExecInsert_Parent() throws SqlResourceFactoryException, SqlResourceException,
-			InvalidRequestException {
-		// Update test fixture
-		Request request = RequestFactoryHelper.getRequest(Request.Type.INSERT, sqlResource.getName(), null, new String[] {
-				"langId", "104", "langName", "Old Esperanto" });
-		final int rowsAffected = sqlResource.write(request);
-		assertEquals(1, rowsAffected);
-
-		// Verify update
-		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), new String[] {
-				"langId", "104" }, null);
-		final List<Map<String, Object>> results = sqlResource.read(request);
-		assertEquals(1, results.size());
-		AssertionHelper.assertLanguageHierarchical(results.get(0), 104, "Old Esperanto");
-		List<Map<String, Object>> childRows = (List<Map<String, Object>>) results.get(0).get("movies");
-		assertEquals(0, childRows.size());
-	}
-
-	@SuppressWarnings("unchecked")
-	@Test
 	public void testExecUpdate_Parent_MultiRow() throws SqlResourceFactoryException, SqlResourceException,
 			InvalidRequestException {
 		// Update test fixture
-		Request request = RequestFactoryHelper.getRequest(Request.Type.UPDATE, sqlResource.getName(), new String[] {
-				"langName", "New%" }, new String[] { "langName", "Unspeakable" });
-		final int rowsAffected = sqlResource.write(request);
+		Request request = RequestFactoryHelper.getRequest(Request.Type.UPDATE, sqlResource.getName(),
+				new String[] { "langName", "New%" }, new String[] { "langName", "Unspeakable" });
+		final int rowsAffected = sqlResource.write(request).getRowsAffected();
 		assertEquals(3, rowsAffected);
 
 		// Verify updates
-		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), new String[] { "langName",
-				"Unspeakable" }, null);
+		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), new String[] {
+				"langName", "Unspeakable" }, null);
 		final List<Map<String, Object>> results = sqlResource.read(request);
 		assertEquals(3, results.size());
 
@@ -245,5 +328,27 @@ public class SqlResourceHierOneToManyWriteTest extends SqlResourceTestBase {
 		AssertionHelper.assertLanguageHierarchical(results.get(2), 102, "Unspeakable");
 		childRows = (List<Map<String, Object>>) results.get(2).get("movies");
 		assertEquals(0, childRows.size());
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testExecUpdate_Parent_SingleRow() throws SqlResourceFactoryException, SqlResourceException,
+			InvalidRequestException {
+		// Update test fixture
+		Request request = RequestFactoryHelper.getRequest(Request.Type.UPDATE, sqlResource.getName(),
+				new String[] { "langId", "100" }, new String[] { "langName", "Greater Esperanto" });
+		final WriteResponse response = sqlResource.write(request);
+		assertEquals("rows affected", 1, response.getRowsAffected());
+		assertNull("null results", response.getRows());
+
+		// Verify update
+		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), new String[] {
+				"langId", "100" }, null);
+		final List<Map<String, Object>> results = sqlResource.read(request);
+		assertEquals(1, results.size());
+		AssertionHelper.assertLanguageHierarchical(results.get(0), 100, "Greater Esperanto");
+		final List<Map<String, Object>> childRows = (List<Map<String, Object>>) results.get(0).get("movies");
+		assertEquals(1, childRows.size());
+		AssertionHelper.assertFilmBasics(childRows.get(0), 5000, "ESCAPE FROM TOMORROW", 2011);
 	}
 }

@@ -14,7 +14,10 @@
 
 	<complexType name="SetupOrTeardown">
 		<sequence>
-			<element name="sql" type="string" maxOccurs="unbounded" minOccurs="1"></element>
+			<element name="resetSequence" type="tc:ResetSequence" maxOccurs="unbounded" minOccurs="0"></element>
+			<element name="sql" type="string" maxOccurs="unbounded"
+				minOccurs="0">
+			</element>
 		</sequence>
 	</complexType>
 
@@ -61,4 +64,10 @@
 		<attribute name="value" type="string" use="required"></attribute>
 	</complexType>
 
+
+	<complexType name="ResetSequence">
+		<attribute name="table" type="string" use="required"></attribute>
+		<attribute name="name" type="string" use="required"></attribute>
+		<attribute name="nextval" type="int" use="required"></attribute>
+	</complexType>
 </schema>

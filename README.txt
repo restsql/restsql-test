@@ -1,4 +1,4 @@
-README.txt (07-Feb-2013)
+README.txt (12-Jan-2014)
 
 restSQL Test Deployment Guide
 
@@ -40,7 +40,7 @@ Execution: The tests are executed using the Ant build file (restsql-test/build.x
 
 If the service is not running in the default location, http://localhost:8080/restsql/, then the System Property, org.restsql.baseUri, must be set. For example:
 
-    ant -Dorg.restsql.baseUri=http://somehost:8080/restsql-0.7/ test-service-http
+    ant -Dorg.restsql.baseUri=http://somehost:8080/restsql-0.8.7/ test-service-http
 
 The trailing forward slash in the base URI is required.
 
@@ -53,9 +53,8 @@ Test results will appear on the console. Test detail is available in restsql-tes
 Security tests are separately run in the api and http interface styles since the default profile of restsql is no security. (The java service interface does not support security tests). Before running the test-api-security or test-service-http-security, uncomment the security declarations in restsql/WebContent/WEB-INF/web.xml, uncomment the security.privileges property in restsql-test/src/resources/properties/restsql-xxx.properties and redeploy the web app.
 
 Note: The following tests are expected to fail for PostgreSQL:
-	- ReadOnlyColumns/* because restSQL doesn't support read-only columns for PostgreSQL (yet)
 	- SingleTable/TestSelect_SingleTableWildcard_MultiRow_ByQuery.xml because the film_text table isn't part of the database schema/data scripts
-	- */TestConf_*.xml because of schema and data type naming differences with MySQL
+	- */TestConf_*.xml because of schema, data type and sequence naming differences with MySQL
 
 If you are using a custom database, set the system property org.restsql.testDatabase, for example:
 

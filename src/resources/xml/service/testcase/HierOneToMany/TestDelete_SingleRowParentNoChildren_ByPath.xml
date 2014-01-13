@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://restsql.org/schema ServiceTestCaseDefinition.xsd ">
+	xsi:schemaLocation="http://restsql.org/schema ../ServiceTestCaseDefinition.xsd ">
 	<setup>
 		<sql>INSERT INTO language (language_id,name) VALUES (100,'New Esperanto')</sql>
 		<sql>INSERT INTO language (language_id,name) VALUES (101,'New Greek')</sql>

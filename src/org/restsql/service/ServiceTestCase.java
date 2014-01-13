@@ -9,8 +9,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import junit.framework.TestCase;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.restsql.core.Factory;
 import org.restsql.core.Factory.SqlResourceFactoryException;
@@ -19,9 +17,9 @@ import org.restsql.core.InvalidRequestException;
 import org.restsql.core.Request;
 import org.restsql.core.Request.Type;
 import org.restsql.core.RequestLogger;
-import org.restsql.core.RequestUtil;
 import org.restsql.core.SqlResource;
 import org.restsql.core.SqlResourceException;
+import org.restsql.core.WriteResponse;
 import org.restsql.security.SecurityFactory;
 import org.restsql.service.testcase.Header;
 import org.restsql.service.testcase.ServiceTestCaseDefinition;
@@ -57,17 +55,20 @@ public class ServiceTestCase extends TestCase {
 
 	// For testing with ServiceTestRunner
 	public ServiceTestCase(final InterfaceStyle interfaceStyle, final String testCaseCategory,
-			final String testCaseName, final Connection connection, final ServiceTestCaseDefinition definition) {
+			final String testCaseFileName, final Connection connection,
+			final ServiceTestCaseDefinition definition) {
 		this.connection = connection;
 		this.definition = definition;
-		this.testCaseName = testCaseName;
+		this.testCaseName = testCaseFileName;
 		this.testCaseCategory = testCaseCategory;
 		if (interfaceStyle == InterfaceStyle.HTTP) {
 			setName("testHttpInterface");
 		} else {
 			setName("testJavaInterface");
 		}
-		helper = new ServiceTestCaseHelper(testCaseName, testCaseCategory);
+
+		// Load helper specified in config
+		helper = new ServiceTestCaseHelper(testCaseCategory, testCaseFileName);
 	}
 
 	public ServiceTestCaseDefinition getDefinition() {
@@ -85,16 +86,15 @@ public class ServiceTestCase extends TestCase {
 	@Override
 	public void setUp() throws Exception {
 		if (definition.getSetup() != null) {
-			ServiceTestCaseHelper.executeSetupOrTeardownSql(connection, "setUp", definition.getSetup()
-					.getSql());
+			helper.resetSequence(connection, definition.getSetup().getResetSequence(), true);
+			helper.executeSetupOrTeardownSql(connection, "setUp", definition.getSetup().getSql());
 		}
 	}
 
 	@Override
 	public void tearDown() throws Exception {
 		if (definition.getTeardown() != null) {
-			ServiceTestCaseHelper.executeSetupOrTeardownSql(connection, "tearDown", definition.getTeardown()
-					.getSql());
+			helper.executeSetupOrTeardownSql(connection, "tearDown", definition.getTeardown().getSql());
 		}
 	}
 
@@ -206,7 +206,7 @@ public class ServiceTestCase extends TestCase {
 						}
 						helper.writeResponseTrace(step, ServiceTestCaseHelper.STATUS_NOT_APPLICABLE,
 								ServiceTestCaseHelper.STATUS_NOT_APPLICABLE, expectedBody, actualBody);
-						request.getLogger().log(200);
+						request.getLogger().log(actualBody);
 						ServiceTestCase.assertEquals(step, "body", expectedBody, actualBody);
 					} catch (Exception exception) {
 						handleJavaStepException(request.getLogger(), step, exception);
@@ -214,43 +214,35 @@ public class ServiceTestCase extends TestCase {
 				} else {
 					try {
 						final SqlResource sqlResource = Factory.getSqlResource(request.getSqlResource());
-						int rowsAffected = 0;
+						WriteResponse response = null;
 						if (step.getRequest().getBody() != null) {
-							rowsAffected = Factory.getRequestDeserializer(
-									httpAttributes.getRequestMediaType()).execWrite(httpAttributes,
-									request.getType(), request.getResourceIdentifiers(), sqlResource,
-									step.getRequest().getBody(), request.getLogger());
+							response = Factory.getRequestDeserializer(httpAttributes.getRequestMediaType())
+									.execWrite(httpAttributes, request.getType(),
+											request.getResourceIdentifiers(), sqlResource,
+											step.getRequest().getBody(), request.getLogger());
 						} else {
-							rowsAffected = sqlResource.write(request);
+							response = sqlResource.write(request);
 						}
-						request.getLogger().log(200);
+
+						String actualBody = Factory.getResponseSerializer(
+								httpAttributes.getResponseMediaType()).serializeWrite(sqlResource, response);
+						request.getLogger().log(actualBody);
 						if (step.getResponse().getStatus() == 200) {
-							String responseMediaType = RequestUtil.getResponseMediaType(null,
-									httpAttributes.getRequestMediaType(),
-									httpAttributes.getResponseMediaType());
-							int expectedRowsAffected = -1;
-							if (responseMediaType.equals("application/xml")) {
-								expectedRowsAffected = XmlHelper.unmarshallWriteResponse(step.getResponse()
-										.getBody());
-							} else { // application/json
-								JSONParser parser = new JSONParser();
-								JSONObject object = (JSONObject) parser.parse(step.getResponse().getBody());
-								expectedRowsAffected = new Integer(object.get("rowsAffected").toString())
-										.intValue();
+							String expectedBody = null;
+							if (step.getResponse().getBody() != null) {
+								expectedBody = step.getResponse().getBody();
 							}
-							helper.writeResponseTrace(step, 200, 200, "rowsAffected=" + expectedRowsAffected,
-									"rowsAffected=" + rowsAffected);
-							ServiceTestCase.assertEquals(step, "rowsAffected", expectedRowsAffected,
-									rowsAffected);
+							helper.writeResponseTrace(step, 200, 200, expectedBody, actualBody);
+							ServiceTestCase.assertEquals(step, "body", expectedBody, actualBody);
 						} else {
 							helper.writeResponseTrace(step, 200, 200, "", "");
 							assertEquals("status", step.getResponse().getStatus(), 200);
 						}
-					} catch (SqlResourceException exception) {
+					} catch (Exception exception) {
 						handleJavaStepException(request.getLogger(), step, exception);
 					}
 				}
-			} catch (SqlResourceException exception) {
+			} catch (Exception exception) {
 				handleJavaStepException(Factory.getRequestLogger(), step, exception);
 			}
 		}

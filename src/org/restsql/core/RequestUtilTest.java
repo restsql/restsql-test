@@ -36,18 +36,18 @@ public class RequestUtilTest {
 
 	@Test
 	public void testGetResponseMediaType_WithParamsAndRequestMediaType() {
-		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		List<RequestValue> params = new ArrayList<RequestValue>();
 		String mediaType = RequestUtil.getResponseMediaType(params, null, null);
 		assertEquals(HttpRequestAttributes.DEFAULT_MEDIA_TYPE, mediaType);
 		assertEquals(0, params.size());
 		
-		NameValuePair param1 = new NameValuePair("test", "123");
+		RequestValue param1 = new RequestValue("test", "123");
 		params.add(param1);
 		mediaType = RequestUtil.getResponseMediaType(params, null, null);
 		assertEquals(HttpRequestAttributes.DEFAULT_MEDIA_TYPE, mediaType);
 		assertEquals(1, params.size());
 
-		NameValuePair param2 = new NameValuePair("test2", "12345");
+		RequestValue param2 = new RequestValue("test2", "12345");
 		params.add(param2);
 		mediaType = RequestUtil.getResponseMediaType(params, "application/json", null);
 		assertEquals("application/json", mediaType);
@@ -57,21 +57,21 @@ public class RequestUtilTest {
 		assertEquals("application/xml", mediaType);
 		assertEquals(2, params.size());
 		
-		params.add(new NameValuePair(Request.PARAM_NAME_OUTPUT, "application/json"));
+		params.add(new RequestValue(Request.PARAM_NAME_OUTPUT, "application/json"));
 		mediaType = RequestUtil.getResponseMediaType(params, null, null);
 		assertEquals("application/json", mediaType);
 		assertEquals(2, params.size());
 		assertEquals(param1, params.get(0));
 		assertEquals(param2, params.get(1));
 
-		params.add(new NameValuePair(Request.PARAM_NAME_OUTPUT, "application/xml"));
+		params.add(new RequestValue(Request.PARAM_NAME_OUTPUT, "application/xml"));
 		mediaType = RequestUtil.getResponseMediaType(params, "application/json", null);
 		assertEquals("application/xml", mediaType);
 		assertEquals(2, params.size());
 		assertEquals(param1, params.get(0));
 		assertEquals(param2, params.get(1));
 		
-		params.add(new NameValuePair(Request.PARAM_NAME_OUTPUT, "application/xml"));
+		params.add(new RequestValue(Request.PARAM_NAME_OUTPUT, "application/xml"));
 		mediaType = RequestUtil.getResponseMediaType(params, "application/x-www-form-urlencoded", null);
 		assertEquals("application/xml", mediaType);
 		assertEquals(2, params.size());
@@ -81,14 +81,14 @@ public class RequestUtilTest {
 
 	@Test
 	public void testGetResponseMediaType_WithParamsAndResponseMediaType() {
-		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		NameValuePair param1 = new NameValuePair("test", "123");
+		List<RequestValue> params = new ArrayList<RequestValue>();
+		RequestValue param1 = new RequestValue("test", "123");
 		params.add(param1);
 		String mediaType = RequestUtil.getResponseMediaType(params, null, "application/json");
 		assertEquals("application/json", mediaType);
 		assertEquals(1, params.size());
 
-		NameValuePair param2 = new NameValuePair("test2", "12345");
+		RequestValue param2 = new RequestValue("test2", "12345");
 		params.add(param2);
 		mediaType = RequestUtil.getResponseMediaType(params, "application/json", "application/json");
 		assertEquals("application/json", mediaType);
@@ -103,7 +103,7 @@ public class RequestUtilTest {
 		assertEquals(2, params.size());
 
 		// Parameter overrides accept media type
-		params.add(new NameValuePair(Request.PARAM_NAME_OUTPUT, "application/xml"));
+		params.add(new RequestValue(Request.PARAM_NAME_OUTPUT, "application/xml"));
 		mediaType = RequestUtil.getResponseMediaType(params, "application/x-www-form-urlencoded", "application/json");
 		assertEquals("application/xml", mediaType);
 		assertEquals(2, params.size());
@@ -111,7 +111,7 @@ public class RequestUtilTest {
 		assertEquals(param2, params.get(1));
 		
 		// Parameter overrides accept media type
-		params.add(new NameValuePair(Request.PARAM_NAME_OUTPUT, "application/xml"));
+		params.add(new RequestValue(Request.PARAM_NAME_OUTPUT, "application/xml"));
 		mediaType = RequestUtil.getResponseMediaType(params, "application/json", "application/json");
 		assertEquals("application/xml", mediaType);
 		assertEquals(2, params.size());
@@ -121,8 +121,8 @@ public class RequestUtilTest {
 	
 	@Test
 	public void testGetResponseMediaType_WithComplexAcceptHeader() {
-		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		NameValuePair param1 = new NameValuePair("test", "123");
+		List<RequestValue> params = new ArrayList<RequestValue>();
+		RequestValue param1 = new RequestValue("test", "123");
 		params.add(param1);
 		
 		String acceptMediaType = "application/xml";
@@ -164,8 +164,8 @@ public class RequestUtilTest {
 	
 	@Test
 	public void testGetResponseMediaType_WithInvalidAcceptHeader() {
-		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		NameValuePair param1 = new NameValuePair("test", "123");
+		List<RequestValue> params = new ArrayList<RequestValue>();
+		RequestValue param1 = new RequestValue("test", "123");
 		params.add(param1);
 
 		String acceptMediaType = null;

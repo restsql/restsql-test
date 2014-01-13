@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://restsql.org/schema ServiceTestCaseDefinition.xsd ">
+	xsi:schemaLocation="http://restsql.org/schema ../ServiceTestCaseDefinition.xsd ">
 	<step name="definition">
 		<!-- Note: The definition file must be saved with Unix line feeds, otherwise the String comparison with the JAXB-read step body below will fail. -->
 		<request method="GET" uri="conf/definition/HierManyToManyMultiExt" />
@@ -44,14 +44,15 @@
 		<response>
 			<body>
 <![CDATA[
+
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:sqlResourceMetaData resName="HierManyToManyMultiExt" hierarchical="true" multipleDatabases="false" xmlns:ns2="http://restsql.org/schema">
     <tables>
         <table databaseName="sakila" tableName="actor" tableAlias="actor" qualifiedTableName="sakila.actor" tableRole="Parent">
             <columns>
-                <column columnLabel="first_name" columnName="first_name" columnNumber="2" columnType="12" columnTypeName="VARCHAR" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="false" qualifiedColumnName="actor.first_name" qualifiedTableName="sakila.actor" readOnly="false" tableName="actor"/>
-                <column columnLabel="actor_id" columnName="actor_id" columnNumber="1" columnType="5" columnTypeName="SMALLINT UNSIGNED" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="true" qualifiedColumnName="actor.actor_id" qualifiedTableName="sakila.actor" readOnly="false" tableName="actor"/>
-                <column columnLabel="last_name" columnName="last_name" columnNumber="3" columnType="12" columnTypeName="VARCHAR" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="false" qualifiedColumnName="actor.last_name" qualifiedTableName="sakila.actor" readOnly="false" tableName="actor"/>
+                <column columnLabel="first_name" columnName="first_name" columnNumber="2" columnType="12" columnTypeName="VARCHAR" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="false" qualifiedColumnName="actor.first_name" qualifiedTableName="sakila.actor" readOnly="false" sequence="false" tableName="actor"/>
+                <column columnLabel="actor_id" columnName="actor_id" columnNumber="1" columnType="5" columnTypeName="SMALLINT UNSIGNED" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="true" qualifiedColumnName="actor.actor_id" qualifiedTableName="sakila.actor" readOnly="false" sequence="true" sequenceName="actor" tableName="actor"/>
+                <column columnLabel="last_name" columnName="last_name" columnNumber="3" columnType="12" columnTypeName="VARCHAR" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="false" qualifiedColumnName="actor.last_name" qualifiedTableName="sakila.actor" readOnly="false" sequence="false" tableName="actor"/>
             </columns>
             <primaryKeys>
                 <column>actor.actor_id</column>
@@ -59,9 +60,9 @@
         </table>
         <table databaseName="sakila" tableName="actor_genre" tableAlias="actor_genre" qualifiedTableName="sakila.actor_genre" tableRole="ParentExtension">
             <columns>
-                <column columnLabel="actor_id" columnName="actor_id" columnNumber="0" columnType="5" columnTypeName="smallint" databaseName="sakila" nonqueriedForeignKey="true" primaryKey="false" qualifiedColumnName="actor_genre.actor_id" qualifiedTableName="sakila.actor_genre" readOnly="false" tableName="actor_genre"/>
-                <column columnLabel="name" columnName="name" columnNumber="5" columnType="12" columnTypeName="VARCHAR" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="false" qualifiedColumnName="actor_genre.name" qualifiedTableName="sakila.actor_genre" readOnly="false" tableName="actor_genre"/>
-                <column columnLabel="actor_genre_id" columnName="actor_genre_id" columnNumber="4" columnType="5" columnTypeName="SMALLINT UNSIGNED" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="true" qualifiedColumnName="actor_genre.actor_genre_id" qualifiedTableName="sakila.actor_genre" readOnly="false" tableName="actor_genre"/>
+                <column columnLabel="actor_id" columnName="actor_id" columnNumber="0" columnType="5" columnTypeName="smallint" databaseName="sakila" nonqueriedForeignKey="true" primaryKey="false" qualifiedColumnName="actor_genre.actor_id" qualifiedTableName="sakila.actor_genre" readOnly="false" sequence="false" tableName="actor_genre"/>
+                <column columnLabel="name" columnName="name" columnNumber="5" columnType="12" columnTypeName="VARCHAR" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="false" qualifiedColumnName="actor_genre.name" qualifiedTableName="sakila.actor_genre" readOnly="false" sequence="false" tableName="actor_genre"/>
+                <column columnLabel="actor_genre_id" columnName="actor_genre_id" columnNumber="4" columnType="5" columnTypeName="SMALLINT UNSIGNED" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="true" qualifiedColumnName="actor_genre.actor_genre_id" qualifiedTableName="sakila.actor_genre" readOnly="false" sequence="false" tableName="actor_genre"/>
             </columns>
             <primaryKeys>
                 <column>actor_genre.actor_genre_id</column>
@@ -69,9 +70,9 @@
         </table>
         <table databaseName="sakila" tableName="film" tableAlias="film" qualifiedTableName="sakila.film" tableRole="Child">
             <columns>
-                <column columnLabel="title" columnName="title" columnNumber="7" columnType="12" columnTypeName="VARCHAR" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="false" qualifiedColumnName="film.title" qualifiedTableName="sakila.film" readOnly="false" tableName="film"/>
-                <column columnLabel="year" columnName="release_year" columnNumber="8" columnType="91" columnTypeName="YEAR" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="false" qualifiedColumnName="film.release_year" qualifiedTableName="sakila.film" readOnly="false" tableName="film"/>
-                <column columnLabel="film_id" columnName="film_id" columnNumber="6" columnType="5" columnTypeName="SMALLINT UNSIGNED" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="true" qualifiedColumnName="film.film_id" qualifiedTableName="sakila.film" readOnly="false" tableName="film"/>
+                <column columnLabel="title" columnName="title" columnNumber="7" columnType="12" columnTypeName="VARCHAR" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="false" qualifiedColumnName="film.title" qualifiedTableName="sakila.film" readOnly="false" sequence="false" tableName="film"/>
+                <column columnLabel="year" columnName="release_year" columnNumber="8" columnType="91" columnTypeName="YEAR" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="false" qualifiedColumnName="film.release_year" qualifiedTableName="sakila.film" readOnly="false" sequence="false" tableName="film"/>
+                <column columnLabel="film_id" columnName="film_id" columnNumber="6" columnType="5" columnTypeName="SMALLINT UNSIGNED" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="true" qualifiedColumnName="film.film_id" qualifiedTableName="sakila.film" readOnly="false" sequence="true" sequenceName="film" tableName="film"/>
             </columns>
             <primaryKeys>
                 <column>film.film_id</column>
@@ -79,31 +80,31 @@
         </table>
         <table databaseName="sakila" tableName="film_comment" tableAlias="film_comment" qualifiedTableName="sakila.film_comment" tableRole="ChildExtension">
             <columns>
-                <column columnLabel="film_id" columnName="film_id" columnNumber="0" columnType="5" columnTypeName="smallint" databaseName="sakila" nonqueriedForeignKey="true" primaryKey="false" qualifiedColumnName="film_comment.film_id" qualifiedTableName="sakila.film_comment" readOnly="false" tableName="film_comment"/>
-                <column columnLabel="comment" columnName="comment" columnNumber="9" columnType="12" columnTypeName="VARCHAR" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="false" qualifiedColumnName="film_comment.comment" qualifiedTableName="sakila.film_comment" readOnly="false" tableName="film_comment"/>
+                <column columnLabel="film_id" columnName="film_id" columnNumber="0" columnType="5" columnTypeName="smallint" databaseName="sakila" nonqueriedForeignKey="true" primaryKey="false" qualifiedColumnName="film_comment.film_id" qualifiedTableName="sakila.film_comment" readOnly="false" sequence="false" tableName="film_comment"/>
+                <column columnLabel="comment" columnName="comment" columnNumber="9" columnType="12" columnTypeName="VARCHAR" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="false" qualifiedColumnName="film_comment.comment" qualifiedTableName="sakila.film_comment" readOnly="false" sequence="false" tableName="film_comment"/>
             </columns>
             <primaryKeys/>
         </table>
         <table databaseName="sakila" tableName="film_genre" tableAlias="film_genre" qualifiedTableName="sakila.film_genre" tableRole="ChildExtension">
             <columns>
-                <column columnLabel="genre" columnName="genre" columnNumber="10" columnType="12" columnTypeName="VARCHAR" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="false" qualifiedColumnName="film_genre.genre" qualifiedTableName="sakila.film_genre" readOnly="false" tableName="film_genre"/>
-                <column columnLabel="film_id" columnName="film_id" columnNumber="0" columnType="5" columnTypeName="smallint" databaseName="sakila" nonqueriedForeignKey="true" primaryKey="false" qualifiedColumnName="film_genre.film_id" qualifiedTableName="sakila.film_genre" readOnly="false" tableName="film_genre"/>
+                <column columnLabel="genre" columnName="genre" columnNumber="10" columnType="12" columnTypeName="VARCHAR" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="false" qualifiedColumnName="film_genre.genre" qualifiedTableName="sakila.film_genre" readOnly="false" sequence="false" tableName="film_genre"/>
+                <column columnLabel="film_id" columnName="film_id" columnNumber="0" columnType="5" columnTypeName="smallint" databaseName="sakila" nonqueriedForeignKey="true" primaryKey="false" qualifiedColumnName="film_genre.film_id" qualifiedTableName="sakila.film_genre" readOnly="false" sequence="false" tableName="film_genre"/>
             </columns>
             <primaryKeys/>
         </table>
         <table databaseName="sakila" tableName="film_origin" tableAlias="film_origin" qualifiedTableName="sakila.film_origin" tableRole="ChildExtension">
             <columns>
-                <column columnLabel="film_id" columnName="film_id" columnNumber="0" columnType="5" columnTypeName="smallint" databaseName="sakila" nonqueriedForeignKey="true" primaryKey="false" qualifiedColumnName="film_origin.film_id" qualifiedTableName="sakila.film_origin" readOnly="false" tableName="film_origin"/>
-                <column columnLabel="country" columnName="country" columnNumber="12" columnType="12" columnTypeName="VARCHAR" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="false" qualifiedColumnName="film_origin.country" qualifiedTableName="sakila.film_origin" readOnly="false" tableName="film_origin"/>
-                <column columnLabel="city" columnName="city" columnNumber="11" columnType="12" columnTypeName="VARCHAR" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="false" qualifiedColumnName="film_origin.city" qualifiedTableName="sakila.film_origin" readOnly="false" tableName="film_origin"/>
+                <column columnLabel="film_id" columnName="film_id" columnNumber="0" columnType="5" columnTypeName="smallint" databaseName="sakila" nonqueriedForeignKey="true" primaryKey="false" qualifiedColumnName="film_origin.film_id" qualifiedTableName="sakila.film_origin" readOnly="false" sequence="false" tableName="film_origin"/>
+                <column columnLabel="country" columnName="country" columnNumber="12" columnType="12" columnTypeName="VARCHAR" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="false" qualifiedColumnName="film_origin.country" qualifiedTableName="sakila.film_origin" readOnly="false" sequence="false" tableName="film_origin"/>
+                <column columnLabel="city" columnName="city" columnNumber="11" columnType="12" columnTypeName="VARCHAR" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="false" qualifiedColumnName="film_origin.city" qualifiedTableName="sakila.film_origin" readOnly="false" sequence="false" tableName="film_origin"/>
             </columns>
             <primaryKeys/>
         </table>
         <table databaseName="sakila" tableName="film_actor" tableAlias="film_actor" qualifiedTableName="sakila.film_actor" tableRole="Join">
             <columns>
-                <column columnLabel="last_update" columnName="last_update" columnNumber="0" columnType="93" columnTypeName="timestamp" databaseName="sakila" nonqueriedForeignKey="true" primaryKey="false" qualifiedColumnName="film_actor.last_update" qualifiedTableName="sakila.film_actor" readOnly="false" tableName="film_actor"/>
-                <column columnLabel="actor_id" columnName="actor_id" columnNumber="0" columnType="5" columnTypeName="smallint" databaseName="sakila" nonqueriedForeignKey="true" primaryKey="false" qualifiedColumnName="film_actor.actor_id" qualifiedTableName="sakila.film_actor" readOnly="false" tableName="film_actor"/>
-                <column columnLabel="film_id" columnName="film_id" columnNumber="0" columnType="5" columnTypeName="smallint" databaseName="sakila" nonqueriedForeignKey="true" primaryKey="false" qualifiedColumnName="film_actor.film_id" qualifiedTableName="sakila.film_actor" readOnly="false" tableName="film_actor"/>
+                <column columnLabel="last_update" columnName="last_update" columnNumber="0" columnType="93" columnTypeName="timestamp" databaseName="sakila" nonqueriedForeignKey="true" primaryKey="false" qualifiedColumnName="film_actor.last_update" qualifiedTableName="sakila.film_actor" readOnly="false" sequence="false" tableName="film_actor"/>
+                <column columnLabel="actor_id" columnName="actor_id" columnNumber="0" columnType="5" columnTypeName="smallint" databaseName="sakila" nonqueriedForeignKey="true" primaryKey="false" qualifiedColumnName="film_actor.actor_id" qualifiedTableName="sakila.film_actor" readOnly="false" sequence="false" tableName="film_actor"/>
+                <column columnLabel="film_id" columnName="film_id" columnNumber="0" columnType="5" columnTypeName="smallint" databaseName="sakila" nonqueriedForeignKey="true" primaryKey="false" qualifiedColumnName="film_actor.film_id" qualifiedTableName="sakila.film_actor" readOnly="false" sequence="false" tableName="film_actor"/>
             </columns>
             <primaryKeys/>
         </table>
