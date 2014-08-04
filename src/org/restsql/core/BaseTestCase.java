@@ -14,10 +14,10 @@ public class BaseTestCase {
 
 	protected String getQualifiedTableName(String tableName) {
 		switch (getDatabaseType()) {
-			case MySQL:
-				return "sakila." + tableName;
 			case PostgreSql:
 				return "sakila.public." + tableName;
+			case MySQL:	//fall through
+				return "sakila." + tableName;
 			default:
 				return "unknown";
 		}

@@ -35,9 +35,9 @@
     <tables>
         <table databaseName="sakila" tableName="actor" tableAlias="actor" qualifiedTableName="sakila.actor" tableRole="Parent">
             <columns>
-                <column columnLabel="id" columnName="actor_id" columnNumber="1" columnType="5" columnTypeName="SMALLINT UNSIGNED" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="true" qualifiedColumnName="actor.actor_id" qualifiedTableName="sakila.actor" readOnly="false" sequence="true" sequenceName="actor" tableName="actor"/>
-                <column columnLabel="first_name" columnName="first_name" columnNumber="2" columnType="12" columnTypeName="VARCHAR" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="false" qualifiedColumnName="actor.first_name" qualifiedTableName="sakila.actor" readOnly="false" sequence="false" tableName="actor"/>
-                <column columnLabel="surname" columnName="last_name" columnNumber="3" columnType="12" columnTypeName="VARCHAR" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="false" qualifiedColumnName="actor.last_name" qualifiedTableName="sakila.actor" readOnly="false" sequence="false" tableName="actor"/>
+                <column columnLabel="id" columnName="actor_id" columnNumber="1" columnType="5" columnTypeName="SMALLINT UNSIGNED" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="true" qualifiedColumnLabel="actor.id" qualifiedColumnName="actor.actor_id" qualifiedTableName="sakila.actor" readOnly="false" sequence="true" sequenceName="actor" tableName="actor"/>
+                <column columnLabel="first_name" columnName="first_name" columnNumber="2" columnType="12" columnTypeName="VARCHAR" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="false" qualifiedColumnLabel="actor.first_name" qualifiedColumnName="actor.first_name" qualifiedTableName="sakila.actor" readOnly="false" sequence="false" tableName="actor"/>
+                <column columnLabel="surname" columnName="last_name" columnNumber="3" columnType="12" columnTypeName="VARCHAR" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="false" qualifiedColumnLabel="actor.surname" qualifiedColumnName="actor.last_name" qualifiedTableName="sakila.actor" readOnly="false" sequence="false" tableName="actor"/>
             </columns>
             <primaryKeys>
                 <column>actor.actor_id</column>
@@ -61,7 +61,7 @@
     </parentReadColumns>
     <childReadColumns/>
 </ns2:sqlResourceMetaData>
- ]]>
+]]>
 			</body>
 		</response>
 	</step>

@@ -5,5 +5,4 @@
 # 	e.g. HierManyToMany/*
 # Use # to comment out a line
 
-#SingleTable/TestInsert_MultiRow_ByBody.xml
-SingleTable/TestConf_SingleTable.xml
+HierManyToManyMultiExt/TestConf_HierManyToManyMultiExt.xml

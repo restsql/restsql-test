@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://restsql.org/schema ../ServiceTestCaseDefinition.xsd ">
-	<step name="execute">
+	<step name="execute-with-pk">
 		<request accept="application/xml" method="GET" uri="res/SingleTable?id=99" />
+		<response>
+			<body>
+<![CDATA[
+<readResponse>
+	<actor id="99" first_name="JIM" surname="MOSTEL" />
+</readResponse>
+]]>
+			</body>
+		</response>
+	</step>
+
+	<step name="execute-with-non-pk">
+		<request accept="application/xml" method="GET" uri="res/SingleTable?first_name=JIM" />
 		<response>
 			<body>
 <![CDATA[

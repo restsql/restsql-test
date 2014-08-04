@@ -147,8 +147,8 @@ public class SqlResourceHierOneToManyWriteTest extends SqlResourceTestBase {
 				new Integer(102),
 				"movies",
 				new Object[][] {
-						{ "film_id", new Integer(5003), "title", "BLESSED SUN", "year", "2011" },
-						{ "film_id", new Integer(5004), "title", "WICKED SUN", "year", "2011" } } },
+						{ "film_id", new Integer(5003), "title", "BLESSED SUN", "year", new Integer(2011) },
+						{ "film_id", new Integer(5004), "title", "WICKED SUN", "year", new Integer(2011) } } },
 				response);
 
 		// Verify insert
@@ -178,8 +178,8 @@ public class SqlResourceHierOneToManyWriteTest extends SqlResourceTestBase {
 				"langId",
 				new Integer(102),
 				"movies",
-				new Object[][] { { "film_id", new Integer(5003), "title", "BLESSED SUN", "year", "2011" },
-						{ "film_id", new Integer(5004), "title", "WICKED SUN", "year", "2011" } } }, response);
+				new Object[][] { { "film_id", new Integer(5003), "title", "BLESSED SUN", "year", new Integer(2011) },
+						{ "film_id", new Integer(5004), "title", "WICKED SUN", "year", new Integer(2011) } } }, response);
 
 		// Verify insert
 		request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(), new String[] {
@@ -212,8 +212,8 @@ public class SqlResourceHierOneToManyWriteTest extends SqlResourceTestBase {
 				new Integer(102),
 				"movies",
 				new Object[][] {
-						{ "film_id", Integer.valueOf(5003), "title", "BLESSED SUN", "year", "2011" },
-						{ "film_id", Integer.valueOf(5004), "title", "WICKED SUN", "year", "2011" } } },
+						{ "film_id", Integer.valueOf(5003), "title", "BLESSED SUN", "year", new Integer(2011) },
+						{ "film_id", Integer.valueOf(5004), "title", "WICKED SUN", "year", new Integer(2011) } } },
 				response);
 
 		// Verify insert
