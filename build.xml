@@ -124,6 +124,15 @@
 		</antcall>
 	</target>
 
+	<target name="test-service-java-default-properties" description="executes all test cases for the service's java interface, excluding security">
+		<antcall target="-test-service">
+			<param name="style" value="java" />
+			<param name="scope" value="all" />
+			<param name="exclude" value="Security" />
+			<param name="propertiesFile" value="${org.restsql.default-properties}" />
+		</antcall>
+	</target>
+
 	<target name="test-service-java-subset" description="executes some test cases for the service's java interface">
 		<antcall target="-test-service">
 			<param name="style" value="java" />
@@ -133,12 +142,13 @@
 	</target>
 
 	<target name="-test-service" depends="compile-tests">
+		<property name="propertiesFile" value="${org.restsql.properties}" />
 		<java fork="true" classpath="${test-exec.classpath}" classname="org.restsql.service.ServiceTestRunner" dir="${basedir}">
 			<arg value="${style}" />
 			<arg value="${scope}" />
 			<arg value="${exclude}" />
 			<jvmarg value="-Dorg.restsql.baseUri=${org.restsql.baseUri}" />
-			<jvmarg value="-Dorg.restsql.properties=${org.restsql.properties}" />
+			<jvmarg value="-Dorg.restsql.properties=${propertiesFile}" />
 			<jvmarg value="-Dorg.restsql.testDatabase=${org.restsql.testDatabase}" />
 		</java>
 	</target>
