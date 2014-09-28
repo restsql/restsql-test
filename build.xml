@@ -46,35 +46,44 @@
 	</target>
 
 	<target name="test-api" depends="compile-tests" description="exercises junit tests for java api">
-		<!-- Create output dir -->
-		<delete dir="${api-test.dir}" />
-		<mkdir dir="${api-test.dir}" />
+		<antcall target="-test-api">
+			<param name="includes" value="**/*Test.*" />
+			<param name="excludes" value="**/Base*.*,org/restsql/security/**" />
+		</antcall>
+	</target>
 
-		<!-- Execute tests -->
-		<junit fork="true" showoutput="true" printsummary="true" tempdir="${api-test.dir}" dir="${basedir}">
-			<sysproperty key="org.restsql.properties" value="${org.restsql.properties}" />
-			<classpath path="${test-exec.classpath}" />
-			<formatter type="xml" />
-			<batchtest todir="${api-test.dir}">
-				<fileset dir="src" includes="**/*Test.*" excludes="**/Base*.*,org/restsql/security/**" />
-			</batchtest>
-		</junit>
+	<target name="test-api-pgsql" depends="compile-tests" description="exercises junit tests for java api-pgsql">
+		<antcall target="-test-api">
+			<param name="propertiesFile" value="${org.restsql.pgsql-properties}" />
+			<param name="includes" value="**/*Test.*" />
+			<param name="excludes" value="**/Base*.*,org/restsql/security/**" />
+		</antcall>
 	</target>
 
 	<target name="test-api-security" depends="compile-tests" description="exercises security junit tests for java api">
+		<antcall target="-test-api">
+			<param name="includes" value="org/restsql/security/*Test.*,org/restsql/security/impl/*Test.*" />
+			<param name="excludes" value="**/Base*.*" />
+		</antcall>
+	</target>
+	
+	<target name="-test-api">
+		<property name="propertiesFile" value="${org.restsql.properties}" />
+		<echo message="Using ${propertiesFile}" />
+		
 		<!-- Create output dir -->
 		<delete dir="${api-test.dir}" />
 		<mkdir dir="${api-test.dir}" />
 
 		<!-- Execute tests -->
 		<junit fork="true" showoutput="true" printsummary="true" tempdir="${api-test.dir}" dir="${basedir}">
-			<sysproperty key="org.restsql.properties" value="${org.restsql.properties}" />
+			<sysproperty key="org.restsql.properties" value="${propertiesFile}" />
 			<classpath path="${test-exec.classpath}" />
 			<formatter type="xml" />
 			<batchtest todir="${api-test.dir}">
-				<fileset dir="src" includes="org/restsql/security/*Test.*,org/restsql/security/impl/*Test.*" excludes="**/Base*.*" />
+				<fileset dir="src" includes="${includes}" excludes="${excludes}" />
 			</batchtest>
-		</junit>
+		</junit>	
 	</target>
 
 	<!-- Creates report for API test -->
@@ -100,6 +109,15 @@
 		</antcall>
 	</target>
 
+	<target name="test-service-http-pgsql" description="executes all test cases for the http interface-pgsql">
+		<antcall target="-test-service">
+			<param name="style" value="http" />
+			<param name="scope" value="all" />
+			<param name="exclude" value="Security,MySqlOnly" />
+			<param name="propertiesFile" value="${org.restsql.pgsql-properties}" />
+		</antcall>
+	</target>
+
 	<target name="test-service-http-security" description="executes security test cases for the http interface">
 		<antcall target="-test-service">
 			<param name="style" value="http" />
@@ -116,11 +134,29 @@
 		</antcall>
 	</target>
 
+	<target name="test-service-http-subset-pgsql" description="executes some of test cases for the http interface-pgsql">
+		<antcall target="-test-service">
+			<param name="style" value="http" />
+			<param name="scope" value="${test.list}" />
+			<param name="exclude" value="MySqlOnly" />
+			<param name="propertiesFile" value="${org.restsql.pgsql-properties}" />
+		</antcall>
+	</target>
+
 	<target name="test-service-java" description="executes all test cases for the service's java interface, excluding security">
 		<antcall target="-test-service">
 			<param name="style" value="java" />
 			<param name="scope" value="all" />
 			<param name="exclude" value="Security" />
+		</antcall>
+	</target>
+
+	<target name="test-service-java-pgsql" description="executes all test cases for the service's java interface, excluding security-pgsql">
+		<antcall target="-test-service">
+			<param name="style" value="java" />
+			<param name="scope" value="all" />
+			<param name="exclude" value="Security,MySqlOnly" />
+			<param name="propertiesFile" value="${org.restsql.pgsql-properties}" />
 		</antcall>
 	</target>
 
@@ -138,6 +174,15 @@
 			<param name="style" value="java" />
 			<param name="scope" value="${test.list}" />
 			<param name="exclude" value="none" />
+		</antcall>
+	</target>
+
+	<target name="test-service-java-subset-pgsql" description="executes some test cases for the service's java interface-pgsql">
+		<antcall target="-test-service">
+			<param name="style" value="java" />
+			<param name="scope" value="${test.list}" />
+			<param name="exclude" value="MySqlOnly" />
+			<param name="propertiesFile" value="${org.restsql.pgsql-properties}" />
 		</antcall>
 	</target>
 

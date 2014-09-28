@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rs:sqlResource xmlns:rs="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://restsql.org/schema ../../../../../restsql/src/resources/xml/SqlResource.xsd">
+	<query>
+		select film.film_id, title, release_year "year", language_id, rental_duration, rental_rate, replacement_cost, image
+		from film, film_image
+		where film.film_id = film_image.film_id
+	</query>
+	<metadata>
+		<database default="sakila" />
+		<table name="film" role="Parent" />
+		<table name="film_image" role="ParentExtension" />
+	</metadata>
+</rs:sqlResource>

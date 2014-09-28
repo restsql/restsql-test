@@ -60,8 +60,7 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 		AssertionHelper.assertColumnMetaData(table.getColumns(), 5, false, "sakila", "film", "title",
 				"title", Types.VARCHAR, false, null);
 		AssertionHelper.assertColumnMetaData(table.getColumns(), 6, false, "sakila", "film", "release_year",
-				"year", (getDatabaseType() == DatabaseType.PostgreSql) ? Types.INTEGER : Types.DATE, false,
-				null);
+				"year", Types.INTEGER, false, null);
 
 		// Join table
 		table = sqlResource.getMetaData().getTableMap().get(getQualifiedTableName("film_actor"));
@@ -137,8 +136,7 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 		AssertionHelper.assertColumnMetaData(table.getColumns(), 2, false, "sakila", "film", "title",
 				"title", Types.VARCHAR, false, null);
 		AssertionHelper.assertColumnMetaData(table.getColumns(), 3, false, "sakila", "film", "release_year",
-				"year", (getDatabaseType() == DatabaseType.PostgreSql) ? Types.INTEGER : Types.DATE, false,
-				null);
+				"year", Types.INTEGER, false, null);
 
 		// Child table
 		table = sqlResource.getMetaData().getTableMap().get(getQualifiedTableName("language"));
@@ -159,6 +157,65 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 				(getDatabaseType() == DatabaseType.PostgreSql) ? "language_language_id_seq" : "language");
 		AssertionHelper.assertColumnMetaData(table.getColumns(), 5, false, "sakila", "language", "name",
 				"name", Types.VARCHAR, false, null);
+	}
+
+	@Test
+	public void testGetTables_FlatOneToOne() throws SqlResourceException {
+		final SqlResource sqlResource = Factory.getSqlResource("FlatOneToOne");
+
+		// Parent table
+		assertEquals(2, sqlResource.getMetaData().getTables().size());
+		TableMetaData table = sqlResource.getMetaData().getTableMap().get(getQualifiedTableName("film"));
+		assertNotNull(table);
+		assertEquals("sakila", table.getDatabaseName());
+		assertEquals("film", table.getTableName());
+		assertEquals(1, table.getPrimaryKeys().size());
+
+		// Primary keys
+		AssertionHelper.assertColumnMetaData(table.getPrimaryKeys().get(0), 1, true, "sakila", "film",
+				"film_id", "film_id", Types.SMALLINT, true,
+				(getDatabaseType() == DatabaseType.PostgreSql) ? "film_film_id_seq" : "film");
+
+		// Columns
+		assertEquals(7, table.getColumns().size());
+		AssertionHelper.assertColumnMetaData(table.getColumns(), 1, true, "sakila", "film", "film_id",
+				"film_id", Types.SMALLINT, true,
+				(getDatabaseType() == DatabaseType.PostgreSql) ? "film_film_id_seq" : "film");
+		AssertionHelper.assertColumnMetaData(table.getColumns(), 2, false, "sakila", "film", "title",
+				"title", Types.VARCHAR, false, null);
+		AssertionHelper.assertColumnMetaData(table.getColumns(), 3, false, "sakila", "film", "release_year",
+				"year", (getDatabaseType() == DatabaseType.PostgreSql) ? Types.INTEGER : Types.INTEGER,
+				false, null);
+
+		AssertionHelper.assertColumnMetaData(table.getColumns(), 4, false, "sakila", "film", "language_id",
+				"language_id", Types.SMALLINT, false, null);
+		AssertionHelper.assertColumnMetaData(table.getColumns(), 5, false, "sakila", "film",
+				"rental_duration", "rental_duration", Types.SMALLINT, false, null);
+		AssertionHelper.assertColumnMetaData(table.getColumns(), 6, false, "sakila", "film", "rental_rate",
+				"rental_rate",
+				(getDatabaseType() == DatabaseType.PostgreSql) ? Types.NUMERIC : Types.DECIMAL, false, null);
+		AssertionHelper.assertColumnMetaData(table.getColumns(), 7, false, "sakila", "film",
+				"replacement_cost", "replacement_cost",
+				(getDatabaseType() == DatabaseType.PostgreSql) ? Types.NUMERIC : Types.DECIMAL, false, null);
+	}
+
+	@Test
+	public void testGetTables_FlatOneToOneBlob() throws SqlResourceException {
+		final SqlResource sqlResource = Factory.getSqlResource("FlatOneToOneBlob");
+
+		// Parent table
+		assertEquals(2, sqlResource.getMetaData().getTables().size());
+		TableMetaData table = sqlResource.getMetaData().getTableMap()
+				.get(getQualifiedTableName("film_image"));
+		assertNotNull(table);
+		assertEquals("sakila", table.getDatabaseName());
+		assertEquals("film_image", table.getTableName());
+
+		AssertionHelper.assertColumnMetaData(table.getColumns(), 8, false, "sakila", "film_image", "image",
+				"image", (getDatabaseType() == DatabaseType.PostgreSql) ? Types.BINARY : Types.LONGVARBINARY,
+				false, null);
+
+		assertTrue("is binary", table.getColumns().get("image").isBinaryType());
 	}
 
 	@Test
@@ -267,8 +324,7 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 		AssertionHelper.assertColumnMetaData(table.getColumns(), 7, false, "sakila", "film", "title",
 				"title", Types.VARCHAR, false, null);
 		AssertionHelper.assertColumnMetaData(table.getColumns(), 8, false, "sakila", "film", "release_year",
-				"year", (getDatabaseType() == DatabaseType.PostgreSql) ? Types.INTEGER : Types.DATE, false,
-				null);
+				"year", Types.INTEGER, false, null);
 		assertEquals(TableRole.Child, table.getColumns().get("film_id").getTableRole());
 
 		// Child extension
@@ -359,8 +415,7 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 		AssertionHelper.assertColumnMetaData(table.getColumns(), 2, false, "sakila", "film", "title",
 				"title", Types.VARCHAR, false, null);
 		AssertionHelper.assertColumnMetaData(table.getColumns(), 3, false, "sakila", "film", "release_year",
-				"year", (getDatabaseType() == DatabaseType.PostgreSql) ? Types.INTEGER : Types.DATE, false,
-				null);
+				"year", Types.INTEGER, false, null);
 		AssertionHelper.assertColumnMetaData(table.getColumns(), 4, false, "sakila", "film", "description",
 				"description", (getDatabaseType() == DatabaseType.PostgreSql) ? Types.VARCHAR
 						: Types.LONGVARCHAR, false, null);
@@ -437,10 +492,33 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 		AssertionHelper.assertColumnMetaData(table.getColumns(), 4, false, "sakila", "film", "title",
 				"title", Types.VARCHAR, false, null);
 		AssertionHelper.assertColumnMetaData(table.getColumns(), 5, false, "sakila", "film", "release_year",
-				"year", (getDatabaseType() == DatabaseType.PostgreSql) ? Types.INTEGER : Types.DATE, false,
-				null);
+				"year", Types.INTEGER, false, null);
 		AssertionHelper.assertColumnMetaData(table.getColumns(), 0, false, "sakila", "film", "language_id",
 				"langId", Types.SMALLINT, false, null);
 		assertTrue("is nonqueried foreign key", table.getColumns().get("langId").isNonqueriedForeignKey());
+	}
+	
+	
+	@Test
+	public void testGetTables_DateTime() throws SqlResourceException {
+		SqlResource sqlResource = Factory.getSqlResource("DateTime");
+		assertTrue(!sqlResource.getMetaData().isHierarchical());
+		assertEquals(1, sqlResource.getMetaData().getTables().size());
+
+		TableMetaData table = sqlResource.getMetaData().getTableMap().get(getQualifiedTableName("datetime"));
+		assertNotNull(table);
+		assertEquals(TableRole.Parent, table.getTableRole());
+
+		assertEquals(5, table.getColumns().size());
+		AssertionHelper.assertColumnMetaData(table.getColumns(), 1, false, "sakila", "datetime", "id",
+				"id", Types.SMALLINT, false, null);
+		AssertionHelper.assertColumnMetaData(table.getColumns(), 2, false, "sakila", "datetime", "time",
+				"time", Types.TIME, false, null);
+		AssertionHelper.assertColumnMetaData(table.getColumns(), 3, false, "sakila", "datetime", "timestamp",
+				"timestamp", Types.TIMESTAMP, false, null);
+		AssertionHelper.assertColumnMetaData(table.getColumns(), 4, false, "sakila", "datetime", "date",
+				"date", Types.DATE, false, null);
+		AssertionHelper.assertColumnMetaData(table.getColumns(), 5, false, "sakila", "datetime", "datetime",
+				"datetime", Types.TIMESTAMP, false, null);
 	}
 }

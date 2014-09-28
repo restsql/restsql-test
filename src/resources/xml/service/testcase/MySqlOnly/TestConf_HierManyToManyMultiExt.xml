@@ -71,7 +71,7 @@
         <table databaseName="sakila" tableName="film" tableAlias="film" qualifiedTableName="sakila.film" tableRole="Child">
             <columns>
                 <column columnLabel="title" columnName="title" columnNumber="7" columnType="12" columnTypeName="VARCHAR" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="false" qualifiedColumnLabel="film.title" qualifiedColumnName="film.title" qualifiedTableName="sakila.film" readOnly="false" sequence="false" tableName="film"/>
-                <column columnLabel="year" columnName="release_year" columnNumber="8" columnType="91" columnTypeName="YEAR" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="false" qualifiedColumnLabel="film.year" qualifiedColumnName="film.release_year" qualifiedTableName="sakila.film" readOnly="false" sequence="false" tableName="film"/>
+                <column columnLabel="year" columnName="release_year" columnNumber="8" columnType="4" columnTypeName="YEAR" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="false" qualifiedColumnLabel="film.year" qualifiedColumnName="film.release_year" qualifiedTableName="sakila.film" readOnly="false" sequence="false" tableName="film"/>
                 <column columnLabel="film_id" columnName="film_id" columnNumber="6" columnType="5" columnTypeName="SMALLINT UNSIGNED" databaseName="sakila" nonqueriedForeignKey="false" primaryKey="true" qualifiedColumnLabel="film.film_id" qualifiedColumnName="film.film_id" qualifiedTableName="sakila.film" readOnly="false" sequence="true" sequenceName="film" tableName="film"/>
             </columns>
             <primaryKeys>

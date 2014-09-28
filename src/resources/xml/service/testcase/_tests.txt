@@ -5,4 +5,4 @@
 # 	e.g. HierManyToMany/*
 # Use # to comment out a line
 
-HierManyToManyMultiExt/TestConf_HierManyToManyMultiExt.xml
+FlatOneToOneBlob/TestSelect_ByPath.xml

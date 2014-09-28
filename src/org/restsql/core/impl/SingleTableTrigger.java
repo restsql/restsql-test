@@ -48,7 +48,7 @@ public class SingleTableTrigger implements Trigger {
 	private void validateParams(final Request request) throws SqlResourceException {
 		for (final RequestValue param : request.getParameters()) {
 			if (param.getName().equals("first_name")) {
-				if (param.getValue() != null && param.getValue().length() > 25) {
+				if (param.getValue() != null && param.getValue().toString().length() > 25) {
 					throw new InvalidRequestException("First name length must be less or equal to 25 characters");
 				}
 			}

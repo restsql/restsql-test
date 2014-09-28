@@ -6,7 +6,7 @@
 		<sql>INSERT INTO datetime (id, time, timestamp, date, datetime) VALUES (1001, '10:54:00', '2011-07-22 10:54:00', '2011-07-22', '2011-07-22 10:54:00')</sql>
 	</setup>
 	<step name="execute">
-		<request method="GET" uri="res/DateTime?timestamp=2011-07-23%2016:54:00" />
+		<request method="GET" uri="res/DateTime?timestamp=2011-07-23%2016:54:00%20EDT" />
 		<response>
 			<body>
 <![CDATA[

@@ -1,4 +1,4 @@
-README.txt (12-Jan-2014)
+README.txt (28-Sep-2014)
 
 restSQL Test Deployment Guide
 
@@ -44,17 +44,15 @@ If the service is not running in the default location, http://localhost:8080/res
 
 The trailing forward slash in the base URI is required.
 
-By default, the tests will use the restsql properties file src/resources/properties/restsql-mysql.properties. If you are using PostgreSQL, you must explicitly instruct the test harness to use the postgresql properties. Set the System property org.restsql.properties as follows at ant execution:
-	
-	ant -Dorg.restsql.properties=/resources/properties/restsql-postgresql.properties test-service-http 
+By default, the tests will use the restsql properties file src/resources/properties/restsql-mysql.properties. If you are using PostgreSQL, you should use the methods that are postfixed with -pgsql, for example:
+
+	ant test-service-java-pgsql
+
+This will instruct the test harness to use the postgresql properties and exlude tests in the MySqlOnly folder. Note alternatively you can set the system property -Dorg.restsql.properties=/resources/properties/restsql-postgresql.properties. 
 
 Test results will appear on the console. Test detail is available in restsql-test/obj/test.
 
 Security tests are separately run in the api and http interface styles since the default profile of restsql is no security. (The java service interface does not support security tests). Before running the test-api-security or test-service-http-security, uncomment the security declarations in restsql/WebContent/WEB-INF/web.xml, uncomment the security.privileges property in restsql-test/src/resources/properties/restsql-xxx.properties and redeploy the web app.
-
-Note: The following tests are expected to fail for PostgreSQL:
-	- SingleTable/TestSelect_SingleTableWildcard_MultiRow_ByQuery.xml because the film_text table isn't part of the database schema/data scripts
-	- */TestConf_*.xml because of schema, data type and sequence naming differences with MySQL
 
 If you are using a custom database, set the system property org.restsql.testDatabase, for example:
 

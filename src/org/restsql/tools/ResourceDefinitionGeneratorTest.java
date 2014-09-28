@@ -22,6 +22,7 @@ import org.restsql.core.SqlResource;
 import org.restsql.core.SqlResourceException;
 
 public class ResourceDefinitionGeneratorTest extends BaseTestCase {
+	private static final int EXPECTED_DEFS_GENERATED = 22;
 	private final static String databaseName = "sakila";
 	private final static String sqlResourcesDir = Config.properties.getProperty(Config.KEY_SQLRESOURCES_DIR,
 			Config.DEFAULT_SQLRESOURCES_DIR);
@@ -51,8 +52,8 @@ public class ResourceDefinitionGeneratorTest extends BaseTestCase {
 	public void testGenerate() throws ResourceDefinitionGenerator.GenerationException,
 			SqlResourceFactoryException, SqlResourceException {
 		final int defs = generator.generate(subDirName, databaseName, getExclusionPattern());
-		assertEquals("defs generated", 21, defs);
-		assertEquals("files created", 21, subDirObj.listFiles().length);
+		assertEquals("defs generated", EXPECTED_DEFS_GENERATED, defs);
+		assertEquals("files created", EXPECTED_DEFS_GENERATED, subDirObj.listFiles().length);
 
 		// Check out the actor resource
 		SqlResource sqlResource = Factory.getSqlResource(subDirName + ".actor");
@@ -92,7 +93,7 @@ public class ResourceDefinitionGeneratorTest extends BaseTestCase {
 	@Test
 	public void testGenerate_WithEmptySubdir() throws ResourceDefinitionGenerator.GenerationException {
 		subDirObj.mkdir();
-		assertEquals("defs generated", 21, generator.generate(subDirName, databaseName, getExclusionPattern()));
+		assertEquals("defs generated", EXPECTED_DEFS_GENERATED, generator.generate(subDirName, databaseName, getExclusionPattern()));
 	}
 
 	@Test(expected = ResourceDefinitionGenerator.GenerationException.class)

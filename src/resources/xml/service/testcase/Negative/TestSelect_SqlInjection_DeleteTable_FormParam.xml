@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://restsql.org/schema ../ServiceTestCaseDefinition.xsd ">
+	<setup>
+		<sql>INSERT INTO actor (actor_id,first_name,last_name) VALUES (1000,'John','_Smith')</sql>
+	</setup>
+
+	<step name="executeDeleteAll">
+		<request method="PUT" uri="res/SingleTable?id=1000%3B%20DELETE%20FROM%20actor_genre"
+			contentType="application/x-www-form-urlencoded">
+			<body>
+<![CDATA[
+first_name=_Jack&surname=Blacksmith
+]]>
+			</body>
+		</request>
+		<response status="400">
+			<body>Could not convert id value 1000; DELETE FROM actor_genre to number</body>
+		</response>
+	</step>
+
+	<teardown>
+		<sql>DELETE FROM actor where actor_id between 1000 and 1100</sql>
+	</teardown>
+</tc:testcase>

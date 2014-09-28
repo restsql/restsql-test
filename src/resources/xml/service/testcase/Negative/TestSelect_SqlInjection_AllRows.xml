@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://restsql.org/schema ../ServiceTestCaseDefinition.xsd ">
+
+	<step name="executeAllRows">
+		<request method="GET" uri="res/SingleTable?id=47%20or%201%3d1" />
+		<response status="400">
+			<body>Could not convert id value 47 or 1=1 to number</body>
+		</response>
+	</step>
+
+</tc:testcase>

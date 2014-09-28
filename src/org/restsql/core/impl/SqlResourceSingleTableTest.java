@@ -87,7 +87,7 @@ public class SqlResourceSingleTableTest extends SqlResourceTestBase {
 
 		assertEquals(
 				"INSERT INTO " + qualifiedTableName + " (first_name,last_name) VALUES ('Patty','White')", sql
-						.get(qualifiedTableName).getMain().toString());
+						.get(qualifiedTableName).getStatement());
 
 		final WriteResponse response = sqlResource.write(request);
 		AssertionHelper.assertResponse(request, 1, new Object[] { "id", Integer.valueOf(1003), "first_name",
@@ -112,7 +112,7 @@ public class SqlResourceSingleTableTest extends SqlResourceTestBase {
 
 		assertEquals("INSERT INTO " + qualifiedTableName
 				+ " (actor_id,first_name,last_name) VALUES (1003,'Patty','White')",
-				sql.get(qualifiedTableName).getMain().toString());
+				sql.get(qualifiedTableName).getStatement());
 
 		final WriteResponse response = sqlResource.write(request);
 		AssertionHelper.assertResponse(request, 1, new Object[] { "id", new Integer(1003), "first_name", "Patty",
