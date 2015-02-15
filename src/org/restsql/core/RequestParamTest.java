@@ -133,6 +133,11 @@ public class RequestParamTest {
 		assertEquals("param1", pair.getName());
 		assertEquals("<=hello", pair.getValue());
 		assertEquals(Operator.Equals, pair.getOperator());
-	}
+
+		pair = new RequestValue("param1", "<=hello", Operator.GreaterThan);
+		assertEquals("param1", pair.getName());
+		assertEquals("<=hello", pair.getValue());
+		assertEquals(Operator.GreaterThan, pair.getOperator());
+}
 
 }

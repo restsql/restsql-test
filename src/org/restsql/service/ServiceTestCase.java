@@ -181,7 +181,11 @@ public class ServiceTestCase extends TestCase {
 				}
 				actualValue.append(value);
 			}
-			ServiceTestCase.assertEquals(step, "header " + header.getName() + " value", header.getValue(),
+			String expectedValue = header.getValue();
+			if (SecurityFactory.getAuthorizer().isAuthorizationEnabled()) {
+				expectedValue += ",private";
+			}
+			ServiceTestCase.assertEquals(step, "header " + header.getName() + " value", expectedValue,
 					actualValue.toString());
 		}
 	}

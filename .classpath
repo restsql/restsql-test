@@ -16,6 +16,5 @@
 	<classpathentry kind="lib" path="/restsql/WebContent/WEB-INF/lib/jersey-core-1.5.jar"/>
 	<classpathentry kind="lib" path="/restsql/WebContent/WEB-INF/lib/json_simple-1.1.jar"/>
 	<classpathentry kind="lib" path="/restsql/WebContent/WEB-INF/lib/mysql-connector-java-5.1.14-bin.jar"/>
-	<classpathentry kind="lib" path="/restsql/WebContent/WEB-INF/lib/servlet-api.jar"/>
 	<classpathentry kind="output" path="obj/bin"/>
 </classpath>

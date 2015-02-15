@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://restsql.org/schema ../ServiceTestCaseDefinition.xsd ">
+	<step name="ping">
+		<request method="GET" uri="monitoring/ping" user="admin" password="admin" />
+		<response>
+			<body>
+<![CDATA[
+pong
+]]>
+			</body>
+		</response>
+	</step>
+
+	<step name="healthcheck">
+		<request method="GET" uri="monitoring/healthcheck" user="admin" password="admin" />
+		<response>
+			<body>
+<![CDATA[
+{"database.connection":{"healthy":true}}
+]]>
+			</body>
+		</response>
+	</step>
+
+	<step name="metrics">
+		<request method="GET" uri="monitoring/metrics" user="admin" password="admin" />
+		<response status="200" />
+	</step>
+
+	<step name="threads">
+		<request method="GET" uri="monitoring/threads" user="admin" password="admin" />
+		<response status="200" />
+	</step>
+
+</tc:testcase>

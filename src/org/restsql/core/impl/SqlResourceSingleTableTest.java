@@ -7,6 +7,7 @@ import static org.junit.Assert.fail;
 
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,9 +18,12 @@ import org.restsql.core.Factory;
 import org.restsql.core.InvalidRequestException;
 import org.restsql.core.Request;
 import org.restsql.core.RequestFactoryHelper;
+import org.restsql.core.RequestLogger;
+import org.restsql.core.RequestValue;
 import org.restsql.core.SqlBuilder;
 import org.restsql.core.SqlResourceException;
 import org.restsql.core.WriteResponse;
+import org.restsql.core.RequestValue.Operator;
 
 public class SqlResourceSingleTableTest extends SqlResourceTestBase {
 
@@ -160,7 +164,7 @@ public class SqlResourceSingleTableTest extends SqlResourceTestBase {
 		assertEquals(1, results.size());
 		AssertionHelper.assertActor(false, results.get(0), 1000, "Marcus", "Aurelius");
 	}
-
+	
 	@Test
 	public void testExecUpdate_SingleRow_WithNoUpdateParameters() throws SqlResourceException {
 		try {
@@ -219,5 +223,23 @@ public class SqlResourceSingleTableTest extends SqlResourceTestBase {
 		results = sqlResource.read(request);
 		assertEquals(1, results.size());
 		AssertionHelper.assertActor(false, results.get(0), 1002, "Manuel", "Black");
+	}
+	
+	@Test
+	public void testExecSelect_WithOperator() throws SqlResourceException {
+		// Create the request
+		List<RequestValue> resIds = null;
+		List<RequestValue> params = new ArrayList<RequestValue>(1);
+		params.add(new RequestValue("id", "1000", Operator.GreaterThan));
+		List<List<RequestValue>> childrenParams = null;
+		RequestLogger requestLogger = Factory.getRequestLogger();
+		Request request = Factory.getRequest(Request.Type.SELECT, sqlResource.getName(), resIds, params,
+				childrenParams, requestLogger);
+
+		// Execute the request
+		final List<Map<String, Object>> results = sqlResource.read(request);
+		assertEquals(2, results.size());
+		AssertionHelper.assertActor(false, results.get(0), 1001, "Bob", "Black");
+		AssertionHelper.assertActor(false, results.get(1), 1002, "Manuel", "Black");
 	}
 }

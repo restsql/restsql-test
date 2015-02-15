@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://restsql.org/schema ../ServiceTestCaseDefinition.xsd ">
 	<step name="definition">
 		<!-- Note: The definition file must be saved with Unix line feeds, otherwise the String comparison with the JAXB-read step body below will fail. -->
-		<request method="GET" uri="conf/definition/HierManyToManyMultiExt" />
+		<request method="GET" uri="conf/definition/HierManyToManyMultiExt" user="admin" password="admin" />
 		<response>
 			<body>
 <![CDATA[
@@ -40,7 +40,7 @@
 	</step>
 
 	<step name="metadata">
-		<request method="GET" uri="conf/metadata/HierManyToManyMultiExt" />
+		<request method="GET" uri="conf/metadata/HierManyToManyMultiExt" user="admin" password="admin" />
 		<response>
 			<body>
 <![CDATA[
