@@ -2,6 +2,7 @@
 package org.restsql.core.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -12,10 +13,9 @@ import java.util.List;
 import org.junit.Test;
 import org.restsql.core.BaseTestCase;
 import org.restsql.core.Factory;
+import org.restsql.core.Factory.SqlResourceFactoryException;
 import org.restsql.core.SqlResource;
 import org.restsql.core.SqlResourceException;
-import org.restsql.core.Factory.SqlResourceFactoryException;
-import org.restsql.core.impl.SqlResourceFactoryImpl;
 
 public class SqlResourceFactoryTest extends BaseTestCase {
 	@Test
@@ -32,8 +32,8 @@ public class SqlResourceFactoryTest extends BaseTestCase {
 		SqlResource sqlResource = Factory.getSqlResource("sub.SingleTable");
 		assertEquals("sub.SingleTable", sqlResource.getName());
 		assertEquals("sakila", sqlResource.getDefinition().getMetadata().getDatabase().getDefault());
-		assertEquals("film", sqlResource.getDefinition().getMetadata().getTable().get(0).getName());
-		assertEquals("pelicula", sqlResource.getDefinition().getMetadata().getTable().get(0).getAlias());
+		assertEquals("ACTOR", sqlResource.getDefinition().getMetadata().getTable().get(0).getName());
+		assertNull(sqlResource.getDefinition().getMetadata().getTable().get(0).getAlias());
 
 		sqlResource = Factory.getSqlResource("sub.sub.SingleTable");
 		assertEquals("sub.sub.SingleTable", sqlResource.getName());

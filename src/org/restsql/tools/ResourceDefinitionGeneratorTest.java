@@ -22,7 +22,7 @@ import org.restsql.core.SqlResource;
 import org.restsql.core.SqlResourceException;
 
 public class ResourceDefinitionGeneratorTest extends BaseTestCase {
-	private static final int EXPECTED_DEFS_GENERATED = 23;
+	private static final int EXPECTED_DEFS_GENERATED = 22;
 	private final static String databaseName = "sakila";
 	private final static String sqlResourcesDir = Config.properties.getProperty(Config.KEY_SQLRESOURCES_DIR,
 			Config.DEFAULT_SQLRESOURCES_DIR);

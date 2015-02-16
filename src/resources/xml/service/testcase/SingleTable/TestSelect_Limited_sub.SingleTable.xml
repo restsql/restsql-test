@@ -7,16 +7,16 @@
 			<body>
 <![CDATA[
 <readResponse>
-	<pelicula film_id="1" title="ACADEMY DINOSAUR" release_year="2006" />
-	<pelicula film_id="2" title="ACE GOLDFINGER" release_year="2006" />
-	<pelicula film_id="3" title="ADAPTATION HOLES" release_year="2006" />
-	<pelicula film_id="4" title="AFFAIR PREJUDICE" release_year="2006" />
-	<pelicula film_id="5" title="AFRICAN EGG" release_year="2006" />
-	<pelicula film_id="6" title="AGENT TRUMAN" release_year="2006" />
-	<pelicula film_id="7" title="AIRPLANE SIERRA" release_year="2006" />
-	<pelicula film_id="8" title="AIRPORT POLLOCK" release_year="2006" />
-	<pelicula film_id="9" title="ALABAMA DEVIL" release_year="2006" />
-	<pelicula film_id="10" title="ALADDIN CALENDAR" release_year="2006" />
+	<actor id="1" first_name="PENELOPE" surname="GUINESS" />
+	<actor id="2" first_name="NICK" surname="WAHLBERG" />
+	<actor id="3" first_name="ED" surname="CHASE" />
+	<actor id="4" first_name="JENNIFER" surname="DAVIS" />
+	<actor id="5" first_name="JOHNNY" surname="LOLLOBRIGIDA" />
+	<actor id="6" first_name="BETTE" surname="NICHOLSON" />
+	<actor id="7" first_name="GRACE" surname="MOSTEL" />
+	<actor id="8" first_name="MATTHEW" surname="JOHANSSON" />
+	<actor id="9" first_name="JOE" surname="SWANK" />
+	<actor id="10" first_name="CHRISTIAN" surname="GABLE" />
 </readResponse>
 ]]>
 			</body>

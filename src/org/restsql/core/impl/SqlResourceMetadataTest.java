@@ -429,11 +429,11 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 		SqlResource sqlResource = Factory.getSqlResource("sub.SingleTable");
 
 		assertEquals(1, sqlResource.getMetaData().getTables().size());
-		TableMetaData table = sqlResource.getMetaData().getTableMap().get(getQualifiedTableName("film"));
+		TableMetaData table = sqlResource.getMetaData().getTableMap().get(getQualifiedTableName("actor"));
 		assertNotNull(table);
 		assertEquals("sakila", table.getDatabaseName());
-		assertEquals("film", table.getTableName());
-		assertEquals("pelicula", table.getTableAlias());
+		assertEquals("actor", table.getTableName());
+		assertEquals("actor", table.getTableAlias());
 
 		sqlResource = Factory.getSqlResource("sub.sub.SingleTable");
 

@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://restsql.org/schema ../ServiceTestCaseDefinition.xsd ">
 	<step name="definition">
 		<!-- Note: The definition file must be saved with Unix line feeds, otherwise the String comparison with the JAXB-read step body below will fail. -->
-		<request method="GET" uri="conf/definition/SingleTable" user="admin" password="admin" />
+		<request method="GET" uri="conf/definition/sub.SingleTable" user="admin" password="admin" />
 		<response>
 			<body>
 <![CDATA[
@@ -25,13 +25,13 @@
 	</step>
 
 	<step name="metadata">
-		<request method="GET" uri="conf/metadata/SingleTable" user="admin" password="admin" />
+		<request method="GET" uri="conf/metadata/sub.SingleTable" user="admin" password="admin" />
 		<response>
 			<body>
 <![CDATA[
 
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<ns2:sqlResourceMetaData resName="SingleTable" hierarchical="false" multipleDatabases="false" xmlns:ns2="http://restsql.org/schema">
+<ns2:sqlResourceMetaData resName="sub.SingleTable" hierarchical="false" multipleDatabases="false" xmlns:ns2="http://restsql.org/schema">
     <tables>
         <table databaseName="sakila" tableName="actor" tableAlias="actor" qualifiedTableName="sakila.actor" tableRole="Parent">
             <columns>
