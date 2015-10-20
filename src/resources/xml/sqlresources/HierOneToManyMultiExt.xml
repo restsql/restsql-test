@@ -11,8 +11,8 @@
 	</query>
 	<metadata>
 		<database default="sakila" />
-		<table name="language" alias="lang" role="Parent" />
-		<table name="film" alias="movie" role="Child" />
+		<table name="language" rowAlias="lang" rowSetAlias="lang" role="Parent" />
+		<table name="film" rowAlias="movie" rowSetAlias="movieSet" role="Child" />
 		<table name="film_comment" role="ChildExtension" />
 		<table name="film_genre" role="ChildExtension" />
 		<table name="film_origin" role="ChildExtension" />

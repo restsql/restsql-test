@@ -8,7 +8,7 @@
 	</query>
 	<metadata>
 		<database default="sakila" />
-		<table name="language" alias="lang" role="Parent" />
-		<table name="film" alias="movie" role="Child" />
+		<table name="language" rowAlias="lang" rowSetAlias="langs" role="Parent" />
+		<table name="film" rowAlias="movie" rowSetAlias="movies" role="Child" />
 	</metadata>
 </rs:sqlResource>

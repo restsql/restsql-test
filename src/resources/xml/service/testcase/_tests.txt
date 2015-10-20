@@ -5,4 +5,4 @@
 # 	e.g. HierManyToMany/*
 # Use # to comment out a line
 
-MySqlOnly/*
+json/TestUpdate_HierOneToManyMultiExt_MultiRowParentAndChild_ByBody.xml
