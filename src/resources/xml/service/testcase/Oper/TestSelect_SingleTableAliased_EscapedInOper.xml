@@ -15,7 +15,7 @@
 			<body>
 <![CDATA[
 { "movies": [
-		{ "id": 5000, "title": "(ESCAPE FROM TOMORROW)", "year": 2011, "description": null, "rating": "G" }
+		{ "id": 5000, "title": "(ESCAPE FROM TOMORROW)", "year": 2011, "rating": "G" }
 	]
 }
 ]]>
@@ -30,7 +30,7 @@
 			<body>
 <![CDATA[
 { "movies": [
-		{ "id": 5000, "title": "(ESCAPE FROM TOMORROW)", "year": 2011, "description": null, "rating": "G" }
+		{ "id": 5000, "title": "(ESCAPE FROM TOMORROW)", "year": 2011, "rating": "G" }
 	]
 }
 ]]>
@@ -45,7 +45,7 @@
 			<body>
 <![CDATA[
 { "movies": [
-		{ "id": 5001, "title": "BLOOD (PURPLE)", "year": 2012, "description": null, "rating": "G" }
+		{ "id": 5001, "title": "BLOOD (PURPLE)", "year": 2012, "rating": "G" }
 	]
 }
 ]]>
@@ -60,8 +60,8 @@
 			<body>
 <![CDATA[
 { "movies": [
-		{ "id": 5002, "title": "THE,DARKENING", "year": 2012, "description": null, "rating": "G" },
-		{ "id": 5003, "title": "HELLO", "year": 2012, "description": null, "rating": "G" }
+		{ "id": 5002, "title": "THE,DARKENING", "year": 2012, "rating": "G" },
+		{ "id": 5003, "title": "HELLO", "year": 2012, "rating": "G" }
 	]
 }
 ]]>
@@ -76,8 +76,8 @@
 			<body>
 <![CDATA[
 { "movies": [
-		{ "id": 5002, "title": "THE,DARKENING", "year": 2012, "description": null, "rating": "G" },
-		{ "id": 5003, "title": "HELLO", "year": 2012, "description": null, "rating": "G" }
+		{ "id": 5002, "title": "THE,DARKENING", "year": 2012, "rating": "G" },
+		{ "id": 5003, "title": "HELLO", "year": 2012, "rating": "G" }
 	]
 }
 ]]>

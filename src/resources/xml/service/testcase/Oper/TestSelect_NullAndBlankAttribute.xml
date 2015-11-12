@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://restsql.org/schema ../ServiceTestCaseDefinition.xsd ">
+	<setup>
+		<sql>INSERT INTO film (film_id,title,description,release_year,language_id,rental_duration,rental_rate,replacement_cost) VALUES (5000,'ESCAPE FROM TOMORROW','Run fast, very fast',null,1,0,0,0)</sql>
+		<sql>INSERT INTO film (film_id,title,description,release_year,language_id,rental_duration,rental_rate,replacement_cost) VALUES (5001,'BLOOD PURPLE',null,2012,1,0,0,0)</sql>
+		<sql>INSERT INTO film (film_id,title,description,release_year,language_id,rental_duration,rental_rate,replacement_cost) VALUES (5002,'THE DARKENING','A dark tale...',2012,1,0,0,0)</sql>
+		<sql>INSERT INTO film (film_id,title,description,release_year,language_id,rental_duration,rental_rate,replacement_cost) VALUES (5003,'SPOT IT','',2014,1,0,0,0)</sql>
+		<sql>INSERT INTO film (film_id,title,description,release_year,language_id,rental_duration,rental_rate,replacement_cost) VALUES (5004,'DOG GONE IT','null',2015,1,0,0,0)</sql>
+		<sql>INSERT INTO film (film_id,title,description,release_year,language_id,rental_duration,rental_rate,replacement_cost) VALUES (5005,'GET UP!','!null',2015,1,0,0,0)</sql>
+		<sql>INSERT INTO film_rating (film_rating_id,film_id,stars) VALUES (1,5000,5)</sql>
+		<sql>INSERT INTO film_rating (film_rating_id,film_id,stars) VALUES (2,5001,1)</sql>
+		<sql>INSERT INTO film_rating (film_rating_id,film_id,stars) VALUES (3,5002,1)</sql>
+		<sql>INSERT INTO film_rating (film_rating_id,film_id,stars) VALUES (4,5003,1)</sql>
+		<sql>INSERT INTO film_rating (film_rating_id,film_id,stars) VALUES (5,5004,1)</sql>
+		<sql>INSERT INTO film_rating (film_rating_id,film_id,stars) VALUES (6,5005,1)</sql>
+	</setup>
+	<step name="queryBy_StringValue">
+		<request method="GET" uri="res/FlatOneToOne?description=Run%20fast,%20very%20fast" />
+		<response>
+			<body>
+<![CDATA[
+<readResponse>
+	<film film_id="5000" title="ESCAPE FROM TOMORROW" description="Run fast, very fast" language_id="1" rental_duration="0" rental_rate="0.00" replacement_cost="0.00" film_rating_id="1" stars="5" />
+</readResponse>
+]]>
+				</body>
+		</response>
+	</step>
+
+	<step name="queryBy_BlankStringValue">
+		<request method="GET" uri="res/FlatOneToOne?description=" />
+		<response>
+			<body>
+<![CDATA[
+<readResponse>
+	<film film_id="5003" title="SPOT IT" description="" year="2014" language_id="1" rental_duration="0" rental_rate="0.00" replacement_cost="0.00" film_rating_id="4" stars="1" />
+</readResponse>
+]]>
+				</body>
+		</response>
+	</step>
+
+	<step name="queryBy_NullString">
+		<request method="GET" uri="res/FlatOneToOne?description=null" />
+		<response>
+			<body>
+<![CDATA[
+<readResponse>
+	<film film_id="5001" title="BLOOD PURPLE" year="2012" language_id="1" rental_duration="0" rental_rate="0.00" replacement_cost="0.00" film_rating_id="2" stars="1" />
+</readResponse>
+]]>
+				</body>
+		</response>
+	</step>
+	
+	<step name="queryBy_NullLiteralString">
+		<request method="GET" uri="res/FlatOneToOne?description=%5Cnull" />
+		<response>
+			<body>
+<![CDATA[
+<readResponse>
+	<film film_id="5004" title="DOG GONE IT" description="null" year="2015" language_id="1" rental_duration="0" rental_rate="0.00" replacement_cost="0.00" film_rating_id="5" stars="1" />
+</readResponse>
+]]>
+				</body>
+		</response>
+	</step>
+
+	<step name="queryBy_NotNullString">
+		<request method="GET" uri="res/FlatOneToOne?description=!null" />
+		<response>
+			<body>
+<![CDATA[
+<readResponse>
+	<film film_id="5000" title="ESCAPE FROM TOMORROW" description="Run fast, very fast" language_id="1" rental_duration="0" rental_rate="0.00" replacement_cost="0.00" film_rating_id="1" stars="5" />
+	<film film_id="5002" title="THE DARKENING" description="A dark tale..." year="2012" language_id="1" rental_duration="0" rental_rate="0.00" replacement_cost="0.00" film_rating_id="3" stars="1" />
+	<film film_id="5003" title="SPOT IT" description="" year="2014" language_id="1" rental_duration="0" rental_rate="0.00" replacement_cost="0.00" film_rating_id="4" stars="1" />
+	<film film_id="5004" title="DOG GONE IT" description="null" year="2015" language_id="1" rental_duration="0" rental_rate="0.00" replacement_cost="0.00" film_rating_id="5" stars="1" />
+	<film film_id="5005" title="GET UP!" description="!null" year="2015" language_id="1" rental_duration="0" rental_rate="0.00" replacement_cost="0.00" film_rating_id="6" stars="1" />
+</readResponse>
+]]>
+				</body>
+		</response>
+	</step>
+
+	<step name="queryBy_NotNullLiteralString">
+		<request method="GET" uri="res/FlatOneToOne?description=%5C!null" />
+		<response>
+			<body>
+<![CDATA[
+<readResponse>
+	<film film_id="5005" title="GET UP!" description="!null" year="2015" language_id="1" rental_duration="0" rental_rate="0.00" replacement_cost="0.00" film_rating_id="6" stars="1" />
+</readResponse>
+]]>
+				</body>
+		</response>
+	</step>
+
+	<step name="queryBy_IntValue_NullString">
+		<request method="GET" uri="res/FlatOneToOne?year=2012&amp;description=null" />
+		<response>
+			<body>
+<![CDATA[
+<readResponse>
+	<film film_id="5001" title="BLOOD PURPLE" year="2012" language_id="1" rental_duration="0" rental_rate="0.00" replacement_cost="0.00" film_rating_id="2" stars="1" />
+</readResponse>
+]]>
+				</body>
+		</response>
+	</step>
+
+	<step name="queryBy_NullString_IntValue">
+		<request method="GET" uri="res/FlatOneToOne?description=null&amp;year=2012" />
+		<response>
+			<body>
+<![CDATA[
+<readResponse>
+	<film film_id="5001" title="BLOOD PURPLE" year="2012" language_id="1" rental_duration="0" rental_rate="0.00" replacement_cost="0.00" film_rating_id="2" stars="1" />
+</readResponse>
+]]>
+				</body>
+		</response>
+	</step>
+
+	<step name="queryBy_IntValue">
+		<request method="GET" uri="res/FlatOneToOne?year=2012" />
+		<response>
+			<body>
+<![CDATA[
+<readResponse>
+	<film film_id="5001" title="BLOOD PURPLE" year="2012" language_id="1" rental_duration="0" rental_rate="0.00" replacement_cost="0.00" film_rating_id="2" stars="1" />
+	<film film_id="5002" title="THE DARKENING" description="A dark tale..." year="2012" language_id="1" rental_duration="0" rental_rate="0.00" replacement_cost="0.00" film_rating_id="3" stars="1" />
+</readResponse>
+]]>
+				</body>
+		</response>
+	</step>
+
+	<step name="queryBy_NullInt">
+		<request method="GET" uri="res/FlatOneToOne?year=null" />
+		<response>
+			<body>
+<![CDATA[
+<readResponse>
+	<film film_id="5000" title="ESCAPE FROM TOMORROW" description="Run fast, very fast" language_id="1" rental_duration="0" rental_rate="0.00" replacement_cost="0.00" film_rating_id="1" stars="5" />
+</readResponse>
+]]>
+				</body>
+		</response>
+	</step>
+
+	<step name="queryBy_NullIntAndIntValue">
+		<request method="GET" uri="res/FlatOneToOne?year=null&amp;rental_duration=0" />
+		<response>
+			<body>
+<![CDATA[
+<readResponse>
+	<film film_id="5000" title="ESCAPE FROM TOMORROW" description="Run fast, very fast" language_id="1" rental_duration="0" rental_rate="0.00" replacement_cost="0.00" film_rating_id="1" stars="5" />
+</readResponse>
+]]>
+				</body>
+		</response>
+	</step>
+
+	<teardown>
+		<sql>DELETE FROM film_rating</sql>
+		<sql>DELETE FROM film WHERE film_id between 5000 and 5500</sql>
+	</teardown>
+</tc:testcase>

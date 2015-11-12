@@ -94,7 +94,7 @@ public class AssertionHelper {
 
 	static void assertFilmRating(final Map<String, Object> row, final int film_id, final String title,
 			final int year, final int film_rating_id, final int stars) {
-		assertEquals(9, row.size());
+		assertEquals(10, row.size());
 		assertEquals(new Integer(film_id), row.get("film_id"));
 		assertEquals(title, row.get("title"));
 		assertEquals(year, row.get("year"));

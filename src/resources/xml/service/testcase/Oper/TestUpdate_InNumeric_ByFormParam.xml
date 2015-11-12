@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://restsql.org/schema ../ServiceTestCaseDefinition.xsd ">
+	<setup>
+		<sql>INSERT INTO film (film_id,title,release_year,language_id,rental_duration,rental_rate,replacement_cost) VALUES (5000,'ESCAPE FROM TOMORROW',2000,1,0,0,0)</sql>
+		<sql>INSERT INTO film (film_id,title,release_year,language_id,rental_duration,rental_rate,replacement_cost) VALUES (5001,'BLOOD PURPLE',2011,1,0,0,0)</sql>
+		<sql>INSERT INTO film (film_id,title,release_year,language_id,rental_duration,rental_rate,replacement_cost) VALUES (5002,'THE DARKENING',2012,1,0,0,0)</sql>
+		<sql>INSERT INTO film_rating (film_rating_id,film_id,stars) VALUES (1,5000,5)</sql>
+		<sql>INSERT INTO film_rating (film_rating_id,film_id,stars) VALUES (2,5001,2)</sql>
+		<sql>INSERT INTO film_rating (film_rating_id,film_id,stars) VALUES (3,5002,1)</sql>
+	</setup>
+
+	<step name="updateTwo">
+		<request method="PUT" uri="res/FlatOneToOne?year=(2000,2011)" contentType="application/x-www-form-urlencoded">
+			<body>
+<![CDATA[
+title=NEW%20TITLE
+]]>
+			</body>
+		</request>
+		<response>
+			<body>
+<![CDATA[
+<writeResponse rowsAffected="2" />
+]]>
+			</body>
+		</response>
+	</step>
+	<step name="verify">
+		<request method="GET" uri="res/FlatOneToOne?film_id=(5000,5001)" />
+		<response>
+			<body>
+<![CDATA[
+<readResponse>
+	<film film_id="5000" title="NEW TITLE" year="2000" language_id="1" rental_duration="0" rental_rate="0.00" replacement_cost="0.00" film_rating_id="1" stars="5" />
+	<film film_id="5001" title="NEW TITLE" year="2011" language_id="1" rental_duration="0" rental_rate="0.00" replacement_cost="0.00" film_rating_id="2" stars="2" />
+</readResponse>
+]]>
+			</body>
+		</response>
+	</step>
+
+	<teardown>
+		<sql>DELETE FROM film_rating</sql>
+		<sql>DELETE FROM film WHERE film_id between 5000 and 5500</sql>
+	</teardown>
+</tc:testcase>

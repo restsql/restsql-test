@@ -40,7 +40,7 @@
 { "langs": [
 		{ "langId": 100, "langName": "New Esperanto",
 			"movies": [
-				{ "year": null, "title": "ESCAPE FROM TOMORROW2", "film_id": 5000 },
+				{ "title": "ESCAPE FROM TOMORROW2", "film_id": 5000 },
 				{ "year": 2012, "title": "BLOOD PURPLE", "film_id": 5001 }
 			]
 		}

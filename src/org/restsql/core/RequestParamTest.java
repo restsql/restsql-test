@@ -23,7 +23,7 @@ public class RequestParamTest {
 		list.add("it's me again");
 		assertEquals(list, RequestValue.parseInValues("(hello,goodbye,it's me again)"));
 	}
-	
+
 	@Test
 	public void testParseInValues_EscapedDelimiter() {
 		List<String> list = new ArrayList<String>();
@@ -37,7 +37,7 @@ public class RequestParamTest {
 		assertEquals(list, RequestValue.parseInValues("(,hel\\,lo,3,goodby\\,e,5)"));
 		assertEquals(list, RequestValue.parseInValues("(,hel\\,lo,3,goodby\\,e,5)"));
 	}
-	
+
 	/**
 	 * Test method for {@link org.restsql.core.RequestValue#parseOperatorFromValue(java.lang.String)}.
 	 */
@@ -56,7 +56,9 @@ public class RequestParamTest {
 	}
 
 	/**
-	 * Test method for {@link org.restsql.core.RequestValue#stripOperatorFromValue(org.restsql.core.RequestValue.Operator operator, java.lang.String)}.
+	 * Test method for {@link
+	 * org.restsql.core.RequestValue#stripOperatorFromValue(org.restsql.core.RequestValue.Operator operator,
+	 * java.lang.String)}.
 	 */
 	@Test
 	public void testStripOperatorFromValue() {
@@ -68,7 +70,7 @@ public class RequestParamTest {
 		assertEquals("hello", RequestValue.stripOperatorFromValue(Operator.GreaterThan, ">hello"));
 		assertEquals("hello", RequestValue.stripOperatorFromValue(Operator.GreaterThanOrEqualTo, ">=hello"));
 	}
-	
+
 	/**
 	 * Test method for {@link org.restsql.core.RequestValue#NameValuePair(java.lang.String, java.lang.String)}.
 	 */
@@ -78,7 +80,7 @@ public class RequestParamTest {
 		assertEquals("param1", pair.getName());
 		assertEquals("hello", pair.getValue());
 		assertEquals(Operator.Equals, pair.getOperator());
-		
+
 		pair = new RequestValue("param1", "\\hello");
 		assertEquals("param1", pair.getName());
 		assertEquals("\\hello", pair.getValue());
@@ -122,10 +124,17 @@ public class RequestParamTest {
 		assertEquals("param1", pair.getName());
 		assertEquals("hello", pair.getValue());
 		assertEquals(Operator.GreaterThanOrEqualTo, pair.getOperator());
+
+		pair = new RequestValue("param1", "!hello");
+		assertEquals("param1", pair.getName());
+		assertEquals("hello", pair.getValue());
+		assertEquals(Operator.NotEquals, pair.getOperator());
 	}
 
 	/**
-	 * Test method for {@link org.restsql.core.RequestValue#NameValuePair(java.lang.String, java.lang.String, org.restsql.core.RequestValue.Operator)}.
+	 * Test method for
+	 * {@link org.restsql.core.RequestValue#NameValuePair(java.lang.String, java.lang.String, org.restsql.core.RequestValue.Operator)}
+	 * .
 	 */
 	@Test
 	public void testNameValuePairStringStringOperator() {
@@ -138,6 +147,74 @@ public class RequestParamTest {
 		assertEquals("param1", pair.getName());
 		assertEquals("<=hello", pair.getValue());
 		assertEquals(Operator.GreaterThan, pair.getOperator());
-}
+	}
 
+	/**
+	 * Test method for
+	 * {@link org.restsql.core.RequestValue#NameValuePair(java.lang.String, java.lang.String, org.restsql.core.RequestValue.Operator)}
+	 * .
+	 */
+	@Test
+	public void testNameValuePairStringString_WithNullValue() {
+		RequestValue pair = new RequestValue("param1", null);
+		assertEquals("param1", pair.getName());
+		assertEquals(null, pair.getValue());
+		assertEquals(Operator.IsNull, pair.getOperator());
+
+		pair = new RequestValue("param1", "Null");
+		assertEquals("param1", pair.getName());
+		assertEquals(null, pair.getValue());
+		assertEquals(Operator.IsNull, pair.getOperator());
+
+		pair = new RequestValue("param1", "null");
+		assertEquals("param1", pair.getName());
+		assertEquals(null, pair.getValue());
+		assertEquals(Operator.IsNull, pair.getOperator());
+
+		pair = new RequestValue("param1", "!Null");
+		assertEquals("param1", pair.getName());
+		assertEquals(null, pair.getValue());
+		assertEquals(Operator.IsNotNull, pair.getOperator());
+
+		pair = new RequestValue("param1", "!null");
+		assertEquals("param1", pair.getName());
+		assertEquals(null, pair.getValue());
+		assertEquals(Operator.IsNotNull, pair.getOperator());
+	}
+
+	/**
+	 * Test method for
+	 * {@link org.restsql.core.RequestValue#NameValuePair(java.lang.String, java.lang.String, org.restsql.core.RequestValue.Operator)}
+	 * .
+	 */
+	@Test
+	public void testNameValuePairStringString_WithEscapedValue() {
+		RequestValue pair = new RequestValue("param1", "\\null");
+		assertEquals("param1", pair.getName());
+		assertEquals("null", pair.getValue());
+		assertEquals(Operator.Equals, pair.getOperator());
+
+		pair = new RequestValue("param1", "\\!null");
+		assertEquals("param1", pair.getName());
+		assertEquals("!null", pair.getValue());
+		assertEquals(Operator.Equals, pair.getOperator());
+
+		pair = new RequestValue("param1", "\\!bla");
+		assertEquals("param1", pair.getName());
+		assertEquals("!bla", pair.getValue());
+		assertEquals(Operator.Equals, pair.getOperator());
+	}
+
+	/**
+	 * Test method for
+	 * {@link org.restsql.core.RequestValue#NameValuePair(java.lang.String, java.lang.String, org.restsql.core.RequestValue.Operator)}
+	 * .
+	 */
+	@Test
+	public void testNameValuePairStringString_WithBlankValue() {
+		RequestValue pair = new RequestValue("param1", "");
+		assertEquals("param1", pair.getName());
+		assertEquals("", pair.getValue());
+		assertEquals(Operator.Equals, pair.getOperator());
+	}
 }

@@ -41,7 +41,7 @@ public class JsonResponseSerializerTest {
 		StringBuilder sb = new StringBuilder();
 		jrs.addAttribute(true, sb, "bar", null);
 
-		assertEquals("\"bar\": null", sb.toString());
+		assertEquals("", sb.toString());
 	}
 
 	@Test
@@ -58,11 +58,12 @@ public class JsonResponseSerializerTest {
 		JsonResponseSerializer jrs = new JsonResponseSerializer();
 		assertNotNull(jrs);
 		StringBuilder sb = new StringBuilder();
+		
 		jrs.addAttribute(true, sb, "bar", null);
 
-		jrs.addAttribute(false, sb, "bar2", "baz2");
+		jrs.addAttribute(true, sb, "bar2", "baz2");
 
-		assertEquals("\"bar\": null, \"bar2\": \"baz2\"", sb.toString());
+		assertEquals("\"bar2\": \"baz2\"", sb.toString());
 	}
 
 	@Test
@@ -76,7 +77,7 @@ public class JsonResponseSerializerTest {
 
 		jrs.addAttribute(false, sb, "bar2", "baz2");
 
-		assertEquals("\"bar\": \"baz\", \"bar3\": null, \"bar2\": \"baz2\"", sb.toString());
+		assertEquals("\"bar\": \"baz\", \"bar2\": \"baz2\"", sb.toString());
 	}
 
 	@Test
@@ -90,6 +91,6 @@ public class JsonResponseSerializerTest {
 
 		jrs.addAttribute(false, sb, "bar3", null);
 
-		assertEquals("\"bar\": \"baz\", \"bar2\": \"baz2\", \"bar3\": null", sb.toString());
+		assertEquals("\"bar\": \"baz\", \"bar2\": \"baz2\"", sb.toString());
 	}
 }

@@ -177,24 +177,26 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 				(getDatabaseType() == DatabaseType.PostgreSql) ? "film_film_id_seq" : "film");
 
 		// Columns
-		assertEquals(7, table.getColumns().size());
+		assertEquals(8, table.getColumns().size());
 		AssertionHelper.assertColumnMetaData(table.getColumns(), 1, true, "sakila", "film", "film_id",
 				"film_id", Types.SMALLINT, true,
 				(getDatabaseType() == DatabaseType.PostgreSql) ? "film_film_id_seq" : "film");
 		AssertionHelper.assertColumnMetaData(table.getColumns(), 2, false, "sakila", "film", "title",
 				"title", Types.VARCHAR, false, null);
-		AssertionHelper.assertColumnMetaData(table.getColumns(), 3, false, "sakila", "film", "release_year",
+		AssertionHelper.assertColumnMetaData(table.getColumns(), 3, false, "sakila", "film", "description",
+				"description", (getDatabaseType() == DatabaseType.PostgreSql) ? Types.VARCHAR : Types.LONGVARCHAR, false, null);
+		AssertionHelper.assertColumnMetaData(table.getColumns(), 4, false, "sakila", "film", "release_year",
 				"year", (getDatabaseType() == DatabaseType.PostgreSql) ? Types.INTEGER : Types.INTEGER,
 				false, null);
 
-		AssertionHelper.assertColumnMetaData(table.getColumns(), 4, false, "sakila", "film", "language_id",
+		AssertionHelper.assertColumnMetaData(table.getColumns(), 5, false, "sakila", "film", "language_id",
 				"language_id", Types.SMALLINT, false, null);
-		AssertionHelper.assertColumnMetaData(table.getColumns(), 5, false, "sakila", "film",
+		AssertionHelper.assertColumnMetaData(table.getColumns(), 6, false, "sakila", "film",
 				"rental_duration", "rental_duration", Types.SMALLINT, false, null);
-		AssertionHelper.assertColumnMetaData(table.getColumns(), 6, false, "sakila", "film", "rental_rate",
+		AssertionHelper.assertColumnMetaData(table.getColumns(), 7, false, "sakila", "film", "rental_rate",
 				"rental_rate",
 				(getDatabaseType() == DatabaseType.PostgreSql) ? Types.NUMERIC : Types.DECIMAL, false, null);
-		AssertionHelper.assertColumnMetaData(table.getColumns(), 7, false, "sakila", "film",
+		AssertionHelper.assertColumnMetaData(table.getColumns(), 8, false, "sakila", "film",
 				"replacement_cost", "replacement_cost",
 				(getDatabaseType() == DatabaseType.PostgreSql) ? Types.NUMERIC : Types.DECIMAL, false, null);
 	}
@@ -401,7 +403,7 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 		assertNotNull(table);
 		assertEquals("sakila", table.getDatabaseName());
 		assertEquals("film", table.getTableName());
-		assertEquals("movie", table.getTableAlias());
+		assertEquals("movie", table.getRowAlias());
 
 		// Pks
 		assertEquals(1, table.getPrimaryKeys().size());
@@ -433,7 +435,7 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 		assertNotNull(table);
 		assertEquals("sakila", table.getDatabaseName());
 		assertEquals("actor", table.getTableName());
-		assertEquals("actor", table.getTableAlias());
+		assertEquals("actor", table.getRowAlias());
 
 		sqlResource = Factory.getSqlResource("sub.sub.SingleTable");
 
@@ -442,7 +444,7 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 		assertNotNull(table);
 		assertEquals("sakila", table.getDatabaseName());
 		assertEquals("language", table.getTableName());
-		assertEquals("language", table.getTableAlias());
+		assertEquals("language", table.getRowAlias());
 	}
 
 	@Test
@@ -478,7 +480,7 @@ public class SqlResourceMetadataTest extends BaseTestCase {
 
 		// Child primary keys
 		assertEquals(1, table.getPrimaryKeys().size());
-		assertEquals("movie", table.getTableAlias());
+		assertEquals("movie", table.getRowAlias());
 		AssertionHelper.assertColumnMetaData(table.getPrimaryKeys().get(0), 3, true, "sakila", "film",
 				"film_id", "film_id", Types.SMALLINT, true,
 				(getDatabaseType() == DatabaseType.PostgreSql) ? "film_film_id_seq" : "film");

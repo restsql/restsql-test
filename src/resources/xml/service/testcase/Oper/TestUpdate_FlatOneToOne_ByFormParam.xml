@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tc:testcase xmlns:tc="http://restsql.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://restsql.org/schema ../ServiceTestCaseDefinition.xsd ">
+	<setup>
+		<sql>INSERT INTO film (film_id,title,description,release_year,language_id,rental_duration,rental_rate,replacement_cost) VALUES (5000,'ESCAPE FROM TOMORROW','blah,blah',2011,1,0,0,0)</sql>
+		<sql>INSERT INTO film_rating (film_rating_id,film_id,stars) VALUES (1,5000,5)</sql>
+	</setup>
+
+	<step name="insertNullLiteralString">
+		<request method="POST" uri="res/FlatOneToOne" contentType="application/x-www-form-urlencoded" accept="application/json">
+			<body>
+<![CDATA[
+film_id=5003&title=THE%20BIG%20COOL&description=\null&year=2014&language_id=1&rental_duration=0&rental_rate=0.0&replacement_cost=0.0&film_rating_id=4&stars=3
+]]>
+			</body>
+		</request>
+		<response>
+			<body>
+<![CDATA[
+{ "rowsAffected": 2,
+	"films": [
+		{ "film_id": 5003, "title": "THE BIG COOL", "description": "null", "year": 2014, "language_id": 1, "rental_duration": 0, "rental_rate": 0.0, "replacement_cost": 0.0, "film_rating_id": 4, "stars": 3 }
+	]
+}
+]]>
+				</body>
+		</response>
+	</step>
+	<step name="verifyStringIsLiteralNull">
+		<request method="GET" uri="res/FlatOneToOne?description=%5Cnull" accept="application/json"/>
+		<response>
+			<body>
+<![CDATA[
+{ "films": [
+		{ "film_id": 5003, "title": "THE BIG COOL", "description": "null", "year": 2014, "language_id": 1, "rental_duration": 0, "rental_rate": 0.00, "replacement_cost": 0.00, "film_rating_id": 4, "stars": 3 }
+	]
+}
+]]>
+		</body>
+		</response>
+	</step>
+
+	<step name="updateStringToBlank">
+		<request method="PUT" uri="res/FlatOneToOne/5003" contentType="application/x-www-form-urlencoded" accept="application/json">
+			<body>
+<![CDATA[
+title=THE%20BIG%20COOL2&description=
+]]>
+			</body>
+		</request>
+		<response>
+			<body>
+<![CDATA[
+{ "rowsAffected": 1 }
+]]>
+				</body>
+		</response>
+	</step>
+	<step name="verifyStringIsBlank">
+		<request method="GET" uri="res/FlatOneToOne?description=" accept="application/json"/>
+		<response>
+			<body>
+<![CDATA[
+{ "films": [
+		{ "film_id": 5003, "title": "THE BIG COOL2", "description": "", "year": 2014, "language_id": 1, "rental_duration": 0, "rental_rate": 0.00, "replacement_cost": 0.00, "film_rating_id": 4, "stars": 3 }
+	]
+}
+]]>
+		</body>
+		</response>
+	</step>
+	
+	<step name="updateStringToNull">
+		<request method="PUT" uri="res/FlatOneToOne/5003" contentType="application/x-www-form-urlencoded" accept="application/json">
+			<body>
+<![CDATA[
+title=THE%20BIG%20COOL3&description=null
+]]>
+			</body>
+		</request>
+		<response>
+			<body>
+<![CDATA[
+{ "rowsAffected": 1 }
+]]>
+				</body>
+		</response>
+	</step>
+	<step name="verifyStringIsNull">
+		<request method="GET" uri="res/FlatOneToOne?description=null" accept="application/json"/>
+		<response>
+			<body>
+<![CDATA[
+{ "films": [
+		{ "film_id": 5003, "title": "THE BIG COOL3", "year": 2014, "language_id": 1, "rental_duration": 0, "rental_rate": 0.00, "replacement_cost": 0.00, "film_rating_id": 4, "stars": 3 }
+	]
+}
+]]>
+		</body>
+		</response>
+	</step>
+
+
+	<step name="updateToNullLiteralString">
+		<request method="PUT" uri="res/FlatOneToOne/5003" contentType="application/x-www-form-urlencoded" accept="application/json">
+			<body>
+<![CDATA[
+title=THE%20BIG%20COOL3&description=\null
+]]>
+			</body>
+		</request>
+		<response>
+			<body>
+<![CDATA[
+{ "rowsAffected": 1 }
+]]>
+				</body>
+		</response>
+	</step>
+	<step name="verify">
+		<request method="GET" uri="res/FlatOneToOne?description=%5Cnull" accept="application/json"/>
+		<response>
+			<body>
+<![CDATA[
+{ "films": [
+		{ "film_id": 5003, "title": "THE BIG COOL3", "description": "null", "year": 2014, "language_id": 1, "rental_duration": 0, "rental_rate": 0.00, "replacement_cost": 0.00, "film_rating_id": 4, "stars": 3 }
+	]
+}
+]]>
+		</body>
+		</response>
+	</step>
+
+	<step name="updateToNotNullLiteralString">
+		<request method="PUT" uri="res/FlatOneToOne?description=!null&amp;film_id=5003" contentType="application/x-www-form-urlencoded" accept="application/json">
+			<body>
+<![CDATA[
+title=THE%20BIG%20COOL4&description=%5C!null
+]]>
+			</body>
+		</request>
+		<response>
+			<body>
+<![CDATA[
+{ "rowsAffected": 1 }
+]]>
+				</body>
+		</response>
+	</step>
+
+	<step name="verifyNotNullLiteralString">
+		<request method="GET" uri="res/FlatOneToOne?description=%5C!null" accept="application/json"/>
+		<response>
+			<body>
+<![CDATA[
+{ "films": [
+		{ "film_id": 5003, "title": "THE BIG COOL4", "description": "!null", "year": 2014, "language_id": 1, "rental_duration": 0, "rental_rate": 0.00, "replacement_cost": 0.00, "film_rating_id": 4, "stars": 3 }
+	]
+}
+]]>
+		</body>
+		</response>
+	</step>
+
+	<teardown>
+		<sql>DELETE FROM film_rating</sql>
+		<sql>DELETE FROM film WHERE film_id between 5000 and 5500</sql>
+	</teardown>
+</tc:testcase>
