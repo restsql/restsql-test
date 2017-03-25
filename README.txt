@@ -1,4 +1,4 @@
-README.txt (15-Mar-2017)
+README.txt (24-Mar-2017)
 
 restSQL Test Deployment Guide
 

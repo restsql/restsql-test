@@ -2,7 +2,6 @@
 package org.restsql.core.impl;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -75,8 +74,8 @@ public class DateTimeTest extends SqlResourceTestBase {
 				"id", "1003" }, null);
 		final List<Map<String, Object>> results = sqlResource.read(request);
 		assertTrue(results.size() == 1);
-		AssertionHelper.assertDateTime(results.get(0), 1003, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-				.parse(SOME_TIMESTAMP));
+		AssertionHelper.assertDateTime(results.get(0), 1003,
+				new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(SOME_TIMESTAMP));
 	}
 
 	@Test
@@ -85,8 +84,8 @@ public class DateTimeTest extends SqlResourceTestBase {
 				null, null);
 		final List<Map<String, Object>> results = sqlResource.read(request);
 		assertTrue(results.size() > 0);
-		AssertionHelper.assertDateTime(results.get(0), 1000, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-				.parse(SOME_TIMESTAMP));
+		AssertionHelper.assertDateTime(results.get(0), 1000,
+				new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(SOME_TIMESTAMP));
 	}
 
 	@Test
@@ -105,13 +104,8 @@ public class DateTimeTest extends SqlResourceTestBase {
 		// Assert the null row
 		Map<String, Object> row = results.get(1);
 		assertEquals(new Integer(1001), row.get("id"));
-		if (usingMysql) {
-			assertNull(row.get("time"));
-			assertNotNull(row.get("timestamp"));
-		} else {
-			assertNull(row.get("time"));
-			assertNull(row.get("timestamp"));
-		}
+		assertNull(row.get("time"));
+		assertNull(row.get("timestamp"));
 		assertNull(row.get("date"));
 		assertNull(row.get("datetime"));
 
@@ -130,7 +124,8 @@ public class DateTimeTest extends SqlResourceTestBase {
 	public void testUpdate() throws SqlResourceException, ParseException {
 		Request request = RequestFactoryHelper.getRequest(Request.Type.UPDATE, sqlResource.getName(),
 				new String[] { "timestamp", SOME_TIMESTAMP }, new String[] { "time", SOME_OTHER_TIME,
-						"timestamp", SOME_OTHER_TIMESTAMP, "date", SOME_OTHER_DATE, "datetime", SOME_OTHER_TIMESTAMP });
+						"timestamp", SOME_OTHER_TIMESTAMP, "date", SOME_OTHER_DATE, "datetime",
+						SOME_OTHER_TIMESTAMP });
 		int rowsAffected = sqlResource.write(request).getRowsAffected();
 		RequestFactoryHelper.logRequest();
 		assertEquals(1, rowsAffected);
@@ -139,7 +134,7 @@ public class DateTimeTest extends SqlResourceTestBase {
 		final List<Map<String, Object>> results = sqlResource.read(request);
 		RequestFactoryHelper.logRequest();
 		assertEquals(1, results.size());
-		AssertionHelper.assertDateTime(results.get(0), 1000, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-				.parse(SOME_OTHER_TIMESTAMP));
+		AssertionHelper.assertDateTime(results.get(0), 1000,
+				new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(SOME_OTHER_TIMESTAMP));
 	}
 }

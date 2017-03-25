@@ -63,7 +63,7 @@ public class SqlResourceFactoryTest extends BaseTestCase {
 		assertTrue(resNames.contains("SingleTable"));
 		assertTrue(resNames.contains("SingleTableAliased"));
 		assertTrue(resNames.contains("SingleTable_FilmRating"));
-		assertTrue(resNames.contains("SingleTable_MultiPK"));
+		assertTrue(resNames.contains("SingleTable_MultiPk"));
 		assertTrue(resNames.contains("DateTime"));
 		assertTrue(resNames.contains("negative.ErrorInQuery"));
 		assertTrue(resNames.contains("negative.MissingMetadata"));

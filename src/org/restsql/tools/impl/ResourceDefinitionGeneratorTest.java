@@ -1,5 +1,5 @@
 /* Copyright (c) restSQL Project Contributors. Licensed under MIT. */
-package org.restsql.tools;
+package org.restsql.tools.impl;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
@@ -20,6 +20,8 @@ import org.restsql.core.Request;
 import org.restsql.core.RequestFactoryHelper;
 import org.restsql.core.SqlResource;
 import org.restsql.core.SqlResourceException;
+import org.restsql.tools.ResourceDefinitionGenerator;
+import org.restsql.tools.ToolsFactory;
 
 public class ResourceDefinitionGeneratorTest extends BaseTestCase {
 	private static final int EXPECTED_DEFS_GENERATED = 22;
@@ -85,11 +87,6 @@ public class ResourceDefinitionGeneratorTest extends BaseTestCase {
 		generator.generate(subDirName, "", null);
 	}
 
-	@Test(expected = ResourceDefinitionGenerator.GenerationException.class)
-	public void testGenerate_WithBlankSubDir() throws ResourceDefinitionGenerator.GenerationException {
-		generator.generate("", databaseName, null);
-	}
-
 	@Test
 	public void testGenerate_WithEmptySubdir() throws ResourceDefinitionGenerator.GenerationException {
 		subDirObj.mkdir();
@@ -110,9 +107,16 @@ public class ResourceDefinitionGeneratorTest extends BaseTestCase {
 		generator.generate(subDirName, null, null);
 	}
 
-	@Test(expected = ResourceDefinitionGenerator.GenerationException.class)
-	public void testGenerate_WithNullSubDir() throws ResourceDefinitionGenerator.GenerationException {
-		generator.generate(null, databaseName, null);
+	@Test
+	public void testCreateSubDir_WithNullSubDir() throws ResourceDefinitionGenerator.GenerationException {
+		File dir = ((AbstractResourceDefinitionGenerator)generator).createSubDir(null, sqlResourcesDir);
+		assertEquals("sqlResourcesDir", sqlResourcesDir, dir.getAbsolutePath());
+	}
+
+	@Test
+	public void testCreateSubDir_WithBlankSubDir() throws ResourceDefinitionGenerator.GenerationException {
+		File dir = ((AbstractResourceDefinitionGenerator)generator).createSubDir("", sqlResourcesDir);
+		assertEquals("sqlResourcesDir", sqlResourcesDir, dir.getAbsolutePath());
 	}
 
 	// Helper methods
