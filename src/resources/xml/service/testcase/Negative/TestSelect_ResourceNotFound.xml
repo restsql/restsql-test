@@ -4,7 +4,7 @@
 	<step name="execute">
 		<request method="GET" uri="res/NeverGonnaFindThisOne" />
 		<response status="404">
-			<body>SQL Resource NeverGonnaFindThisOne not found - expected /opt/restsql/code/restsql-test/src/resources/xml/sqlresources/NeverGonnaFindThisOne.xml</body>
+			<body>SQL Resource NeverGonnaFindThisOne not found - expected /etc/opt/restsql/sqlresources/NeverGonnaFindThisOne.xml</body>
 		</response>
 	</step>
 </tc:testcase>

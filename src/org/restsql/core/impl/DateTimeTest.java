@@ -93,7 +93,7 @@ public class DateTimeTest extends SqlResourceTestBase {
 		if (usingMysql) {
 			final Statement statement = connection.createStatement();
 			statement
-					.execute("INSERT INTO datetime (id, time, timestamp, date, datetime) VALUES (1002, 0, 0, 0, 0)");
+					.execute("INSERT INTO datetime (id, time, timestamp, date, datetime) VALUES (1002, 0, NULL, NULL, NULL)");
 			statement.close();
 		}
 		final Request request = RequestFactoryHelper.getRequest(Request.Type.SELECT, sqlResource.getName(),

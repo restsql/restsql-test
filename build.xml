@@ -45,6 +45,31 @@
 		<ant antfile="../restsql-sdk/build.xml" target="exec-examples" inheritall="false" />
 	</target>
 
+	<target name="prep-mysql" description="prepares /etc/opt/restsql for http tests with mysql">
+		<antcall target="-prep">
+			<param name="database" value="mysql" />
+		</antcall>
+	</target>
+
+	<target name="prep-psql" description="prepares /etc/opt/restsql for http tests with postgresql">
+		<antcall target="-prep">
+			<param name="database" value="postgresql" />
+		</antcall>
+	</target>
+	
+	<target name="-prep" depends="compile-tests" description="prepares /etc/opt/restsql for tests for specified database">
+		<delete file="/etc/opt/restsql/privileges.properties" />
+		<delete file="/etc/opt/restsql/restsql.properties" />
+		<copy file="src/resources/properties/restsql-${database}.properties" tofile="/etc/opt/restsql/restsql.properties" />
+		<copy todir="/etc/opt/restsql/sqlresources">
+			<fileset dir="src/resources/xml/sqlresources" />
+		</copy>
+		<copy file="src/resources/properties/triggers.properties" tofile="/etc/opt/restsql/triggers.properties" />
+		<copy todir="/etc/opt/restsql/triggers">
+			<fileset dir="obj/bin" />
+		</copy>
+	</target>
+
 	<target name="test-api" depends="compile-tests" description="exercises junit tests for java api">
 		<antcall target="-test-api">
 			<param name="includes" value="**/*Test.*" />
@@ -66,11 +91,11 @@
 			<param name="excludes" value="**/Base*.*" />
 		</antcall>
 	</target>
-	
+
 	<target name="-test-api">
 		<property name="propertiesFile" value="${org.restsql.properties}" />
 		<echo message="Using ${propertiesFile}" />
-		
+
 		<!-- Create output dir -->
 		<delete dir="${api-test.dir}" />
 		<mkdir dir="${api-test.dir}" />
@@ -83,7 +108,7 @@
 			<batchtest todir="${api-test.dir}">
 				<fileset dir="src" includes="${includes}" excludes="${excludes}" />
 			</batchtest>
-		</junit>	
+		</junit>
 	</target>
 
 	<!-- Creates report for API test -->
