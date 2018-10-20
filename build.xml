@@ -51,7 +51,7 @@
 		</antcall>
 	</target>
 
-	<target name="prep-psql" description="prepares /etc/opt/restsql for http tests with postgresql">
+	<target name="prep-pgsql" description="prepares /etc/opt/restsql for http tests with postgresql">
 		<antcall target="-prep">
 			<param name="database" value="postgresql" />
 		</antcall>
